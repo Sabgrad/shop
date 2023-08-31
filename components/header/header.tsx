@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
+import clsx from 'clsx'
 import { AiOutlineMenu, AiFillShop, AiOutlineUser, AiOutlineAppstore, AiOutlineShoppingCart, AiOutlineSearch, AiFillSetting } from 'react-icons/ai'
-import HeaderBtn from './header-btn'
 
 export default function Header() {
   return (
@@ -27,7 +27,7 @@ export default function Header() {
           </button>
         </form>
         <HeaderBtn className='hidden md:flex relative'>
-          <AiFillSetting size={28}/>
+          <AiFillSetting size={28} />
         </HeaderBtn>
         <HeaderBtn className='hidden sm:flex'>
           <AiOutlineUser size={28} />
@@ -40,5 +40,21 @@ export default function Header() {
         </HeaderBtn>
       </div>
     </header>
+  )
+}
+
+type HeaderBtnProps = {
+  children: React.ReactNode
+  className?: string
+}
+
+function HeaderBtn({
+  children,
+  className
+}: HeaderBtnProps) {
+  return (
+    <button className={clsx('p-2 hover:bg-gray-500 rounded-lg transition-all h-full flex items-center justify-center', className && className)}>
+      {children}
+    </button>
   )
 }
