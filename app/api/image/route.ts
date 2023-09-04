@@ -5,24 +5,20 @@ export const POST = async (request: Request) => {
   try {
 
     const body = await request.json()
-    const { userId, name, description, price, category, discount } = body
+    const { path, productId } = body
 
-    const newProduct = await prisma.product.create({
+    const newImage = await prisma.image.create({
       data: {
-        name,
-        description,
-        price,
-        category,
-        discount,
-        owner: {
+        path,
+        product: {
           connect: {
-            id: userId
+            id: productId
           }
-        },
+        }
       }
     })
 
-    return NextResponse.json(newProduct)
+    return NextResponse.json(newImage)
 
   } catch (error) {
     return NextResponse.json(error)

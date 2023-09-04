@@ -82,7 +82,6 @@ function Register({
   })
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data)
     setIsLoading(true)
     if (variant === 'login') {
       signIn('credentials', {

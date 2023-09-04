@@ -17,6 +17,9 @@ export const GET = async (request: NextRequest, { params }: { params: Params }) 
     const user = await prisma.product.findMany({
       where: {
         ownerId: id
+      },
+      include: {
+        image: true
       }
     })
 

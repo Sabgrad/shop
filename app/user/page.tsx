@@ -12,8 +12,8 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { useRouter } from 'next/navigation'
 import { category } from '@/lib/data'
-
-console.log(category)
+import { CldUploadButton } from 'next-cloudinary'
+import ProductCard from '@/components/cards/product-card'
 
 type SectionType = typeof UserMenuData[number]['title']
 
@@ -83,49 +83,78 @@ export default function User() {
         {currentSection === 'My shop' &&
           <>
             <form onSubmit={handleSubmit(onSubmit)} className='w-full flex flex-col gap-2'>
-              <div className='flex flex-col md:flex-row gap-2 items-center md:items-start'>
-                <div className='h-96 border border-black/40 min-w-0 max-w-[300px] w-full'>
-
-                </div>
-                <div className='flex flex-col w-full gap-2'>
-                  <textarea placeholder='Name' {...register('name')} className='p-1 border border-black/40' />
-                  <textarea placeholder='Description' {...register('description')} className='p-1 border border-black/40' />
-                  <select {...register('category')}>
-                    {
-                      category.map((el) =>
-                        <optgroup label={el.title} key={el.title}>
-                          {
-                            el.subCategory.map((subEl) =>
-                              'subCategory' in subEl ?
-                                subEl.subCategory?.map((item) =>
-                                  <option key={item.title} value={item.title}>
-                                    {item.title}
-                                  </option>
-                                )
-                                :
-                                <option key={subEl.title} value={subEl.title}>
-                                  {subEl.title}
+              <div className='flex flex-col gap-2'>
+                <textarea
+                  placeholder='Name'
+                  {...register('name', {
+                    required: true,
+                    minLength: 10,
+                    maxLength: 256,
+                  })}
+                  className='p-1 border border-black/40'
+                />
+                <textarea
+                  placeholder='Description'
+                  {...register('description', {
+                    required: true,
+                    minLength: 10,
+                    maxLength: 2048,
+                  })}
+                  className='p-1 border border-black/40'
+                />
+                <select
+                  {...register('category', {
+                    required: true,
+                  })}
+                >
+                  {
+                    category.map((mainCategory) =>
+                      <optgroup label={mainCategory.title} key={mainCategory.title}>
+                        {
+                          mainCategory.subCategory.map((subCategory) =>
+                            'subCategory' in subCategory ?
+                              subCategory.subCategory?.map((item) =>
+                                <option key={item.title} value={item.title}>
+                                  {item.title}
                                 </option>
-                            )
-                          }
-                        </optgroup>
-                      )
-                    }
-                  </select>
-                  <input placeholder='price' {...register('price')} className='p-1 border border-black/40' />
-                  <input placeholder='discount' {...register('discount')} className='p-1 border border-black/40' />
-                </div>
+                              )
+                              :
+                              <option key={subCategory.title} value={subCategory.title}>
+                                {subCategory.title}
+                              </option>
+                          )
+                        }
+                      </optgroup>
+                    )
+                  }
+                </select>
+                <input
+                  placeholder='price'
+                  {...register('price', {
+                    required: true,
+                    valueAsNumber: true,
+                    validate: (v) => v >= 100 && v <= 999999
+                  })}
+                  className='p-1 border border-black/40'
+                />
+                <input
+                  placeholder='discount'
+                  {...register('discount', {
+                    required: true,
+                    valueAsNumber: true,
+                    validate: (v) => v >= 10 && v <= 80 || v === 0
+                  })}
+                  className='p-1 border border-black/40'
+                />
               </div>
               <button type='submit' className='bg-gray-500'>
-                Submit
+                Create Product
               </button>
             </form>
             <div className='w-full border-b border-black/40' />
-            <div className='flex flex-col gap-2'>
+            <div className='gap-2 grid p-2 grid-cols-2 md:lg:responsive-grid'>
               {product?.map((el, index) =>
-                <div key={el.id}>
-                  {index + 1} {el.category}
-                </div>
+                <ProductCard key={el.id} product={el} />
               )}
             </div>
           </>

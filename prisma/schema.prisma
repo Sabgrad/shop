@@ -27,8 +27,8 @@ model Product {
   updatedAt   DateTime @updatedAt
   name        String
   description String
-  price       String
-  discount    String
+  price       Int
+  discount    Int
   category    String
 
   image Image[]
@@ -43,6 +43,6 @@ model Image {
   updatedAt DateTime @updatedAt
   path      String
 
-  product   Product? @relation(fields: [productId], references: [id])
-  productId String   @db.ObjectId
+  product   Product @relation(fields: [productId], references: [id])
+  productId String  @db.ObjectId
 }
