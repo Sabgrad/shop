@@ -5,11 +5,12 @@ export const POST = async (request: Request) => {
   try {
 
     const body = await request.json()
-    const { path, productId } = body
+    const { path, productId, publickId } = body
 
     const newImage = await prisma.image.create({
       data: {
         path,
+        publickId,
         product: {
           connect: {
             id: productId

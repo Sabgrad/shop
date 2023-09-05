@@ -5,7 +5,7 @@
 @layer utilities {
   @variants responsive {
     .responsive-grid {
-      grid-template-columns: repeat(auto-fit, minmax(230px, max-content));
+      grid-template-columns: repeat(auto-fit, minmax(200px, max-content));
     }
   }
 }

@@ -1,6 +1,7 @@
 'use client'
 
-import { Product, User } from '@prisma/client'
+import { ProductType } from '@/types/types'
+import { User } from '@prisma/client'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import React, { createContext, useContext, useEffect, useState } from 'react'
@@ -12,8 +13,8 @@ type UserContexProps = {
 type UserContextType = {
   user: User | undefined
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>
-  product: Product[] | undefined
-  setProduct: React.Dispatch<React.SetStateAction<Product[] | undefined>>
+  product: ProductType[] | undefined
+  setProduct: React.Dispatch<React.SetStateAction<ProductType[] | undefined>>
   triggerProductRequest: () => void
 }
 
@@ -40,7 +41,7 @@ export default function UserContextProvider({
 }: UserContexProps) {
 
   const [user, setUser] = useState<User>()
-  const [product, setProduct] = useState<Product[]>()
+  const [product, setProduct] = useState<ProductType[]>()
   const [triggerProduct, setTriggerProduct] = useState(0)
 
   const triggerProductRequest = () => {
@@ -51,7 +52,7 @@ export default function UserContextProvider({
 
   useEffect(() => {
     if (session.status === 'authenticated') {
-      getUser(session.data.user?.email as string).then((res) => {setUser(res), setTriggerProduct(v => v + 1)})
+      getUser(session.data.user?.email as string).then((res) => { setUser(res), setTriggerProduct(v => v + 1) })
     }
   }, [session.data?.user?.email])
 
