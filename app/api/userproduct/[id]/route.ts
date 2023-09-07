@@ -1,4 +1,4 @@
-import prisma from '@/prisma/prismadb'
+import prisma from '@/lib/prismadb'
 import { NextRequest, NextResponse } from 'next/server'
 
 type Params = {

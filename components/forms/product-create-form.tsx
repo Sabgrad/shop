@@ -46,7 +46,7 @@ export default function ProductCreateForm() {
             minLength: 10,
             maxLength: 256,
           })}
-          className='p-1 border border-black/40'
+          className='p-1 border border-black/40 rounded-lg'
         />
         <textarea
           placeholder='Description'
@@ -55,9 +55,10 @@ export default function ProductCreateForm() {
             minLength: 10,
             maxLength: 2048,
           })}
-          className='p-1 border border-black/40'
+          className='p-1 border border-black/40 rounded-lg'
         />
         <select
+          className='p-1 border border-black/40 rounded-lg'
           {...register('category', {
             required: true,
           })}
@@ -90,7 +91,7 @@ export default function ProductCreateForm() {
             valueAsNumber: true,
             validate: (v) => v >= 100 && v <= 999999
           })}
-          className='p-1 border border-black/40'
+          className='p-1 border border-black/40 rounded-lg'
         />
         <input
           placeholder='discount'
@@ -99,7 +100,7 @@ export default function ProductCreateForm() {
             valueAsNumber: true,
             validate: (v) => v >= 10 && v <= 80 || v === 0
           })}
-          className='p-1 border border-black/40'
+          className='p-1 border border-black/40 rounded-lg'
         />
       </div>
       <button type='submit' className='bg-gray-500'>

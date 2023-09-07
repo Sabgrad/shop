@@ -1,4 +1,4 @@
-import prisma from '@/prisma/prismadb'
+import prisma from '@/lib/prismadb'
 import { NextResponse } from 'next/server'
 
 export const POST = async (request: Request) => {

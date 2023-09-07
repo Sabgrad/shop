@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className='h-full'>
+    <html lang="en" className='h-full select-none'>
       <AuthContext>
         <UserContextProvider>
           <MenuContextProvider>
