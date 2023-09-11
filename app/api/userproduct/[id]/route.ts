@@ -1,11 +1,11 @@
 import prisma from '@/lib/prismadb'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
 type Params = {
   id: string
 }
 
-export const GET = async (request: NextRequest, { params }: { params: Params }) => {
+export const GET = async (request: Request, { params }: { params: Params }) => {
   try {
     const { id } = params
 
@@ -24,6 +24,34 @@ export const GET = async (request: NextRequest, { params }: { params: Params }) 
     })
 
     return NextResponse.json(user)
+
+  } catch (err: any) {
+    return NextResponse.json(err)
+  }
+}
+
+export const DELETE = async (request: Request, { params }: { params: Params }) => {
+  try {
+    const { id } = params
+
+    if (!id) {
+      console.log('no id')
+      return null
+    }
+
+    const deleteImages = await prisma.image.deleteMany({
+      where: {
+        productId: id
+      }
+    })
+
+    const deleteProduct = await prisma.product.delete({
+      where: {
+        id: id
+      }
+    })
+
+    return NextResponse.json([deleteImages, deleteProduct])
 
   } catch (err: any) {
     return NextResponse.json(err)

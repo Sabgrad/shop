@@ -1,6 +1,6 @@
 'use client'
 
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import noimage from '@/public/noimage.jpg'
 import { ProductType } from '@/types/types'
 import Image from 'next/image'
@@ -31,8 +31,8 @@ export default function ProductCard({
       <div className='gap-2 flex flex-col p-2 border border-gray-300 rounded-xl max-w-[250px] bg-white' onClick={handleClick}>
         <div className='relative flex flex-1 h-[234px]'>
           {
-            product.image !== null && product.image.length ?
-              <Image src={product.image.at(0)?.path as string} alt='product image' width={234} height={234} />
+            'image' in product && product.image.length !== 0 ?
+              <Image src={product.image[0]?.path as string} alt='product image' width={234} height={234} />
               :
               <Image src={noimage} alt='product image' width={234} height={234} />
           }
@@ -52,9 +52,12 @@ export default function ProductCard({
           }
         </div>
       </div>
-      <Modal active={activeModal} setActive={setActiveModal}>
-         <ProductUpdaterForm product={product}/>
-      </Modal>
+      {
+        type === 'user' &&
+        < Modal active={activeModal} setActive={setActiveModal}>
+          <ProductUpdaterForm product={product} />
+        </Modal >
+      }
     </>
   )
 }

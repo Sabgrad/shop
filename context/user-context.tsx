@@ -15,6 +15,8 @@ type UserContextType = {
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>
   product: ProductType[] | undefined
   setProduct: React.Dispatch<React.SetStateAction<ProductType[] | undefined>>
+  isLoading: boolean
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
   triggerProductRequest: () => void
 }
 
@@ -43,6 +45,7 @@ export default function UserContextProvider({
   const [user, setUser] = useState<User>()
   const [product, setProduct] = useState<ProductType[]>()
   const [triggerProduct, setTriggerProduct] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
 
   const triggerProductRequest = () => {
     setTriggerProduct(v => v + 1)
@@ -52,13 +55,20 @@ export default function UserContextProvider({
 
   useEffect(() => {
     if (session.status === 'authenticated') {
-      getUser(session.data.user?.email as string).then((res) => { setUser(res), setTriggerProduct(v => v + 1) })
+      getUser(session.data.user?.email as string)
+        .then((res) => {
+          setUser(res),
+            setTriggerProduct(v => v + 1)
+        })
     }
   }, [session.data?.user?.email])
 
   useEffect(() => {
     if (user && triggerProduct > 0) {
-      getUserProduct(user.id).then((res) => setProduct(res))
+      setIsLoading(true)
+      getUserProduct(user.id)
+        .then((res) => setProduct(res))
+        .finally(() => setIsLoading(false))
     }
   }, [user, triggerProduct])
 
@@ -68,6 +78,8 @@ export default function UserContextProvider({
       setUser,
       product,
       setProduct,
+      isLoading,
+      setIsLoading,
       triggerProductRequest
     }}>
       {children}

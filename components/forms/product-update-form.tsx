@@ -3,55 +3,25 @@
 import { ProductType } from '@/types/types'
 import { CldUploadButton } from 'next-cloudinary'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import noimage from '@/public/noimage.jpg'
 import axios from 'axios'
 import { useUserContext } from '@/context/user-context'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import { category } from '@/lib/data'
-import crypto from 'crypto'
-import clsx from 'clsx'
+import { categorys } from '@/lib/data'
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 import { TiFolderDelete, TiFolderAdd } from 'react-icons/ti'
+import { deleteCloudinrayImage } from '@/action/deleteCloudinaryImage'
 
 type ProductUpdaterFormProps = {
   product: ProductType
 }
 
-const generateSHA1 = (data: any) => {
-  const hash = crypto.createHash("sha1");
-  hash.update(data);
-  return hash.digest("hex");
-}
-
-const generateSignature = (publicId: string, apiSecret: string) => {
-  const timestamp = new Date().getTime();
-  return `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
-};
-
-const deleteCloudinrayImage = async (public_id: string) => {
-  const cloud_name = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
-  const api_key = process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY
-  const api_secret = process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET as string
-  const timestamp = new Date().getTime()
-  const url = `https://api.cloudinary.com/v1_1/${cloud_name}/image/destroy`
-  const signature = generateSHA1(generateSignature(public_id, api_secret))
-
-  const res = await axios.post(url, {
-    public_id,
-    signature,
-    api_key,
-    timestamp,
-  })
-
-  console.log(res)
-}
-
 export default function ProductUpdaterForm({
-  product
+  product,
 }: ProductUpdaterFormProps) {
 
-  const { triggerProductRequest } = useUserContext()
+  const { triggerProductRequest, isLoading } = useUserContext()
 
   const [isDisable, setIsDisable] = useState(false)
   const [currentImage, setCurrentImage] = useState(0)
@@ -69,16 +39,16 @@ export default function ProductUpdaterForm({
   })
 
   const handleUpload = (result: any) => {
-    console.log(result)
+    setIsDisable(true)
     const { id: productId } = product
     const { secure_url: path, public_id: publicId } = result.info
-    setIsDisable(true)
     axios.post('/api/image', {
       path,
       productId,
       publicId
     })
       .then(() => triggerProductRequest())
+      .catch(() => deleteCloudinrayImage(publicId))
       .finally(() => setIsDisable(false))
   }
 
@@ -102,10 +72,14 @@ export default function ProductUpdaterForm({
       .finally(() => setIsDisable(false))
   }
 
-  const isDisableFunc = () => {
-    if (product.image.length >= 5 || isDisable) {
-      return true
-    }
+  const handleDeleteProduct = () => {
+    setIsDisable(true)
+    axios.delete(`/api/userproduct/${product.id}`)
+      .then(() => {
+        product.image.forEach((el) => deleteCloudinrayImage(el.publicId))
+      })
+      .then(() => triggerProductRequest())
+      .catch(() => setIsDisable(false))
   }
 
   const handleSwapImage = (type: 'left' | 'right') => {
@@ -126,10 +100,6 @@ export default function ProductUpdaterForm({
       }
     }
   }
-
-  useEffect(() => {
-    console.log(currentImage)
-  }, [currentImage])
 
   return (
     <>
@@ -155,11 +125,11 @@ export default function ProductUpdaterForm({
             </div>
           )}
         </div>
-        <div className={clsx('h-[432px] justify-center items-center relative flex bg-gray-200 rounded-lg group', isDisableFunc() && 'pointer-events-none')}>
+        <div className='h-[432px] justify-center items-center relative flex bg-gray-200 rounded-lg group'>
           {
             product.image.length !== 0 &&
             <AiOutlineLeft
-              className='opacity-0 group-hover:opacity-100 absolute left-1 bg-gray-100/10 hover:bg-gray-100/60 pointer-events-auto rounded-lg transition-all'
+              className='opacity-0 group-hover:opacity-100 absolute left-1 bg-gray-100/10 hover:bg-gray-100/60 rounded-lg transition-all'
               size={40}
               onClick={() => handleSwapImage('left')}
             />
@@ -180,21 +150,24 @@ export default function ProductUpdaterForm({
                 height={234}
               />
           }
-          <CldUploadButton
-            onUpload={handleUpload}
-            options={{ maxFiles: 1 }}
-            uploadPreset='niudip3t'
-            className='absolute'
-          >
-            <TiFolderAdd
-              size={100}
-              className='opacity-0 group-hover:opacity-100 bg-gray-100/10 hover:bg-gray-100/60 pointer-events-auto rounded-lg transition-all'
-            />
-          </CldUploadButton>
+          {
+            product.image.length < 5 && isDisable === false && isLoading === false &&
+            <CldUploadButton
+              onUpload={handleUpload}
+              options={{ maxFiles: 1 }}
+              uploadPreset='niudip3t'
+              className='absolute'
+            >
+              <TiFolderAdd
+                size={100}
+                className='opacity-0 group-hover:opacity-100 bg-gray-100/10 hover:bg-gray-100/60 rounded-lg transition-all'
+              />
+            </CldUploadButton>
+          }
           {
             product.image.length !== 0 &&
             <AiOutlineRight
-              className='opacity-0 group-hover:opacity-100 absolute right-1 bg-gray-100/10 hover:bg-gray-100/60 pointer-events-auto rounded-lg transition-all'
+              className='opacity-0 group-hover:opacity-100 absolute right-1 bg-gray-100/10 hover:bg-gray-100/60 rounded-lg transition-all'
               size={40}
               onClick={() => handleSwapImage('right')}
             />
@@ -227,20 +200,13 @@ export default function ProductUpdaterForm({
           })}
         >
           {
-            category.map((mainCategory) =>
-              <optgroup label={mainCategory.title} key={mainCategory.title}>
+            categorys.map((category) =>
+              <optgroup key={category.title} label={category.title}>
                 {
-                  mainCategory.subCategory.map((subCategory) =>
-                    'subCategory' in subCategory ?
-                      subCategory.subCategory?.map((item) =>
-                        <option key={item.title} value={item.title}>
-                          {item.title}
-                        </option>
-                      )
-                      :
-                      <option key={subCategory.title} value={subCategory.title}>
-                        {subCategory.title}
-                      </option>
+                  category.subCategory.map((subCategory) =>
+                    <option key={subCategory.title} value={subCategory.title}>
+                      {subCategory.title}
+                    </option>
                   )
                 }
               </optgroup>
@@ -265,10 +231,19 @@ export default function ProductUpdaterForm({
           })}
           className='p-1 border border-black/40 rounded-lg'
         />
-        <button type='submit' className='w-full p-1 bg-green-500/50 hover:bg-green-500 rounded-lg transition-all'>
+        <button
+          disabled={isDisable}
+          type='submit'
+          className='w-full p-1 bg-green-500/50 hover:bg-green-500 rounded-lg transition-all'
+        >
           Submit changes
         </button>
-        <button type='button' className='w-full p-1 bg-red-500/50 hover:bg-red-500 rounded-lg relative transition-all'>
+        <button
+          disabled={isDisable}
+          type='button'
+          className='w-full p-1 bg-red-500/50 hover:bg-red-500 rounded-lg relative transition-all'
+          onClick={() => handleDeleteProduct()}
+        >
           Delete product
         </button>
       </form>

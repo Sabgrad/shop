@@ -1,14 +1,16 @@
 'use client'
 
 import { useUserContext } from '@/context/user-context'
-import { category } from '@/lib/data'
+import { categorys } from '@/lib/data'
 import axios from 'axios'
-import React from 'react'
+import React, { useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 
 export default function ProductCreateForm() {
 
   const { user, triggerProductRequest } = useUserContext()
+
+  const [isDisable, setIsDisable] = useState(false)
 
   const {
     handleSubmit,
@@ -29,11 +31,13 @@ export default function ProductCreateForm() {
   })
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    setIsDisable(true)
     axios.post('/api/product', {
       ...data,
       userId: user?.id
     })
       .then(() => { triggerProductRequest() })
+      .finally(() => setIsDisable(false))
   }
 
   return (
@@ -64,20 +68,13 @@ export default function ProductCreateForm() {
           })}
         >
           {
-            category.map((mainCategory) =>
-              <optgroup label={mainCategory.title} key={mainCategory.title}>
+            categorys.map((category) =>
+              <optgroup key={category.title} label={category.title}>
                 {
-                  mainCategory.subCategory.map((subCategory) =>
-                    'subCategory' in subCategory ?
-                      subCategory.subCategory?.map((item) =>
-                        <option key={item.title} value={item.title}>
-                          {item.title}
-                        </option>
-                      )
-                      :
-                      <option key={subCategory.title} value={subCategory.title}>
-                        {subCategory.title}
-                      </option>
+                  category.subCategory.map((subCategory) =>
+                    <option key={subCategory.title} value={subCategory.title}>
+                      {subCategory.title}
+                    </option>
                   )
                 }
               </optgroup>
@@ -103,7 +100,7 @@ export default function ProductCreateForm() {
           className='p-1 border border-black/40 rounded-lg'
         />
       </div>
-      <button type='submit' className='bg-gray-500'>
+      <button type='submit' disabled={isDisable} className='w-full p-1 bg-green-500/50 hover:bg-green-500 rounded-lg transition-all'>
         Create Product
       </button>
     </form>

@@ -25,13 +25,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className='h-full select-none'>
+    <html lang="en" className='min-h-full select-none'>
       <AuthContext>
         <UserContextProvider>
           <MenuContextProvider>
             <CatalogContextProvider>
               <body className={clsx(inter.className,
-                'bg-gray-50 h-full relative pt-[4.5rem]'
+                'bg-gray-50 min-h-full relative pt-[4.5rem]'
               )}>
                 <Header />
                 {children}

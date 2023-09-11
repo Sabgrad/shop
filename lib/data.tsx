@@ -25,7 +25,7 @@ export const UserMenuData = [
 ] as const
 
 
-export const category = [
+export const categorys = [
   {
     title: 'Pc and Laptops',
     icon: '',
@@ -40,24 +40,19 @@ export const category = [
         title: 'Monitors'
       },
       {
-        title: 'Computer components',
-        subCategory: [
-          {
-            title: 'CPU'
-          },
-          {
-            title: 'GPU'
-          },
-          {
-            title: 'Power Block'
-          },
-          {
-            title: 'SSD'
-          },
-          {
-            title: 'HDD'
-          }
-        ]
+        title: 'CPU'
+      },
+      {
+        title: 'GPU'
+      },
+      {
+        title: 'Power Block'
+      },
+      {
+        title: 'SSD'
+      },
+      {
+        title: 'HDD'
       },
       {
         title: 'Office equipment'
