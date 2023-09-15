@@ -50,6 +50,7 @@ export default function Home() {
   const [maxPagination, setMaxPagination] = useState(1)
 
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingPagination, setIsLoadingPagination] = useState(false)
 
   const [price, setPrice] = useState({ min: 0, max: 999999 })
   const [currentCategory, setCurrentCategory] = useState<string>('')
@@ -58,7 +59,8 @@ export default function Home() {
   const {
     handleSubmit,
     register,
-    watch,
+    getValues,
+    setValue,
     formState: {
       errors
     }
@@ -67,7 +69,7 @@ export default function Home() {
       minPrice: price.min,
       maxPrice: price.max
     },
-    mode: 'onSubmit'
+    mode: 'all'
   })
 
   useEffect(() => {
@@ -78,8 +80,10 @@ export default function Home() {
 
   useEffect(() => {
     if (pagination !== 1) {
+      setIsLoadingPagination(true)
       getProducts(pagination, currentCategory, price.min, price.max, sort.sortBy, sort.orderBy)
         .then((res) => setProducts(prev => [...prev, ...res]))
+        .finally(() => setIsLoadingPagination(false))
     }
   }, [pagination])
 
@@ -90,13 +94,26 @@ export default function Home() {
   }, [price, currentCategory, sort])
 
   useEffect(() => {
-    if (errors.minPrice) {
-      toast.error(errors.minPrice.message as string)
+    const min = getValues().minPrice
+    const max = getValues().maxPrice
+
+    if (min > max) {
+      toast.error('Minimum cant be lower than maximum')
+      setValue('minPrice', 0)
+      setValue('maxPrice', 999999)
     }
-    if (errors.maxPrice) {
-      toast.error(errors.maxPrice.message as string)
+
+    else if (min < 0) {
+      toast.error('Price cant be lower than 0')
+      setValue('minPrice', 0)
     }
-  }, [triggerToast, errors])
+
+    else if (max > 999999) {
+      toast.error('Price cant be higher than 999,999')
+      setValue('minPrice', 999999)
+    }
+
+  }, [triggerToast])
 
   const handleDownloadMore = () => {
     if (pagination !== maxPagination && pagination < maxPagination) {
@@ -123,7 +140,7 @@ export default function Home() {
     <div className="h-full flex flex-col min-h-full gap-2">
       <div className="min-h-[4.5rem] sticky top-[72px] p-2 z-[500] bg-gray-50 border-b border-gray-200 justify-between items-end  flex flex-row">
         <button onClick={() => setfilter(prev => !prev)} className="flex flex-row gap-2 text-lg px-2 bg-blue-500 text-white hover:bg-blue-700 transition-all">
-          <BsFilterLeft size={28}/> Filters
+          <BsFilterLeft size={28} /> Filters
         </button>
         <div className="flex flex-col relative">
           <button onClick={() => setOpenSort(prev => !prev)}>
@@ -156,11 +173,9 @@ export default function Home() {
                   required: true,
                   valueAsNumber: true,
                   min: 0,
-                  max: {
-                    value: watch('maxPrice'),
-                    message: 'no higher than the maximum price'
-                  }
+                  max: getValues().maxPrice,
                 })} />
+              {errors.minPrice && <>{errors.minPrice.message}</>}
               <input
                 id='maxPrice'
                 className="w-20"
@@ -169,15 +184,10 @@ export default function Home() {
                 {...register('maxPrice', {
                   required: true,
                   valueAsNumber: true,
-                  min: {
-                    value: watch('minPrice'),
-                    message: 'no lower than the minimum price'
-                  },
-                  max: {
-                    value: 999999,
-                    message: 'maximum price 999999'
-                  }
+                  min: getValues().minPrice,
+                  max: 999999,
                 })} />
+              {errors.maxPrice && <>{errors.maxPrice.message}</>}
               <button type="submit" className="bg-green-500/50 hover:bg-green-500 rounded-md p-[2px]" onClick={() => setTriggerToast(prev => prev + 1)}>
                 OK
               </button>
@@ -204,8 +214,8 @@ export default function Home() {
             </div>
           </div>
         }
-        <div className="flex min-h-max flex-col w-full">
-          <div className='gap-2 grid responsive-grid items-center max-h-full'>
+        <div className="flex min-h-max flex-col gap-4 w-full items-center">
+          <div className='gap-2 grid responsive-grid max-h-full w-full'>
             {
               products.map((product) =>
                 <ProductCard key={product.id} product={product} />
@@ -213,9 +223,9 @@ export default function Home() {
             }
           </div>
           {
-            pagination !== maxPagination && pagination < maxPagination &&
-            <button className=" w-max flex bg-gray-200 p-1 rounded-lg" onClick={handleDownloadMore}>
-              Download more
+            pagination !== maxPagination && pagination < maxPagination && products.length !== 0 &&
+            <button className=" w-max flex bg-gray-200 p-1 bg-green-500/50 hover:bg-green-500 text-xl items-center gap-2" onClick={handleDownloadMore}>
+              {isLoadingPagination && <div className="h-5 w-5 border-t-2  border-black rounded-full animate-spin" />} Load more
             </button>
           }
         </div>

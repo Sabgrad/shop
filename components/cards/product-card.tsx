@@ -6,6 +6,7 @@ import { ProductType } from '@/types/types'
 import Image from 'next/image'
 import Modal from '../modals/modal'
 import ProductUpdaterForm from '../forms/product-update-form'
+import ProductCardInModal from './product-card-in-modal'
 
 type ProductCardProps = {
   product: ProductType
@@ -23,7 +24,7 @@ export default function ProductCard({
 
   const handleClick = () => {
     onClick && onClick()
-    type === 'user' && setActiveModal(true)
+    setActiveModal(true)
   }
 
   return (
@@ -53,10 +54,16 @@ export default function ProductCard({
         </div>
       </div>
       {
-        type === 'user' &&
-        < Modal active={activeModal} setActive={setActiveModal}>
-          <ProductUpdaterForm product={product} />
-        </Modal >
+        type === 'user' ?
+          < Modal active={activeModal} setActive={setActiveModal}>
+            <ProductUpdaterForm product={product} />
+          </Modal >
+          :
+          type === 'default' ?
+            < Modal active={activeModal} setActive={setActiveModal}>
+              <ProductCardInModal product={product} />
+            </Modal >
+            : null
       }
     </>
   )

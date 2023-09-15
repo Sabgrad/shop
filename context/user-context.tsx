@@ -13,10 +13,9 @@ type UserContexProps = {
 type UserContextType = {
   user: User | undefined
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>
-  product: ProductType[] | undefined
-  setProduct: React.Dispatch<React.SetStateAction<ProductType[] | undefined>>
   isLoading: boolean
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+  triggerProduct: number
   triggerProductRequest: () => void
 }
 
@@ -30,20 +29,11 @@ const getUser = async (email: string) => {
   }
 }
 
-const getUserProduct = async (id: string) => {
-  const res = await axios.get(`/api/userproduct/${id}`)
-
-  if (res.data) {
-    return res.data
-  }
-}
-
 export default function UserContextProvider({
   children
 }: UserContexProps) {
 
   const [user, setUser] = useState<User>()
-  const [product, setProduct] = useState<ProductType[]>()
   const [triggerProduct, setTriggerProduct] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -63,23 +53,14 @@ export default function UserContextProvider({
     }
   }, [session.data?.user?.email])
 
-  useEffect(() => {
-    if (user && triggerProduct > 0) {
-      setIsLoading(true)
-      getUserProduct(user.id)
-        .then((res) => setProduct(res))
-        .finally(() => setIsLoading(false))
-    }
-  }, [user, triggerProduct])
 
   return (
     <UserContext.Provider value={{
       user,
       setUser,
-      product,
-      setProduct,
       isLoading,
       setIsLoading,
+      triggerProduct,
       triggerProductRequest
     }}>
       {children}
