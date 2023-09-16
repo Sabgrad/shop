@@ -4,7 +4,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className='w-full h-full flex flex-row pl-[264px]'>
+    <div className='w-full min-h-full flex flex-row'>
       {children}
     </div>
   )

@@ -137,7 +137,7 @@ export default function Home() {
   }
 
   return (
-    <div className="h-full flex flex-col min-h-full gap-2">
+    <div className="flex flex-col min-h-full gap-2">
       <div className="min-h-[4.5rem] sticky top-[72px] p-2 z-[500] bg-gray-50 border-b border-gray-200 justify-between items-end  flex flex-row">
         <button onClick={() => setfilter(prev => !prev)} className="flex flex-row gap-2 text-lg px-2 bg-blue-500 text-white hover:bg-blue-700 transition-all">
           <BsFilterLeft size={28} /> Filters
@@ -215,7 +215,7 @@ export default function Home() {
           </div>
         }
         <div className="flex min-h-max flex-col gap-4 w-full items-center">
-          <div className='gap-2 grid responsive-grid max-h-full w-full'>
+          <div className='gap-2 grid responsive-grid w-full'>
             {
               products.map((product) =>
                 <ProductCard key={product.id} product={product} />

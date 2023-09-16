@@ -20,7 +20,7 @@ export default function Menu() {
     <>
       <AnimatePresence>
         {activeMenu &&
-          <div className='bg-black/10 absolute h-full w-full top-0 left-0 text-black z-[950] flex justify-start' onClick={() => setActiveMenu(false)}>
+          <div className='fixed h-screen w-screen bg-black/40 flex justify-start z-[900] top-0 left-0' onClick={() => setActiveMenu(false)}>
             <motion.div
               className='w-72 h-full bg-white flex flex-col'
               key='menu'
@@ -28,7 +28,7 @@ export default function Menu() {
               animate={{ x: 0 }}
               exit={{ x: -288 }}
               transition={{ duration: 0.3 }}
-              // onClick={(e) => e.stopPropagation()}
+            // onClick={(e) => e.stopPropagation()}
             >
               <div className='w-full bg-gray-900 text-white p-2 gap-2 flex flex-row items-center'>
                 <AiFillShop size={36} />

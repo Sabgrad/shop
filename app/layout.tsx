@@ -11,6 +11,8 @@ import Menu from '@/components/menu'
 import CatalogContextProvider from '@/context/catalog-context'
 import Catalog from '@/components/catalog'
 import UserContextProvider from '@/context/user-context'
+import CartContextProvider from '@/context/cart-context'
+import UserPageCurrentSectionProvider from '@/context/user-current-section'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,24 +27,28 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className='min-h-full select-none'>
+    <html lang="en" className='h-full select-none relative'>
       <AuthContext>
-        <UserContextProvider>
-          <MenuContextProvider>
-            <CatalogContextProvider>
-              <body className={clsx(inter.className,
-                'bg-gray-50 min-h-full relative pt-[4.5rem]'
-              )}>
-                <Header />
-                {children}
-                <Menu />
-                <Catalog />
-                <Toaster position='top-center' />
-              </body>
-            </CatalogContextProvider>
-          </MenuContextProvider>
-        </UserContextProvider>
-      </AuthContext>
-    </html>
+        <CartContextProvider>
+          <UserContextProvider>
+            <MenuContextProvider>
+              <CatalogContextProvider>
+                <UserPageCurrentSectionProvider>
+                  <body className={clsx('bg-gray-50 h-full relative pt-[4.5rem]',
+                    inter.className,
+                  )}>
+                    <Header />
+                    {children}
+                    <Menu />
+                    <Catalog />
+                    <Toaster position='top-center' />
+                  </body>
+                </UserPageCurrentSectionProvider>
+              </CatalogContextProvider>
+            </MenuContextProvider>
+          </UserContextProvider>
+        </CartContextProvider>
+      </AuthContext >
+    </html >
   )
 }

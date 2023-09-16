@@ -75,7 +75,7 @@ export default function ImageComponent({
   }
 
   return (
-    <div className='flex gap-2 w-full sm:min-w-[35rem]'>
+    <div className='flex gap-2 min-w-[15rem] max-w-[30rem]'>
       {
         images.length > 0 &&
         <div className='gap-2 flex flex-col'>

@@ -1,26 +1,23 @@
 'use client'
 
 import MenuBtn from '@/components/buttons/menu-btn'
+import { useUserPageCurrentSection } from '@/context/user-current-section'
 import { UserMenuData } from '@/lib/data'
 import clsx from 'clsx'
 import { useSession } from 'next-auth/react'
-import React, { useState } from 'react'
-import MyShop from '@/components/user/myshop/my-shop-section'
-import MyOrder from '@/components/user/myorders/my-oroder-section'
-
-type SectionType = typeof UserMenuData[number]['title']
+import React from 'react'
 
 export default function User() {
 
   const session = useSession()
 
-  const [currentSection, setCurrentSection] = useState<SectionType | 'User'>('My shop')
+  const { currentSection, setCurrentSection } = useUserPageCurrentSection()
 
   if (session.status !== 'authenticated') return null
 
   return (
     <>
-      <div className=' w-64 h-full p-2 flex flex-col gap-2 border-r border-r-black/30 fixed left-0'>
+      <div className=' w-64 h-full p-2 flex flex-col z-[500] gap-2 border-r border-r-black/30 sticky left-0 top-[72px]'>
         <div className={clsx('w-full flex flex-row gap-2 p-1 rounded-lg', currentSection === 'User' && 'bg-green-500/20')} onClick={() => setCurrentSection('User')}>
           <div className='font-semibold text-2xl p-2 rounded-full h-10 w-10 flex justify-center items-center'>
             {session.data.user?.name?.charAt(0).toUpperCase()}
@@ -43,8 +40,12 @@ export default function User() {
         }
       </div>
       <div className='w-full h-full p-2 flex flex-col gap-4'>
-        {currentSection === 'My orders' && <MyOrder />}
-        {currentSection === 'My shop' && <MyShop />}
+        {
+          currentSection === 'User' ?
+            <>user</>
+            :
+            UserMenuData.find((el) => currentSection === el.title)?.section
+        }
       </div>
     </>
   )

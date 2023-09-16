@@ -12,8 +12,12 @@ import toast from 'react-hot-toast'
 import { useMenuContext } from '@/context/menu-context'
 import { useCatalogContext } from '@/context/catalog-context'
 import HeaderBtn from '../buttons/header-btn'
+import { useCartContext } from '@/context/cart-context'
 
 export default function Header() {
+
+  const { userCart } = useCartContext()
+
   return (
     <header className="h-[4.5rem] z-[800] fixed top-0  bg-black/90 w-full px-1 sm:px-6 text-xl text-white">
 
@@ -39,7 +43,7 @@ export default function Header() {
         <HeaderBtn className='relative'>
           <AiOutlineShoppingCart size={28} />
           <div className='absolute text-green-500 font-semibold text-sm -top-2 right-0'>
-            1
+            {userCart.length}
           </div>
         </HeaderBtn>
       </div>
