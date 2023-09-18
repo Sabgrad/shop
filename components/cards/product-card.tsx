@@ -48,7 +48,7 @@ export default function ProductCard({
               :
               <>
                 <span className='text-xs line-through'>{product.price + ' \u20B4'}</span>
-                <span className='text-red-500'>{Math.round(product.price - (product.price / 100 * product.discount)) + ' \u20B4'}</span>
+                <span className='text-red-500'>{product.actual_price + ' \u20B4'}</span>
               </>
           }
         </div>

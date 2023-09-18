@@ -31,7 +31,7 @@ export default function ProductCardInModal({
     if (inCart) {
       setUserCart(prev => prev.filter((el) => el.id !== product.id))
     } else {
-      setUserCart(prev => [...prev, product])
+      setUserCart(prev => [...prev, { ...product, amount: 1 }])
     }
   }
 

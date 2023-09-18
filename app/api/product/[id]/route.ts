@@ -26,7 +26,7 @@ export const PATCH = async (request: Request, { params }: { params: Params }) =>
 
   const { id } = params
   const body = await request.json()
-  const { name, description, category, price, discount } = body
+  const { name, description, category, price, discount, actual_price } = body
 
   if (!id) {
     return NextResponse.json({ error: 'No id' }, { status: 500 })
@@ -41,7 +41,8 @@ export const PATCH = async (request: Request, { params }: { params: Params }) =>
       description,
       category,
       price,
-      discount
+      discount,
+      actual_price
     }
   })
 

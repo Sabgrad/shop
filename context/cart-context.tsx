@@ -3,9 +3,11 @@
 import { ProductType } from '@/types/types'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
+type userCartType = ProductType & { amount: number }
+
 type CartContextType = {
-  userCart: ProductType[]
-  setUserCart: React.Dispatch<React.SetStateAction<ProductType[]>>
+  userCart: userCartType[]
+  setUserCart: React.Dispatch<React.SetStateAction<userCartType[]>>
 }
 
 const CartContext = createContext<CartContextType | null>(null)
@@ -18,7 +20,7 @@ export default function CartContextProvider({
   children
 }: CartContextProps) {
 
-  const [userCart, setUserCart] = useState<ProductType[]>([])
+  const [userCart, setUserCart] = useState<userCartType[]>([])
 
   useEffect(() => {
     const localUserCart = localStorage.getItem('user-cart')

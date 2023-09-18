@@ -36,8 +36,9 @@ export default function ProductUpdaterForm({
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsDisable(true)
     const { name, description, price, category, discount } = data
+    const actual_price = Math.round(price - (price * discount / 100))
     axios.patch(`/api/product/${product.id}`, {
-      name, description, price, category, discount
+      name, description, price, category, discount, actual_price
     })
       .then(() => triggerProductRequest())
       .finally(() => setIsDisable(false))

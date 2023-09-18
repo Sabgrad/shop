@@ -19,22 +19,26 @@ model User {
   hashedPassword String?
 
   product Product[]
+  order   Order[]
 }
 
 model Product {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  name        String
-  description String
-  price       Int
-  discount    Int
-  category    String
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  name         String
+  description  String
+  price        Int
+  discount     Int
+  actual_price Int
+  category     String
 
   image Image[]
 
   owner   User   @relation(fields: [ownerId], references: [id])
   ownerId String @db.ObjectId
+
+  orderItems OrderItem[]
 }
 
 model Image {
@@ -42,8 +46,35 @@ model Image {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   path      String
-  publicId String
+  publicId  String
 
   product   Product @relation(fields: [productId], references: [id])
   productId String  @db.ObjectId
+}
+
+model Order {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    String
+  price     Int
+  paid      Boolean
+
+  products OrderItem[]
+
+  customer   User   @relation(fields: [customerId], references: [id])
+  customerId String @db.ObjectId
+}
+
+model OrderItem {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  amount    Int
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String  @db.ObjectId
+
+  order   Order?  @relation(fields: [orderId], references: [id])
+  orderId String? @db.ObjectId
 }

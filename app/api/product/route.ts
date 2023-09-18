@@ -50,7 +50,7 @@ export const POST = async (request: Request) => {
   try {
 
     const body = await request.json()
-    const { userId, name, description, price, category, discount } = body
+    const { userId, name, description, price, category, discount, actual_price } = body
 
     const newProduct = await prisma.product.create({
       data: {
@@ -59,6 +59,7 @@ export const POST = async (request: Request) => {
         price,
         category,
         discount,
+        actual_price,
         owner: {
           connect: {
             id: userId

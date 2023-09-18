@@ -31,9 +31,12 @@ export default function ProductCreateForm() {
   })
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const { price, discount } = data
+    const actual_price = Math.round(price - (price * discount / 100))
     setIsDisable(true)
     axios.post('/api/product', {
       ...data,
+      actual_price,
       userId: user?.id
     })
       .then(() => { triggerProductRequest() })
