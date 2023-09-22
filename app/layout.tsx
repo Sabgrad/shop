@@ -7,7 +7,7 @@ import Footer from '@/components/footer'
 import { Toaster } from 'react-hot-toast'
 import AuthContext from '@/context/session-context'
 import MenuContextProvider from '@/context/menu-context'
-import Menu from '@/components/menu'
+import Menu from '@/components/menu/menu'
 import CatalogContextProvider from '@/context/catalog-context'
 import Catalog from '@/components/catalog'
 import UserContextProvider from '@/context/user-context'
@@ -34,7 +34,7 @@ export default function RootLayout({
             <MenuContextProvider>
               <CatalogContextProvider>
                 <UserPageCurrentSectionProvider>
-                  <body className={clsx('bg-gray-50 h-full relative pt-[4.5rem]',
+                  <body className={clsx('bg-maincolor-50 h-full relative pt-[4.5rem]',
                     inter.className,
                   )}>
                     <Header />

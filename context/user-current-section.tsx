@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState } from 'react'
 import { UserMenuData } from '@/lib/data'
 
-type UserSectionType = typeof UserMenuData[number]['title'] | 'User'
+type UserSectionType = typeof UserMenuData[number]['title']
 
 type UserPageCurrentSectionType = {
   currentSection: UserSectionType
@@ -20,7 +20,7 @@ export default function UserPageCurrentSectionProvider({
   children
 }: UserPageCurrentSectionProps) {
 
-  const [currentSection, setCurrentSection] = useState<UserSectionType>('User')
+  const [currentSection, setCurrentSection] = useState<UserSectionType>('Me')
 
   return (
     <UserPageCurrentSection.Provider

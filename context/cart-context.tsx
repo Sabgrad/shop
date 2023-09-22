@@ -1,9 +1,8 @@
 'use client'
 
-import { ProductType } from '@/types/types'
+import { ProductType, userCartType } from '@/types/types'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
-type userCartType = ProductType & { amount: number }
 
 type CartContextType = {
   userCart: userCartType[]

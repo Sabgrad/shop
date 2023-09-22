@@ -5,6 +5,10 @@ import { categorys } from '@/lib/data'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import TextArea from '../input/textarea'
+import Input from '../input/input'
+import Btn from '../buttons/btn'
+import SelectCategory from '../input/select-category'
 
 export default function ProductCreateForm() {
 
@@ -46,66 +50,19 @@ export default function ProductCreateForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='w-full flex flex-col gap-2'>
       <div className='flex flex-col gap-2'>
-        <textarea
-          placeholder='Name'
-          {...register('name', {
-            required: true,
-            minLength: 10,
-            maxLength: 256,
-          })}
-          className='p-1 border border-black/40 rounded-lg'
-        />
-        <textarea
-          placeholder='Description'
-          {...register('description', {
-            required: true,
-            minLength: 10,
-            maxLength: 2048,
-          })}
-          className='p-1 border border-black/40 rounded-lg'
-        />
-        <select
-          className='p-1 border border-black/40 rounded-lg'
-          {...register('category', {
-            required: true,
-          })}
-        >
-          {
-            categorys.map((category) =>
-              <optgroup key={category.title} label={category.title}>
-                {
-                  category.subCategory.map((subCategory) =>
-                    <option key={subCategory.title} value={subCategory.title}>
-                      {subCategory.title}
-                    </option>
-                  )
-                }
-              </optgroup>
-            )
-          }
-        </select>
-        <input
-          placeholder='price'
-          {...register('price', {
-            required: true,
-            valueAsNumber: true,
-            validate: (v) => v >= 100 && v <= 999999
-          })}
-          className='p-1 border border-black/40 rounded-lg'
-        />
-        <input
-          placeholder='discount'
-          {...register('discount', {
-            required: true,
-            valueAsNumber: true,
-            validate: (v) => v >= 10 && v <= 80 || v === 0
-          })}
-          className='p-1 border border-black/40 rounded-lg'
-        />
+        <TextArea placeholder='Name' id='name' required register={register} minLength={10} maxLength={300} />
+        <TextArea placeholder='Description' id='description' required register={register} />
+        <SelectCategory id='category' register={register} required />
+        <Input id={'price'} type={'number'} placeholder='Price' register={register} required valueAsNumber validate={(v) => v >= 100 && v <= 999999} />
+        <Input id={'discount'} type={'number'} placeholder='Discount' register={register} required valueAsNumber validate={(v) => v >= 10 && v <= 80 || v === 0} />
       </div>
-      <button type='submit' disabled={isDisable} className='w-full p-1 bg-green-500/50 hover:bg-green-500 rounded-lg transition-all'>
+      <Btn
+        type='submit'
+        disabled={isDisable}
+        className='w-full p-1 bg-maincolor-100/50 hover:bg-maincolor-100 rounded-lg transition-all'
+      >
         Create Product
-      </button>
+      </Btn>
     </form>
   )
 }

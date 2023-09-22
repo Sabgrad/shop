@@ -1,39 +1,58 @@
+import MeUser from "@/components/user/MeUser/me-user";
 import MyCart from "@/components/user/mycart/my-cart-section";
 import MyOrder from "@/components/user/myorders/my-oroder-section";
 import MyReviews from "@/components/user/myreviews/my-reviews";
 import MyShop from "@/components/user/myshop/my-shop-section";
 import WishList from "@/components/user/wishlist/wish-list";
 import React from "react";
-import { AiOutlineProfile, AiOutlineUnorderedList, AiOutlineShoppingCart } from 'react-icons/ai'
+import { AiOutlineProfile, AiOutlineUnorderedList, AiOutlineShoppingCart, AiOutlineAppstore } from 'react-icons/ai'
 import { BiCommentDetail } from 'react-icons/bi'
 import { BsShop } from 'react-icons/bs'
 
-const size = { size: 30 }
+const menuSize = { size: 25 }
+const userMenuSize = { size: 30 }
+
+
+export const MenuData = [
+  {
+    title: 'Cart',
+    icon: React.createElement(AiOutlineShoppingCart, menuSize),
+  },
+  {
+    title: 'Catalog',
+    icon: React.createElement(AiOutlineAppstore, menuSize),
+  }
+] as const
 
 export const UserMenuData = [
   {
+    title: 'Me',
+    icon: React.createElement(AiOutlineShoppingCart, userMenuSize),
+    section: React.createElement(MeUser)
+  },
+  {
     title: 'My cart',
-    icon: React.createElement(AiOutlineShoppingCart, size),
+    icon: React.createElement(AiOutlineShoppingCart, userMenuSize),
     section: React.createElement(MyCart)
   },
   {
     title: 'My orders',
-    icon: React.createElement(AiOutlineProfile, size),
+    icon: React.createElement(AiOutlineProfile, userMenuSize),
     section: React.createElement(MyOrder)
   },
   {
     title: 'A wish list',
-    icon: React.createElement(AiOutlineUnorderedList, size),
+    icon: React.createElement(AiOutlineUnorderedList, userMenuSize),
     section: React.createElement(WishList)
   },
   {
     title: 'My reviews',
-    icon: React.createElement(BiCommentDetail, size),
+    icon: React.createElement(BiCommentDetail, userMenuSize),
     section: React.createElement(MyReviews)
   },
   {
     title: 'My shop',
-    icon: React.createElement(BsShop, size),
+    icon: React.createElement(BsShop, userMenuSize),
     section: React.createElement(MyShop)
   },
 ] as const

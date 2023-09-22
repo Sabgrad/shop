@@ -20,7 +20,11 @@ export const GET = async (request: Request) => {
       include: {
         products: {
           include: {
-            product: true
+            product: {
+              include: {
+                image: true
+              }
+            }
           }
         }
       },

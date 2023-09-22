@@ -6,12 +6,16 @@ type HeaderBtnProps = {
   children: React.ReactNode
   className?: string
   onClick?: (value?: string | boolean | number) => void
+  disabled?: boolean
+  type?: 'button' | 'submit'
 }
 
-export default function HeaderBtn({
+export default function Btn({
   children,
   className,
-  onClick
+  onClick,
+  disabled,
+  type = 'button'
 }: HeaderBtnProps) {
 
   const handleClick = () => {
@@ -20,7 +24,9 @@ export default function HeaderBtn({
 
   return (
     <button onClick={handleClick}
-      className={clsx('p-2 hover:bg-gray-500 rounded-lg transition-all h-max flex items-center justify-center text-gray-200', className && className)}
+      type={type}
+      disabled={disabled}
+      className={clsx('p-2 gap-2 rounded-lg transition-all h-max flex items-center justify-center hover:bg-maincolor-300 hover:text-maincolor-950 whitespace-nowrap', className && className)}
     >
       {children}
     </button>

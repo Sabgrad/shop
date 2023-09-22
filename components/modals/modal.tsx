@@ -55,11 +55,11 @@ export default function Modal({
   return domReady && active ?
     ReactDOM.createPortal(
       <div
-        className="fixed h-screen w-screen bg-black/40 flex justify-center items-center z-[900] top-0 left-0"
+        className="fixed h-screen w-screen bg-maincolor-950/50 flex justify-center items-center z-[900] top-0 left-0"
         onClick={() => setActive(false)}
       >
         <div
-          className={clsx(`flex relative items-center p-10 bg-gray-50 h-full w-full flex-col gap-3 max-h-full overflow-auto
+          className={clsx(`flex relative items-center p-10 bg-maincolor-50 h-full w-full flex-col gap-3 max-h-full overflow-auto
           sm:max-w-max sm:rounded-lg sm:h-max`)}
           onClick={(e) => e.stopPropagation()}
         >

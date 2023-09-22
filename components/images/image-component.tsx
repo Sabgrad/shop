@@ -2,11 +2,12 @@ import { deleteCloudinrayImage } from '@/action/deleteCloudinaryImage'
 import { Image as ImagePrismaType } from '@prisma/client'
 import axios from 'axios'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 import { TiFolderDelete, TiFolderAdd } from 'react-icons/ti'
 import noimage from '@/public/noimage.jpg'
 import { CldUploadButton } from 'next-cloudinary'
+import clsx from 'clsx'
 
 type ImageComponentProps = {
   type: 'update' | 'view'
@@ -25,6 +26,7 @@ export default function ImageComponent({
   setIsDisable,
   triggerProductRequest,
 }: ImageComponentProps) {
+
 
   const [currentImage, setCurrentImage] = useState(0)
 
@@ -82,28 +84,27 @@ export default function ImageComponent({
           {images.map((el) =>
             <div
               key={el.id}
-              className='flex w-20 h-20 justify-start items-center relative 
-            bg-gray-200 rounded-lg group'
+              className={`h-[3.75rem] w-[3.75rem] flex justify-start bg-maincolor-950/40 items-center relative group`}
             >
               {
                 type === 'update' &&
                 <TiFolderDelete
                   className='hover:text-black text-black/40 absolute left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-200/60 rounded-lg transition-all'
-                  size={40}
+                  size={30}
                   onClick={() => handleDeleteImage(el.id, el.publicId)}
                 />
               }
               <Image
                 src={el.path}
                 alt='image'
-                width={80}
-                height={80}
+                width={60}
+                height={60}
               />
             </div>
           )}
         </div>
       }
-      <div className='h-[432px] justify-center items-center relative flex bg-gray-200 rounded-lg group w-full'>
+      <div className={`h-[324px] justify-center items-center relative flex bg-maincolor-950/40 group w-full`}>
         {
           images.length !== 0 &&
           <AiOutlineLeft
@@ -112,22 +113,13 @@ export default function ImageComponent({
             onClick={() => handleSwapImage('left')}
           />
         }
-        {
-          images.length ?
-            <Image
-              src={images.at(currentImage)?.path as string}
-              alt='product image'
-              width={432}
-              height={432}
-            />
-            :
-            <Image
-              src={noimage}
-              alt='product image'
-              width={234}
-              height={234}
-            />
-        }
+
+        <Image
+          src={images.length ? images[0].path : noimage}
+          alt='product image'
+          width={300}
+          height={300}
+        />
         {
           type === 'update' && images.length < 5 && isDisable === false &&
           <CldUploadButton
