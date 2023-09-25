@@ -1,10 +1,11 @@
-import { ProductType } from '@/types/types'
+import { } from '@/types/types'
 import React from 'react'
 import Image from 'next/image'
 import noimage from '@/public/noimage.jpg'
+import { Product } from '@prisma/client'
 
 type UserCartItemProps = {
-  product: ProductType
+  product: Product
 }
 
 export default function UserCartItem({
@@ -13,7 +14,7 @@ export default function UserCartItem({
 
   return (
     <div className='p-2 border border-gray-500 flex flex-row gap-2'>
-      <Image src={product.image[0]?.path || noimage} alt='image' width={150} height={150} />
+      <Image src={product.images[0] || noimage} alt='image' width={150} height={150} />
       {product.name}
     </div>
   )

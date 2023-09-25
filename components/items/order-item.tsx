@@ -10,41 +10,17 @@ type OrderItemProps = {
 export default function OrderItem({
   orderItem
 }: OrderItemProps) {
-  
+
   return (
-    <div className='border p-1 flex flex-row gap-2 px-4 items-center'>
+    <div className='border p-1 flex flex-col gap-2 px-4 items-center min-w-[11rem] max-w-[12rem]'>
       <div className='relative justify-start items-center flex h-[150px] w-[150px]'>
         {
           <Image src={orderItem.product.image.length ? orderItem.product.image[0].path : noimage} alt='product image' width={150} height={150} />
         }
       </div>
-      <span className='flex flex-1'>
+      <span className='line-clamp-3'>
         {orderItem.product.name}
       </span>
-      <table className='h-full'>
-        <tr>
-          <td className='px-2 text-center'>
-            Price per unit
-          </td>
-          <td className='px-2 text-center'>
-            Amount
-          </td>
-          <td className='px-2 text-center'>
-            Total price
-          </td>
-        </tr>
-        <tr>
-          <td className='px-2 text-center'>
-            {orderItem.product.actual_price}
-          </td>
-          <td className='mr-2 text-center'>
-            {orderItem.amount}
-          </td>
-          <td className='px-2 text-center'>
-            {orderItem.amount * orderItem.product.actual_price}
-          </td>
-        </tr>
-      </table>
     </div>
   )
 }

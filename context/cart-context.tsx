@@ -1,12 +1,10 @@
 'use client'
 
-import { ProductType, userCartType } from '@/types/types'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
-
 type CartContextType = {
-  userCart: userCartType[]
-  setUserCart: React.Dispatch<React.SetStateAction<userCartType[]>>
+  userCart: { productId: string }[]
+  setUserCart: React.Dispatch<React.SetStateAction<{ productId: string }[]>>
 }
 
 const CartContext = createContext<CartContextType | null>(null)
@@ -19,7 +17,7 @@ export default function CartContextProvider({
   children
 }: CartContextProps) {
 
-  const [userCart, setUserCart] = useState<userCartType[]>([])
+  const [userCart, setUserCart] = useState<{ productId: string }[]>([])
 
   useEffect(() => {
     const localUserCart = localStorage.getItem('user-cart')

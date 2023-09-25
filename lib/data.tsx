@@ -1,4 +1,4 @@
-import MeUser from "@/components/user/MeUser/me-user";
+import MeUser from "@/components/user/meuser/me-user";
 import MyCart from "@/components/user/mycart/my-cart-section";
 import MyOrder from "@/components/user/myorders/my-oroder-section";
 import MyReviews from "@/components/user/myreviews/my-reviews";

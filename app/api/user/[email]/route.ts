@@ -7,7 +7,6 @@ type Params = {
 
 export const GET = async (request: Request, { params }: { params: Params }) => {
   try {
-
     const { email } = params
 
     if (!email) {
@@ -17,7 +16,7 @@ export const GET = async (request: Request, { params }: { params: Params }) => {
 
     const user = await prisma.user.findFirst({
       where: {
-        email: email as string
+        email
       },
       select: {
         email: true,

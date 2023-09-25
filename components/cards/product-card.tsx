@@ -2,40 +2,49 @@
 
 import React, { useState } from 'react'
 import noimage from '@/public/noimage.jpg'
-import { ProductType } from '@/types/types'
 import Image from 'next/image'
 import Modal from '../modals/modal'
 import ProductUpdaterForm from '../forms/product-update-form'
-import ProductCardInModal from './product-card-in-modal'
+import { Product } from '@prisma/client'
+import { useRouter } from 'next/navigation'
 
 type ProductCardProps = {
-  product: ProductType
+  product: Product
   onClick?: () => void
-  type?: 'default' | 'user'
+  amount?: number
+  type?: 'user' | 'order' | 'default'
+  imagesData?: string[]
 }
 
 export default function ProductCard({
   onClick,
   product,
-  type = 'default'
+  type = 'default',
+  amount,
+  imagesData
 }: ProductCardProps) {
 
   const [activeModal, setActiveModal] = useState(false)
+  const router = useRouter()
 
   const handleClick = () => {
     onClick && onClick()
-    setActiveModal(true)
+    type === 'user' && setActiveModal(true)
+  }
+
+  const handleOpenProductPage = () => {
+    if (type === 'default') window.open(`/product/${product.id}`, '_blanck', 'noopener noreferrer')
   }
 
   return (
     <>
-      <div className='gap-2 flex flex-col p-2 border  rounded-lg max-w-[250px] bg-maincolor-100/50 hover:bg-maincolor-100' onClick={handleClick}>
-        <div className='relative justify-center items-center flex flex-1 h-[250px] '>
+      <div className='gap-2 flex flex-col p-2 border relative rounded-lg max-w-[250px] bg-maincolor-100/50 hover:bg-maincolor-100' onClick={handleClick}>
+        <div className='relative justify-center items-center flex flex-1 min-h-[250px] hover:cursor-pointer' onClick={handleOpenProductPage}>
           {
-            <Image className='rounded-lg' src={product.image.length ? product.image[0].path : noimage} alt='product image' width={250} height={250} />
+            <Image className='rounded-lg' src={product.images.length ? product.images[0] : noimage} alt='product image' width={250} height={200} />
           }
         </div>
-        <span className='line-clamp-2 h-[48px]'>
+        <span className='line-clamp-2 h-[48px] break-words hover:underline hover:cursor-pointer' onClick={handleOpenProductPage}>
           {product.name}
         </span>
         <div className='flex flex-col w-full gap-1 h-[44px] justify-end'>
@@ -49,18 +58,23 @@ export default function ProductCard({
               </>
           }
         </div>
+        {type === 'order' ?
+          <div className='absolute bg-maincolor-600 w-10 h-10 flex justify-center items-center rounded-full bottom-2 right-2 text-white'>
+            {'x' + amount}
+          </div> :
+          product.discount !== 0 ?
+            <div className='absolute bg-maincolor-600 w-10 h-10 flex justify-center items-center rounded-full bottom-2 right-2 text-white'>
+              {product.discount + '%'}
+            </div>
+            :
+            null
+        }
       </div>
       {
-        type === 'user' ?
-          < Modal active={activeModal} setActive={setActiveModal}>
-            <ProductUpdaterForm product={product} />
-          </Modal >
-          :
-          type === 'default' ?
-            < Modal active={activeModal} setActive={setActiveModal}>
-              <ProductCardInModal product={product} />
-            </Modal >
-            : null
+        type === 'user' && imagesData !== undefined &&
+        < Modal active={activeModal} setActive={setActiveModal}>
+          <ProductUpdaterForm imagesData={imagesData} product={product} />
+        </Modal >
       }
     </>
   )

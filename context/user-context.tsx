@@ -1,6 +1,5 @@
 'use client'
 
-import { ProductType } from '@/types/types'
 import { User } from '@prisma/client'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'

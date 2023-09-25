@@ -1,7 +1,6 @@
 'use client'
 
 import { useUserContext } from '@/context/user-context'
-import { categorys } from '@/lib/data'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'

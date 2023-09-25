@@ -1,6 +1,9 @@
 import { userOrderType } from '@/types/types'
 import React, { useState } from 'react'
 import OrderItem from '../items/order-item'
+import Btn from '../buttons/btn'
+import ResponsiveGridLayout from '../items/responsive-grid-layout'
+import ProductCard from './product-card'
 
 type OrderCardProps = {
   order: userOrderType
@@ -13,30 +16,54 @@ export default function OrderCard({
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div>
-      <div key={order.id} className='flex flex-col gap-2 border border-gray-700 p-1'>
-        <span>
-          {`Order ${order.id} Date: ${new Date(order.createdAt).toUTCString()}`}
-        </span>
-        <span>
-          {`Status: ${order.status}`}
-        </span>
-        <span>
-          {`Price: ${order.price}`}
-        </span>
-        <span>
-          Payment: {order.paid ? `Paid in the amount of ${order.price}` : 'Pay for the order'}
-        </span>
-        <button onClick={() => setIsOpen(prev => !prev)}>
-          Show products
-        </button>
+    <div key={order.id} className='flex flex-col gap-2 border border-maincolor-100 rounded-lg  p-1'>
+      <div className='flex flex-row gap-2'>
+        <div className='flex flex-col gap-2'>
+          <span>
+            Order:
+          </span>
+          <span>
+            Date:
+          </span>
+          <span>
+            Status:
+          </span>
+          <span>
+            Price:
+          </span>
+          <span>
+            Payment:
+          </span>
+        </div>
+        <div className='flex flex-col gap-2'>
+          <span>
+            {order.id}
+          </span>
+          <span>
+            {new Date(order.createdAt).toUTCString()}
+          </span>
+          <span>
+            {order.status}
+          </span>
+          <span>
+            {order.price + '\u20B4'}
+          </span>
+          <span>
+            {order.paid ? `Paid in the amount of ${order.price}` : <Btn className='py-0 px-1 bg-maincolor-100/50 hover:!bg-maincolor-100'>Pay for the order</Btn>}
+          </span>
+        </div>
+      </div>
+      <Btn onClick={() => setIsOpen(prev => !prev)} className='bg-maincolor-100'>
+        {isOpen ? 'Hide products' : 'Show products'}
+      </Btn>
+      <ResponsiveGridLayout>
         {
           isOpen &&
           order.products.map((orderItem) =>
-            <OrderItem orderItem={orderItem} key={orderItem.id} />
+            <ProductCard amount={orderItem.amount} type='order' product={orderItem.product} key={orderItem.id} />
           )
         }
-      </div>
+      </ResponsiveGridLayout>
     </div>
   )
 }

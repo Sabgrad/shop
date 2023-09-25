@@ -38,9 +38,6 @@ export const GET = async (request: Request) => {
         lte: max < min ? min : max,
       }
     },
-    include: {
-      image: true
-    }
   })
 
   return NextResponse.json(getProducts)
@@ -60,6 +57,7 @@ export const POST = async (request: Request) => {
         category,
         discount,
         actual_price,
+        images: [],
         owner: {
           connect: {
             id: userId

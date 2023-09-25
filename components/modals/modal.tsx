@@ -55,7 +55,7 @@ export default function Modal({
   return domReady && active ?
     ReactDOM.createPortal(
       <div
-        className="fixed h-screen w-screen bg-maincolor-950/50 flex justify-center items-center z-[900] top-0 left-0"
+        className="fixed h-screen w-screen bg-maincolor-950/50 flex justify-center items-center z-[950] top-0 left-0"
         onClick={() => setActive(false)}
       >
         <div

@@ -17,7 +17,7 @@ export default function User() {
   return (
     <>
       <UserMenu />
-      <div className='w-full h-full p-2 flex flex-col gap-4'>
+      <div className='w-full h-full p-6 flex flex-col gap-4'>
         {
           UserMenuData.find((el) => currentSection === el.title)?.section
         }

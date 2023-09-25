@@ -62,8 +62,9 @@ export default function PriceFilterForm({
   }
 
   return (
-    <form onSubmit={handleSubmit(priceRange)} className="gap-2 flex flex-col">
+    <form onSubmit={handleSubmit(priceRange)} className="gap-2 flex flex-row w-full">
       <Input
+        className='w-[5rem]'
         placeholder={price.min.toString()}
         type='number'
         id='minPrice'
@@ -74,6 +75,7 @@ export default function PriceFilterForm({
         max={getValues().maxPrice}
       />
       <Input
+        className='w-[5rem]'
         placeholder={price.max.toString()}
         type='number'
         id='maxPrice'
@@ -83,7 +85,7 @@ export default function PriceFilterForm({
         min={getValues().minPrice}
         max={999999}
       />
-      <Btn className="bg-maincolor-100" type="submit" onClick={() => setTriggerToast(prev => prev + 1)}>
+      <Btn className="bg-maincolor-100 w-full" type="submit" onClick={() => setTriggerToast(prev => prev + 1)}>
         OK
       </Btn>
     </form>

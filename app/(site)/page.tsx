@@ -1,7 +1,6 @@
 'use client'
 
 import ProductCard from "@/components/cards/product-card"
-import { ProductType } from "@/types/types"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import PriceFilterForm from "@/components/forms/price-filter-form"
@@ -10,6 +9,7 @@ import HomePaginationBtn from "@/components/home/home-pagination-btn"
 import ResponsiveGridLayout from "@/components/items/responsive-grid-layout"
 import HomeFilterToggle from "@/components/home/home-filter-toggle"
 import HomeSort from "@/components/home/home-sort"
+import { Product } from "@prisma/client"
 
 const getPageCount = async (category: string, min: number, max: number,) => {
   const result = await axios.get('api/count', {
@@ -40,7 +40,7 @@ const getProducts = async (page: number, category: string, min: number, max: num
 
 export default function Home() {
 
-  const [products, setProducts] = useState<ProductType[]>([])
+  const [products, setProducts] = useState<Product[]>([])
 
   const [filter, setFilter] = useState(true)
 
@@ -76,20 +76,26 @@ export default function Home() {
   }, [price, currentCategory, sort])
 
   return (
-    <div className="flex flex-col min-h-full gap-2">
-      <div className="sticky top-[72px] p-2 z-[500] border-b  justify-between items-end  flex flex-row">
+    <div className="relative flex flex-col min-h-full gap-2 pb-2">
+      <div className="sticky top-[72px] z-[500] border-b border-b-maincolor-950 justify-between items-end  flex flex-row overflow-x-clip backdrop-blur-lg p-2">
         <HomeFilterToggle setFilter={setFilter} />
         <HomeSort setSort={setSort} />
       </div>
-      <div className="flex gap-2 flex-row p-2">
+      <div className="flex gap-2 flex-row">
         {
           filter &&
-          <div className="flex flex-col border-r border-black/40 min-w-max h-max px-2 gap-2">
+          <div className="flex flex-col border-r border-black/40 min-w-max h-max gap-2 px-2">
+            <span className="underline text-maincolor-100 text-sm">
+              Price range
+            </span>
             <PriceFilterForm price={price} setPrice={setPrice} />
+            <span className="underline text-maincolor-100 text-sm">
+              Category
+            </span>
             <HomeCategoryFilter currentCategory={currentCategory} setCurrentCategory={setCurrentCategory} />
           </div>
         }
-        <div className="flex min-h-max flex-col gap-4 w-full items-center">
+        <div className="flex min-h-max flex-col gap-4 w-full items-center pr-2">
           <ResponsiveGridLayout>
             {
               products.map((product) =>

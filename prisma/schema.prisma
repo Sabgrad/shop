@@ -17,6 +17,7 @@ model User {
   name           String
   email          String   @unique
   hashedPassword String?
+  images         String[]
 
   product Product[]
   order   Order[]
@@ -32,24 +33,12 @@ model Product {
   discount     Int
   actual_price Int
   category     String
-
-  image Image[]
+  images       String[]
 
   owner   User   @relation(fields: [ownerId], references: [id])
   ownerId String @db.ObjectId
 
   orderItems OrderItem[]
-}
-
-model Image {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  path      String
-  publicId  String
-
-  product   Product @relation(fields: [productId], references: [id])
-  productId String  @db.ObjectId
 }
 
 model Order {

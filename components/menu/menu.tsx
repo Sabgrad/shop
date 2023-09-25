@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import MenuHeader from './menu-header'
 import MenuBtns from './menu-btns'
 import MenuLogoutBtn from './menu-logout-btn'
-import Dash from '../items/dash'
 import MenuToggleUser from './menu-toggle-user'
 
 
@@ -22,9 +21,9 @@ export default function Menu() {
             <motion.div
               className='w-72 h-full bg-white flex flex-col'
               key='menu'
-              initial={{ x: -288 }}
+              initial={{ x: '-100%' }}
               animate={{ x: 0 }}
-              exit={{ x: -288 }}
+              exit={{ x: '-100%' }}
               transition={{ duration: 0.3 }}
             // onClick={(e) => e.stopPropagation()}
             >
@@ -32,7 +31,6 @@ export default function Menu() {
               <MenuToggleUser />
               <div className='w-full p-2 flex flex-col gap-1'>
                 <MenuBtns />
-                <Dash type='x' />
                 <MenuLogoutBtn />
               </div>
             </motion.div>
