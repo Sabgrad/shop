@@ -5,7 +5,7 @@ export const POST = async (request: Request) => {
   try {
 
     const body = await request.json()
-    const { id, status, price } = body
+    const { email, status, price } = body
 
     const newOrder = await prisma.order.create({
       data: {
@@ -14,7 +14,7 @@ export const POST = async (request: Request) => {
         paid: false,
         customer: {
           connect: {
-            id
+            email: email
           }
         }
       }

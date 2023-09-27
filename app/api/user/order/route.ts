@@ -6,16 +6,16 @@ export const GET = async (request: Request) => {
   try {
     const url = request.url
     const params = new URLSearchParams(url.substring(url.indexOf('?') + 1))
-    const id = params.get('userId')
+    const email = params.get('userEmail')
 
-    if (!id) {
+    if (!email) {
       console.log('no id')
       return null
     }
 
     const user = await prisma.order.findMany({
       where: {
-        customerId: id
+        customerEmail: email
       },
       include: {
         products: {

@@ -4,10 +4,10 @@ import { userOrderType } from '@/types/types'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
-const getOrders = async (id: string) => {
+const getOrders = async (email: string) => {
   const res = await axios.get('api/user/order', {
     params: {
-      userId: id
+      userEmail: email
     }
   })
 
@@ -23,14 +23,13 @@ const updateOrderPrice = (id: string, price: number) => {
 export default function MyOrder() {
 
   const { user } = useUserContext()
-
-  if (!user?.id) return null
-
   const [orders, setOrders] = useState<userOrderType[]>([])
   const [triggerUpdatePrice, setTriggerUpdatePrice] = useState(0)
 
+  if (!user) return null
+
   useEffect(() => {
-    getOrders(user.id)
+    getOrders(user.email)
       .then((res) => {
         setOrders(res.data)
       })
@@ -43,8 +42,6 @@ export default function MyOrder() {
       orders.forEach((el) => {
         let price = el.price
         let newPrice = el.products.reduce((acc, products) => acc + products.amount * products.product.actual_price, 0)
-
-        console.log(price, newPrice)
 
         if (price !== newPrice && el.paid === false) {
           promise.push(updateOrderPrice(el.id, newPrice))
@@ -59,7 +56,7 @@ export default function MyOrder() {
 
   return (
     <>
-      {orders.map((order) =>
+      {orders?.map((order) =>
         <OrderCard order={order} key={order.id} />
       )}
     </>

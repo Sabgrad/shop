@@ -48,11 +48,12 @@ model Order {
   status    String
   price     Int
   paid      Boolean
+  intent_id String?  @unique
 
   products OrderItem[]
 
-  customer   User   @relation(fields: [customerId], references: [id])
-  customerId String @db.ObjectId
+  customer      User   @relation(fields: [customerEmail], references: [email])
+  customerEmail String
 }
 
 model OrderItem {

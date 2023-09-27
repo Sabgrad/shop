@@ -4,6 +4,7 @@ import OrderItem from '../items/order-item'
 import Btn from '../buttons/btn'
 import ResponsiveGridLayout from '../items/responsive-grid-layout'
 import ProductCard from './product-card'
+import { useRouter } from 'next/navigation'
 
 type OrderCardProps = {
   order: userOrderType
@@ -14,6 +15,13 @@ export default function OrderCard({
 }: OrderCardProps) {
 
   const [isOpen, setIsOpen] = useState(false)
+
+  const router = useRouter()
+
+  const handlePaid = () => {
+    console.log('paid')
+    router.push(`/pay/${order.id}`)
+  }
 
   return (
     <div key={order.id} className='flex flex-col gap-2 border border-maincolor-100 rounded-lg  p-1'>
@@ -49,7 +57,13 @@ export default function OrderCard({
             {order.price + '\u20B4'}
           </span>
           <span>
-            {order.paid ? `Paid in the amount of ${order.price}` : <Btn className='py-0 px-1 bg-maincolor-100/50 hover:!bg-maincolor-100'>Pay for the order</Btn>}
+            {
+              order.paid ?
+                `Paid in the amount of ${order.price}` :
+                <Btn className='py-0 px-1 bg-maincolor-100/50 hover:!bg-maincolor-100' onClick={handlePaid}>
+                  Pay for the order
+                </Btn>
+            }
           </span>
         </div>
       </div>

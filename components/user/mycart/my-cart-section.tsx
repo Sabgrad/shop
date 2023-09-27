@@ -33,7 +33,7 @@ export default function MyCart() {
       setIsDisable(true)
       const price = cart.reduce((acc, current) => acc + (current.actual_price * current.amount), 0)
       axios.post('/api/order', {
-        id: user.id,
+        email: user.email,
         status: 'Processed',
         price,
       })
