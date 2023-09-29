@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function MeUser() {
+export default function Me() {
   return (
     <div>
-      User
+      Me
     </div>
   )
 }

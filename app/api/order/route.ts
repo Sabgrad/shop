@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 export const POST = async (request: Request) => {
 
   const body = await request.json()
-  const { email, status, price } = body
+  const { email, status, price, products, options } = body
 
   try {
     const newOrder = await prisma.order.create({
@@ -16,7 +16,11 @@ export const POST = async (request: Request) => {
           connect: {
             email: email
           }
-        }
+        },
+        products: {
+          connect: products
+        },
+        options: options
       }
     })
 

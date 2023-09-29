@@ -21,7 +21,6 @@ const getUserProduct = async (id: string) => {
 }
 
 const getImages = async (id: string) => {
-  console.log('request')
   const res = await axios.get(`/api/user/images`, {
     params: {
       user_id: id

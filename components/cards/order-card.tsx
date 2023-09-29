@@ -1,13 +1,13 @@
-import { userOrderType } from '@/types/types'
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import Btn from '../buttons/btn'
 import ResponsiveGridLayout from '../items/responsive-grid-layout'
 import ProductCard from './product-card'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
+import { Orders } from '@/types/types'
 
 type OrderCardProps = {
-  order: userOrderType
+  order: Orders
   setTriggerUpdateOrders: Dispatch<SetStateAction<number>>
 }
 
@@ -85,7 +85,8 @@ export default function OrderCard({
         {
           isOpen &&
           order.products.map((orderItem) =>
-            <ProductCard amount={orderItem.amount} type='order' product={orderItem.product} key={orderItem.id} />
+            // @ts-ignore
+            <ProductCard amount={order.options[orderItem.id]} type='order' product={orderItem} key={orderItem.id} />
           )
         }
       </ResponsiveGridLayout>

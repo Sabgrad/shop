@@ -18,13 +18,24 @@ export const GET = async (request: Request) => {
       },
       include: {
         products: {
-          include: {
-            product: true
+          select: {
+            actual_price: true,
+            category: true,
+            createdAt: true,
+            description: true,
+            discount: true,
+            hide: true,
+            id: true,
+            images: true,
+            name: true,
+            ownerId: true,
+            price: true,
+            updatedAt: true,
           }
         }
       },
       orderBy: {
-        createdAt: 'desc'
+        createdAt: 'desc',
       }
     })
 

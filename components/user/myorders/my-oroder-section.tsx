@@ -1,6 +1,6 @@
 import OrderCard from '@/components/cards/order-card'
 import { useUserContext } from '@/context/user-context'
-import { userOrderType } from '@/types/types'
+import { Orders } from '@/types/types'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
@@ -23,7 +23,7 @@ const updateOrderPrice = (id: string, price: number) => {
 export default function MyOrder() {
 
   const { user } = useUserContext()
-  const [orders, setOrders] = useState<userOrderType[]>([])
+  const [orders, setOrders] = useState<Orders[]>([])
   const [triggerUpdatePrice, setTriggerUpdatePrice] = useState(0)
   const [triggerUpdateOrders, setTriggerUpdateOrders] = useState(0)
 
@@ -40,12 +40,12 @@ export default function MyOrder() {
     if (orders.length > 0) {
       let promise = new Array
 
-      orders.forEach((el) => {
-        let price = el.price
-        let newPrice = el.products.reduce((acc, products) => acc + products.amount * products.product.actual_price, 0)
-
-        if (price !== newPrice && el.paid === false) {
-          promise.push(updateOrderPrice(el.id, newPrice))
+      orders.forEach((order) => {
+        let price = order.price
+        //@ts-ignore
+        let newPrice = order.products.reduce((acc, product) => acc + product.actual_price * order.options[product.id], 0)
+        if (price !== newPrice && order.paid === false) {
+          promise.push(updateOrderPrice(order.id, newPrice))
         }
       })
 

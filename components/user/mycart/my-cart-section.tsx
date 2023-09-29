@@ -24,38 +24,25 @@ export default function MyCart() {
 
     Promise
       .all(promise)
-      .then((res) => setCart(res.map((product) => ({ ...product.data, amount: 1 }))))
+      .then((res) => setCart(res.map((product) => ({ ...product.data, quantity: 1 }))))
       .finally(() => setIsLoading(false))
   }, [userCart])
 
   const handleCreateOrder = () => {
     if (user) {
       setIsDisable(true)
-      const price = cart.reduce((acc, current) => acc + (current.actual_price * current.amount), 0)
+      let price = cart.reduce((acc, current) => acc + (current.actual_price * current.quantity), 0)
+      let products = cart.map((el) => ({ id: el.id }))
+      let options = new Object
+      cart.forEach((el) => (Object.assign(options, { [el.id]: el.quantity })))
       axios.post('/api/order', {
         email: user.email,
         status: 'Processed',
         price,
+        products: products,
+        options: options,
       })
-        .then((res) => {
-          const data = res.data
-          console.log(userCart)
-          const promise = cart.map((el) => axios.post('/api/order/item', {
-            orderId: data.id,
-            productId: el.id,
-            amount: el.amount
-          }))
-
-          Promise.all(promise)
-            .then(() => {
-              toast.success('Orders created, go to "My orders" and pay for product')
-              setUserCart([])
-            })
-            .catch(() => {
-              toast.error('Something went wrong')
-              axios.delete(`/api/order/${res.data.id}`)
-            })
-        })
+        .then(() => setUserCart([]))
         .finally(() => setIsDisable(false))
     }
   }
@@ -74,18 +61,18 @@ export default function MyCart() {
                     <ProductCard product={product} />
                     <div className='flex flex-row gap-2'>
                       <div className='flex h-8 w-8 rounded-full justify-center items-center bg-maincolor-500 text-white'>
-                        {product.amount}
+                        {product.quantity}
                       </div>
                       <Btn
                         className='bg-maincolor-100 w-8 h-8 !rounded-full'
-                        disabled={product.amount < 9 ? false : true}
-                        onClick={() => setCart(prev => [...prev.slice(0, index), { ...prev[index], amount: prev[index].amount + 1 }, ...prev.slice(index + 1)])}>
+                        disabled={product.quantity < 9 ? false : true}
+                        onClick={() => setCart(prev => [...prev.slice(0, index), { ...prev[index], quantity: prev[index].quantity + 1 }, ...prev.slice(index + 1)])}>
                         <BsPlus size={25} />
                       </Btn>
                       <Btn
                         className='bg-maincolor-100 w-8 h-8 !rounded-full'
-                        disabled={product.amount > 1 ? false : true}
-                        onClick={() => setCart(prev => [...prev.slice(0, index), { ...prev[index], amount: prev[index].amount - 1 }, ...prev.slice(index + 1)])}>
+                        disabled={product.quantity > 1 ? false : true}
+                        onClick={() => setCart(prev => [...prev.slice(0, index), { ...prev[index], quantity: prev[index].quantity - 1 }, ...prev.slice(index + 1)])}>
                         <BiMinus size={25} />
                       </Btn>
                     </div>

@@ -10,13 +10,9 @@ import CheckoutForm from '@/components/checkout-form';
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 const makeRequest = async (order_id: string) => {
-  try {
-    const res = await axios.post(`/api/create-intent/${order_id}`)
+  const res = await axios.post(`/api/create-intent/${order_id}`)
 
-    return res.data
-  } catch (error) {
-    console.log(error)
-  }
+  return res.data
 }
 
 export default function PayPage({ params }: { params: { id: string } }) {

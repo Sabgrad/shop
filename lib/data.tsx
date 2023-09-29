@@ -1,3 +1,4 @@
+import Me from "@/components/user/me/me";
 import MyCart from "@/components/user/mycart/my-cart-section";
 import MyOrder from "@/components/user/myorders/my-oroder-section";
 import MyReviews from "@/components/user/myreviews/my-reviews";
@@ -24,6 +25,11 @@ export const MenuData = [
 ] as const
 
 export const UserMenuData = [
+  {
+    title: 'Me',
+    icon: React.createElement(AiOutlineAppstore, userMenuSize),
+    section: React.createElement(Me)
+  },
   {
     title: 'My cart',
     icon: React.createElement(AiOutlineShoppingCart, userMenuSize),
