@@ -9,12 +9,11 @@ import CheckoutForm from '@/components/checkout-form';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-const makeRequest = async (orderId: string) => {
+const makeRequest = async (order_id: string) => {
   try {
-    const res = await axios.post(`/api/create-intent/${orderId}`)
+    const res = await axios.post(`/api/create-intent/${order_id}`)
 
     return res.data
-
   } catch (error) {
     console.log(error)
   }
@@ -28,17 +27,17 @@ export default function PayPage({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     if (id) {
-      makeRequest(id).then((res) => setClientSecret(res.client_secret))
+      makeRequest(id)
+        .then((res) => setClientSecret(res.client_secret))
     }
   }, [id])
-
 
   const options: StripeElementsOptions = {
     clientSecret: clientSecret,
     appearance: {
       theme: 'stripe'
     }
-  };
+  }
 
   return (
     <div className='p-2'>

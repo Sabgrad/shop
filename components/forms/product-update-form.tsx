@@ -12,6 +12,7 @@ import SelectCategory from '../input/select-category'
 import { Product } from '@prisma/client'
 import clsx from 'clsx'
 import Image from 'next/image'
+import toast from 'react-hot-toast'
 
 type ProductUpdaterFormProps = {
   product: Product
@@ -23,14 +24,15 @@ export default function ProductUpdaterForm({
   imagesData
 }: ProductUpdaterFormProps) {
 
-  const { triggerProductRequest, isLoading } = useUserContext()
+  const { triggerProductRequest } = useUserContext()
 
   const [isDisable, setIsDisable] = useState(false)
   const [imagePicker, setImagePicker] = useState(false)
   const [select, setSelect] = useState<string[]>(product.images)
 
   const {
-    register, handleSubmit
+    register,
+    handleSubmit
   } = useForm<FieldValues>({
     defaultValues: {
       name: product.name,
@@ -48,15 +50,27 @@ export default function ProductUpdaterForm({
     axios.patch(`/api/product/${product.id}`, {
       name, description, price, category, discount, actual_price, images: select
     })
-      .then(() => triggerProductRequest())
+      .then(() => { triggerProductRequest(), toast.success('success updater') })
+      .catch(() => toast.error('something went wrong'))
       .finally(() => setIsDisable(false))
   }
 
   const handleDeleteProduct = () => {
     setIsDisable(true)
     axios.delete(`/api/product/${product.id}`)
-      .then(() => triggerProductRequest())
-      .catch(() => setIsDisable(false))
+      .then(() => { triggerProductRequest(), toast.success('success delete') })
+      .catch(() => toast.error('something went wrong'))
+      .finally(() => setIsDisable(false))
+  }
+
+  const handleHiddeProduct = () => {
+    setIsDisable(true)
+    axios.patch(`/api/product/hide/${product.id}`, {
+      hide: product.hide ? false : true
+    })
+      .then(() => { triggerProductRequest(), toast.success('success hide product') })
+      .catch(() => toast.error('something went wrong'))
+      .finally(() => setIsDisable(false))
   }
 
   return (
@@ -119,13 +133,20 @@ export default function ProductUpdaterForm({
         <Btn
           disabled={isDisable}
           type='submit'
-          className='w-full p-1 bg-maincolor-100/50 hover:bg-maincolor-100 rounded-lg transition-all'
+          className={clsx('w-full p-1 bg-maincolor-100/50 hover:bg-maincolor-100 rounded-lg relative transition-all', isDisable && 'disabled:pointer-events-none')}
         >
           Submit changes
         </Btn>
         <Btn
           disabled={isDisable}
-          className='w-full p-1 bg-maincolor-600/50 hover:bg-maincolor-600 rounded-lg relative transition-all'
+          className={clsx('w-full p-1 bg-maincolor-100/50 hover:bg-maincolor-100 rounded-lg relative transition-all', isDisable && 'disabled:pointer-events-none')}
+          onClick={() => handleHiddeProduct()}
+        >
+          {product.hide ? 'Show product' : 'Hide product'}
+        </Btn>
+        <Btn
+          disabled={isDisable}
+          className={clsx('w-full p-1 bg-maincolor-600/50 hover:bg-maincolor-600 rounded-lg relative transition-all', isDisable && 'disabled:pointer-events-none')}
           onClick={() => handleDeleteProduct()}
         >
           Delete product

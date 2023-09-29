@@ -1,9 +1,7 @@
 'use client'
 
-import Btn from '@/components/buttons/btn'
 import ProductCard from '@/components/cards/product-card'
 import ProductCreateForm from '@/components/forms/product-create-form'
-import ImageUpload from '@/components/images/image-upload'
 import MyShopImageBoard from '@/components/images/my-shop-image-board'
 import { useUserContext } from '@/context/user-context'
 import { Product } from '@prisma/client'
@@ -13,7 +11,7 @@ import React, { useEffect, useState } from 'react'
 const getUserProduct = async (id: string) => {
   const res = await axios.get(`/api/user/product`, {
     params: {
-      userId: id
+      user_id: id
     }
   })
 
@@ -26,7 +24,7 @@ const getImages = async (id: string) => {
   console.log('request')
   const res = await axios.get(`/api/user/images`, {
     params: {
-      userId: id
+      user_id: id
     }
   })
 

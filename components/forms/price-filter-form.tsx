@@ -85,7 +85,7 @@ export default function PriceFilterForm({
         min={getValues().minPrice}
         max={999999}
       />
-      <Btn className="bg-maincolor-100 w-full" type="submit" onClick={() => setTriggerToast(prev => prev + 1)}>
+      <Btn className="bg-white border hover:!bg-maincolor-100 w-full" type="submit" onClick={() => setTriggerToast(prev => prev + 1)}>
         OK
       </Btn>
     </form>

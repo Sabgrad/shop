@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react'
 const getOrders = async (email: string) => {
   const res = await axios.get('api/user/order', {
     params: {
-      userEmail: email
+      user_email: email
     }
   })
 
@@ -25,6 +25,7 @@ export default function MyOrder() {
   const { user } = useUserContext()
   const [orders, setOrders] = useState<userOrderType[]>([])
   const [triggerUpdatePrice, setTriggerUpdatePrice] = useState(0)
+  const [triggerUpdateOrders, setTriggerUpdateOrders] = useState(0)
 
   if (!user) return null
 
@@ -33,7 +34,7 @@ export default function MyOrder() {
       .then((res) => {
         setOrders(res.data)
       })
-  }, [triggerUpdatePrice])
+  }, [triggerUpdatePrice, triggerUpdateOrders])
 
   useEffect(() => {
     if (orders.length > 0) {
@@ -57,7 +58,7 @@ export default function MyOrder() {
   return (
     <>
       {orders?.map((order) =>
-        <OrderCard order={order} key={order.id} />
+        <OrderCard order={order} key={order.id} setTriggerUpdateOrders={setTriggerUpdateOrders} />
       )}
     </>
   )

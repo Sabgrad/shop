@@ -20,13 +20,13 @@ export default function HomeSort({
 
   return (
     <div className="flex flex-col relative">
-      <Btn onClick={() => setOpenSort(prev => !prev)} className='bg-maincolor-100'>
+      <Btn onClick={() => setOpenSort(prev => !prev)} className='bg-white border hover:!bg-maincolor-100'>
         Sort
       </Btn>
       <AnimatePresence>
         {openSort &&
           <motion.ul
-            className=" z-[901] absolute top-10 -right-2  flex flex-col gap-1 w-max py-1 pl-1 border-l border-t border-b border-maincolor-950/30 rounded-l-lg bg-maincolor-100"
+            className=" z-[901] absolute top-[42px] -right-2  flex flex-col gap-1 w-max py-1 pl-1 border-l border-t border-b border-maincolor-950/30 rounded-l-lg bg-maincolor-100"
             onClick={() => setOpenSort(false)}
             key={'sort'}
             initial={{ x: '100%' }}

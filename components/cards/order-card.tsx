@@ -1,17 +1,19 @@
 import { userOrderType } from '@/types/types'
-import React, { useState } from 'react'
-import OrderItem from '../items/order-item'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import Btn from '../buttons/btn'
 import ResponsiveGridLayout from '../items/responsive-grid-layout'
 import ProductCard from './product-card'
 import { useRouter } from 'next/navigation'
+import axios from 'axios'
 
 type OrderCardProps = {
   order: userOrderType
+  setTriggerUpdateOrders: Dispatch<SetStateAction<number>>
 }
 
 export default function OrderCard({
-  order
+  order,
+  setTriggerUpdateOrders
 }: OrderCardProps) {
 
   const [isOpen, setIsOpen] = useState(false)
@@ -19,12 +21,16 @@ export default function OrderCard({
   const router = useRouter()
 
   const handlePaid = () => {
-    console.log('paid')
     router.push(`/pay/${order.id}`)
   }
 
+  const handleDelete = () => {
+    axios.delete(`/api/order/${order.id}`)
+      .then(() => setTriggerUpdateOrders(prev => prev + 1))
+  }
+
   return (
-    <div key={order.id} className='flex flex-col gap-2 border border-maincolor-100 rounded-lg  p-1'>
+    <div key={order.id} className='flex flex-col gap-2 border bg-white hover:border-maincolor-100 rounded-lg  p-1'>
       <div className='flex flex-row gap-2'>
         <div className='flex flex-col gap-2'>
           <span>
@@ -67,9 +73,14 @@ export default function OrderCard({
           </span>
         </div>
       </div>
-      <Btn onClick={() => setIsOpen(prev => !prev)} className='bg-maincolor-100'>
-        {isOpen ? 'Hide products' : 'Show products'}
-      </Btn>
+      <div className='flex w-full gap-2 flex-col sm:flex-row'>
+        <Btn onClick={() => setIsOpen(prev => !prev)} className='bg-maincolor-100'>
+          {isOpen ? 'Hide products' : 'Show products'}
+        </Btn>
+        <Btn onClick={handleDelete} className='bg-maincolor-100'>
+          Delete order
+        </Btn>
+      </div>
       <ResponsiveGridLayout>
         {
           isOpen &&

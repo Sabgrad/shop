@@ -46,10 +46,8 @@ export default function Product() {
   const handleCart = () => {
     if (product) {
       if (inCart) {
-        console.log('added')
         setUserCart(prev => prev.filter((el) => el.productId !== product.id))
       } else {
-        console.log('deleted')
         setUserCart(prev => [...prev, { productId: product.id }])
       }
     }

@@ -27,29 +27,11 @@ export default function Modal({
   }, [])
 
   useEffect(() => {
-
     if (active) {
       document.body.style.overflow = 'hidden'
     } else {
       document.body.style.overflow = 'unset'
     }
-
-    // const node = ref.current
-
-    // if (node) {
-    //   const resizeObserevr = new ResizeObserver(() => {
-    //     console.log(node.clientHeight)
-    //     console.log(window.innerHeight)
-
-    //     if (node.clientHeight === window.innerHeight) {
-    //       setScrollOn(true)
-    //     }
-    //   })
-
-    //   resizeObserevr.observe(node)
-
-    //   return () => resizeObserevr.disconnect()
-    // }
   }, [active])
 
   return domReady && active ?

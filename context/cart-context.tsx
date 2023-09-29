@@ -24,6 +24,17 @@ export default function CartContextProvider({
     if (localUserCart) {
       setUserCart(JSON.parse(localUserCart))
     }
+
+    const storage = () => {
+      let localStor = localStorage.getItem('user-cart')
+      let stor: { productId: string }[] = localStor !== null ? JSON.parse(localStor) : null
+      if (stor) {
+        setUserCart(stor)
+      }
+    }
+
+    window.addEventListener('storage', storage)
+    return () => window.removeEventListener('storage', storage)
   }, [])
 
   useEffect(() => {

@@ -13,21 +13,25 @@ const POST = async (request: Request) => {
   } = body
 
   if (!email || !password || !name) {
-    return new NextResponse('Missing info', { status: 400 })
+    return NextResponse.json({ message: `Missing info`, satus: 500 })
   }
 
-  const hashedPassword = await bcrypt.hash(password, 12)
+  try {
+    const hashedPassword = await bcrypt.hash(password, 12)
 
-  const user = await prisma.user.create({
-    data: {
-      email,
-      name,
-      hashedPassword,
-      images: [],
-    }
-  })
+    const user = await prisma.user.create({
+      data: {
+        email,
+        name,
+        hashedPassword,
+        images: [],
+      }
+    })
 
-  return NextResponse.json(user)
+    return NextResponse.json(user)
+  } catch (error) {
+    return NextResponse.json({ message: `Error register POST -> Error: ${error}`, satus: 500 })
+  }
 }
 
 export { POST }

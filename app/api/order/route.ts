@@ -2,15 +2,15 @@ import prisma from '@/lib/prismadb'
 import { NextResponse } from 'next/server'
 
 export const POST = async (request: Request) => {
+
+  const body = await request.json()
+  const { email, status, price } = body
+
   try {
-
-    const body = await request.json()
-    const { email, status, price } = body
-
     const newOrder = await prisma.order.create({
       data: {
-        status,
-        price,
+        status: status,
+        price: price,
         paid: false,
         customer: {
           connect: {
@@ -21,8 +21,7 @@ export const POST = async (request: Request) => {
     })
 
     return NextResponse.json(newOrder)
-
   } catch (error) {
-    return NextResponse.json(error)
+    return NextResponse.json({ message: `Error order POST -> Error: ${error}`, satus: 500 })
   }
 }

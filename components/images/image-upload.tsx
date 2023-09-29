@@ -39,7 +39,7 @@ export default function ImageUpload({
     const toDeleteImages = new Set(select)
     const updateImages = images.filter((el) => !toDeleteImages.has(el))
 
-    axios.patch(`api/user/data/${id}`, {
+    axios.patch(`/api/user/images/${id}`, {
       images: updateImages
     })
       .then(() => {

@@ -10,7 +10,6 @@ export const GET = async (request: Request) => {
   const max = Number(params.get('max'))
 
   try {
-
     const count = await prisma.product.count({
       where: {
         category: category || undefined,
@@ -22,8 +21,7 @@ export const GET = async (request: Request) => {
     })
 
     return NextResponse.json(count)
-
-  } catch (err: any) {
-    return NextResponse.json(err)
+  } catch (error) {
+    return NextResponse.json({ message: `Error count GET -> Error: ${error}`, satus: 500 })
   }
 }

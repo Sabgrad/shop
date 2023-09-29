@@ -25,7 +25,7 @@ export default function HomeCategoryFilter({
             <div className="flex flex-row w-full gap-1" key={item.title}>
               <span
                 onClick={() => handleCategory(item.title)}
-                className={clsx("rounded-lg hover:bg-maincolor-100/50 px-1 w-full transition-all", item.title === currentCategory && '!bg-maincolor-100')}
+                className={clsx("rounded-lg hover:bg-white border-b px-1 w-full transition-all", item.title === currentCategory && '!bg-white')}
               >
                 {item.title}
               </span>
