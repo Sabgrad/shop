@@ -20,7 +20,7 @@ export default function UserPageCurrentSectionProvider({
   children
 }: UserPageCurrentSectionProps) {
 
-  const [currentSection, setCurrentSection] = useState<UserSectionType>('Me')
+  const [currentSection, setCurrentSection] = useState<UserSectionType>('My cart')
 
   return (
     <UserPageCurrentSection.Provider
