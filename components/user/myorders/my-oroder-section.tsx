@@ -27,14 +27,14 @@ export default function MyOrder() {
   const [triggerUpdatePrice, setTriggerUpdatePrice] = useState(0)
   const [triggerUpdateOrders, setTriggerUpdateOrders] = useState(0)
 
-  if (!user) return null
-
   useEffect(() => {
-    getOrders(user.email)
-      .then((res) => {
-        setOrders(res.data)
-      })
-  }, [triggerUpdatePrice, triggerUpdateOrders])
+    if (user?.email) {
+      getOrders(user.email)
+        .then((res) => {
+          setOrders(res.data)
+        })
+    }
+  }, [user?.email, triggerUpdatePrice, triggerUpdateOrders])
 
   useEffect(() => {
     if (orders.length > 0) {
