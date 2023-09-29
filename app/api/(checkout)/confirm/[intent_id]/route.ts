@@ -6,9 +6,9 @@ export const PATCH = async (request: Request, { params }: { params: { intent_id:
   const { intent_id } = params;
 
   try {
-    await prisma.order.update({
+    await prisma.order.updateMany({
       where: {
-        intent_id: intent_id
+        intent_id: intent_id,
       },
       data: {
         paid: true

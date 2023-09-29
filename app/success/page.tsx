@@ -5,8 +5,8 @@ import axios from 'axios'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect } from 'react'
 
-const makeRequest = async (intentId: string) => {
-  await axios.patch(`/api/confirm/${intentId}`)
+const makeRequest = async (intent_id: string) => {
+  await axios.patch(`/api/confirm/${intent_id}`)
 }
 
 export default function Success() {
