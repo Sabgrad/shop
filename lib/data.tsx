@@ -26,11 +26,6 @@ export const MenuData = [
 
 export const UserMenuData = [
   {
-    title: 'Me',
-    icon: React.createElement(AiOutlineShoppingCart, userMenuSize),
-    section: React.createElement(MeUser)
-  },
-  {
     title: 'My cart',
     icon: React.createElement(AiOutlineShoppingCart, userMenuSize),
     section: React.createElement(MyCart)
