@@ -1,64 +1,21 @@
 import OrderCard from '@/components/cards/order-card'
 import { useUserContext } from '@/context/user-context'
-import { Orders } from '@/types/types'
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-
-const getOrders = async (email: string) => {
-  const res = await axios.get('api/user/order', {
-    params: {
-      user_email: email
-    }
-  })
-
-  return res
-}
-
-const updateOrderPrice = (id: string, price: number) => {
-  axios.patch(`api/order/${id}`, {
-    price: price
-  })
-}
+import React from 'react'
+import { useFetchUserOrders } from '@/hooks/tanstack-query/useQuery-hooks'
+import { useUpdateOrderPrice } from '@/hooks/tanstack-query/useMutation-hooks'
 
 export default function MyOrder() {
 
   const { user } = useUserContext()
-  const [orders, setOrders] = useState<Orders[]>([])
-  const [triggerUpdatePrice, setTriggerUpdatePrice] = useState(0)
-  const [triggerUpdateOrders, setTriggerUpdateOrders] = useState(0)
 
-  useEffect(() => {
-    if (user?.email) {
-      getOrders(user.email)
-        .then((res) => {
-          setOrders(res.data)
-        })
-    }
-  }, [user?.email, triggerUpdatePrice, triggerUpdateOrders])
+  const { mutate: updateOrderPrice } = useUpdateOrderPrice()
 
-  useEffect(() => {
-    if (orders.length > 0) {
-      let promise = new Array
-
-      orders.forEach((order) => {
-        let price = order.price
-        //@ts-ignore
-        let newPrice = order.products.reduce((acc, product) => acc + product.actual_price * order.options[product.id], 0)
-        if (price !== newPrice && order.paid === false) {
-          promise.push(updateOrderPrice(order.id, newPrice))
-        }
-      })
-
-      if (promise.length > 0) {
-        Promise.all(promise).then(() => setTriggerUpdatePrice(prev => prev + 1))
-      }
-    }
-  }, [orders])
+  const { data: orders } = useFetchUserOrders({ email: user?.email, updateOrderPrice })
 
   return (
     <>
       {orders?.map((order) =>
-        <OrderCard order={order} key={order.id} setTriggerUpdateOrders={setTriggerUpdateOrders} />
+        <OrderCard order={order} key={order.id} />
       )}
     </>
   )

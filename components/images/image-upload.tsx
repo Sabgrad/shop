@@ -1,12 +1,14 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { extractPublicId } from 'cloudinary-build-url'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import Btn from '../buttons/btn'
 import { CldUploadWidget } from 'next-cloudinary'
-import axios from 'axios'
 import Image from 'next/image'
 import clsx from 'clsx'
-import { deleteCloudinrayImage } from '@/action/deleteCloudinaryImage'
 import { ImSpinner8 } from 'react-icons/im'
+import ShopService from '@/services/services'
+import { useMutation } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
+import { extractPublicId } from 'cloudinary-build-url'
+import { useDeleteCloudinaryImages, useDeleteUserImages, useUpdateUserImages } from '@/hooks/tanstack-query/useMutation-hooks'
 
 type ImageUploadProps = {
   id: string
@@ -23,33 +25,22 @@ export default function ImageUpload({
   const [select, setSelect] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
+  const { mutate: updateImages } = useUpdateUserImages({ id, images, setTriggerImages })
+
+  const { mutate: deleteCloudinaryImages } = useDeleteCloudinaryImages()
+
+  const { mutate: deleteImages } = useDeleteUserImages({ select, deleteCloudinaryImages })
+
   const onUpload = (result: any) => {
     if (result) {
-      setIsLoading(true)
-      axios.patch(`api/user/${id}`, {
-        images: [...images, result.info.secure_url]
-      })
-        .then(() => setTriggerImages(prev => prev + 1))
-        .finally(() => setIsLoading(false))
+      updateImages(result.info.secure_url)
     }
   }
 
   const handleDeleteImages = () => {
-    setIsLoading(true)
     const toDeleteImages = new Set(select)
     const updateImages = images.filter((el) => !toDeleteImages.has(el))
-
-    axios.patch(`/api/user/images/${id}`, {
-      images: updateImages
-    })
-      .then(() => {
-        let promise = select.map(el => deleteCloudinrayImage(extractPublicId(el)))
-        Promise.all(promise)
-          .finally(() => {
-            setTriggerImages(prev => prev + 1)
-            setIsLoading(false)
-          })
-      })
+    deleteImages({ id, images: updateImages })
   }
 
   return (

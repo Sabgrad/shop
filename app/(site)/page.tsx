@@ -1,79 +1,29 @@
 'use client'
 
 import ProductCard from "@/components/cards/product-card"
-import axios from "axios"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import PriceFilterForm from "@/components/forms/price-filter-form"
-import HomeCategoryFilter from "@/components/home/home-category-filter"
+import HomeCategoryFilter from "@/components/home/category-filter/home-category-filter"
 import HomePaginationBtn from "@/components/home/home-pagination-btn"
-import ResponsiveGridLayout from "@/components/items/responsive-grid-layout"
 import HomeFilterToggle from "@/components/home/home-filter-toggle"
 import HomeSort from "@/components/home/home-sort"
 import { Product } from "@prisma/client"
-
-const getPageCount = async (category: string, min: number, max: number,) => {
-  const result = await axios.get('api/count', {
-    params: {
-      category,
-      min,
-      max
-    }
-  })
-
-  return result.data
-}
-
-const getProducts = async (page: number, category: string, min: number, max: number, sortBy: string, orderBy: string) => {
-  const result = await axios.get('api/product', {
-    params: {
-      page,
-      category,
-      min,
-      max,
-      sortBy,
-      orderBy,
-    }
-  })
-
-  return result.data
-}
+import { useHomePageCurrentCategoryContext } from "@/context/home-current-category"
+import { useFetchHomeByFilter, useFetchHomeByPagination, useFetchMaxHomePagination } from "@/hooks/tanstack-query/useQuery-hooks"
 
 export default function Home() {
 
   const [products, setProducts] = useState<Product[]>([])
-
   const [filter, setFilter] = useState(true)
-
   const [pagination, setPagination] = useState(1)
-  const [maxPagination, setMaxPagination] = useState(1)
-
-  const [isLoading, setIsLoading] = useState(false)
-  const [isLoadingPagination, setIsLoadingPagination] = useState(false)
-
   const [price, setPrice] = useState({ min: 0, max: 999999 })
-  const [currentCategory, setCurrentCategory] = useState<string>('')
   const [sort, setSort] = useState({ sortBy: '', orderBy: '', })
 
-  useEffect(() => {
-    getPageCount(currentCategory, price.min, price.max)
-      .then((res) => setMaxPagination(Math.ceil(res / Number(process.env.NEXT_PUBLIC_ITEMS_PER_PAGE))))
-  }, [currentCategory, price])
+  const { currentCategory } = useHomePageCurrentCategoryContext()
 
-
-  useEffect(() => {
-    if (pagination !== 1) {
-      setIsLoadingPagination(true)
-      getProducts(pagination, currentCategory, price.min, price.max, sort.sortBy, sort.orderBy)
-        .then((res) => setProducts(prev => [...prev, ...res]))
-        .finally(() => setIsLoadingPagination(false))
-    }
-  }, [pagination])
-
-  useEffect(() => {
-    setPagination(1)
-    getProducts(1, currentCategory, price.min, price.max, sort.sortBy, sort.orderBy)
-      .then((res) => setProducts(res))
-  }, [price, currentCategory, sort])
+  const { data: maxPagination } = useFetchMaxHomePagination({ currentCategory, price })
+  const { isFetching: isFetchingProduct } = useFetchHomeByFilter({ currentCategory, price, sort, setPagination, setProducts })
+  const { isFetching: isFetchingPagination } = useFetchHomeByPagination({ currentCategory, pagination, price, sort, setProducts })
 
   return (
     <div className="relative flex flex-col min-h-full gap-2 pb-2">
@@ -92,24 +42,36 @@ export default function Home() {
             <span className="underline text-maincolor-100 text-sm">
               Category
             </span>
-            <HomeCategoryFilter currentCategory={currentCategory} setCurrentCategory={setCurrentCategory} />
+            <HomeCategoryFilter />
           </div>
         }
         <div className="flex min-h-max flex-col gap-4 w-full items-center pr-2">
-          <ResponsiveGridLayout>
+          <div className="flex flex-row gap-2 flex-wrap justify-center">
             {
-              products.map((product) =>
-                <ProductCard key={product.id} product={product} />
-              )
+              isFetchingProduct ?
+                <>Loading...</>
+                :
+                products.length > 0 ?
+                  products.map((product) =>
+                    <ProductCard key={product.id} product={product} />
+                  )
+                  :
+                  products.length === 0 &&
+                  <>Product didnt found</>
             }
-          </ResponsiveGridLayout>
-          <HomePaginationBtn
-            length={products.length !== 0}
-            isLoadingPagination={isLoadingPagination}
-            pagination={pagination}
-            maxPagination={maxPagination}
-            setPagination={setPagination}
-          />
+          </div>
+          {
+            maxPagination && maxPagination > 0 ?
+              <HomePaginationBtn
+                pagination={pagination}
+                isLoadingPagination={isFetchingPagination}
+                maxPagination={maxPagination}
+                setPagination={setPagination}
+                length={products.length !== 0}
+              />
+              :
+              null
+          }
         </div>
       </div>
     </div >

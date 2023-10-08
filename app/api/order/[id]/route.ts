@@ -1,6 +1,29 @@
 import prisma from '@/lib/prismadb'
 import { NextResponse } from 'next/server'
 
+export const GET = async (request: Request, { params }: { params: { id: string } }) => {
+
+  const { id } = params
+
+  console.log(id)
+
+  try {
+    const getOrder = await prisma.order.findUnique({
+      where: {
+        id: id
+      },
+      select: {
+        price: true,
+        paid: true,
+      }
+    })
+
+    return NextResponse.json(getOrder)
+  } catch (error) {
+    return NextResponse.json({ message: `Error order/[id] GET -> Error: ${error}`, satus: 500 })
+  }
+}
+
 export const PATCH = async (request: Request, { params }: { params: { id: string } }) => {
 
   const body = await request.json()

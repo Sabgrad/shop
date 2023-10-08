@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import axios from 'axios'
 import { useUserContext } from '@/context/user-context'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import ImageComponent from '../images/image-component'
@@ -12,7 +11,9 @@ import SelectCategory from '../input/select-category'
 import { Product } from '@prisma/client'
 import clsx from 'clsx'
 import Image from 'next/image'
-import toast from 'react-hot-toast'
+import { useQueryClient } from '@tanstack/react-query'
+import { UpdateProductDataType } from '@/types/types'
+import { useDeleteProduct, useHideProduct, useUpdateProduct } from '@/hooks/tanstack-query/useMutation-hooks'
 
 type ProductUpdaterFormProps = {
   product: Product
@@ -24,11 +25,18 @@ export default function ProductUpdaterForm({
   imagesData
 }: ProductUpdaterFormProps) {
 
+  const client = useQueryClient()
+
   const { triggerProductRequest } = useUserContext()
 
-  const [isDisable, setIsDisable] = useState(false)
   const [imagePicker, setImagePicker] = useState(false)
   const [select, setSelect] = useState<string[]>(product.images)
+
+  const { mutate: updateProduct, isLoading: updatingProduct } = useUpdateProduct({ triggerProductRequest })
+
+  const { mutate: deleteProduct, isLoading: deletingProduct } = useDeleteProduct({ triggerProductRequest })
+
+  const { mutate: hideProduct, isLoading: hidingProduct } = useHideProduct({ triggerProductRequest })
 
   const {
     register,
@@ -44,33 +52,9 @@ export default function ProductUpdaterForm({
   })
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setIsDisable(true)
-    const { name, description, price, category, discount } = data
-    const actual_price = Math.round(price - (price * discount / 100))
-    axios.patch(`/api/product/${product.id}`, {
-      name, description, price, category, discount, actual_price, images: select
-    })
-      .then(() => { triggerProductRequest(), toast.success('success updater') })
-      .catch(() => toast.error('something went wrong'))
-      .finally(() => setIsDisable(false))
-  }
-
-  const handleDeleteProduct = () => {
-    setIsDisable(true)
-    axios.delete(`/api/product/${product.id}`)
-      .then(() => { triggerProductRequest(), toast.success('success delete') })
-      .catch(() => toast.error('something went wrong'))
-      .finally(() => setIsDisable(false))
-  }
-
-  const handleHiddeProduct = () => {
-    setIsDisable(true)
-    axios.patch(`/api/product/hide/${product.id}`, {
-      hide: product.hide ? false : true
-    })
-      .then(() => { triggerProductRequest(), toast.success('success hide product') })
-      .catch(() => toast.error('something went wrong'))
-      .finally(() => setIsDisable(false))
+    const { price, discount } = data
+    let updatetData = Object.assign(data, { actual_price: Math.round(price - (price * discount / 100)) }, { images: select })
+    updateProduct({ id: product.id, data: updatetData as UpdateProductDataType })
   }
 
   return (
@@ -131,23 +115,23 @@ export default function ProductUpdaterForm({
         <Input id={'price'} type={'number'} placeholder='Price' register={register} required valueAsNumber validate={(v) => v >= 100 && v <= 999999} />
         <Input id={'discount'} type={'number'} placeholder='Discount' register={register} required valueAsNumber validate={(v) => v >= 10 && v <= 80 || v === 0} />
         <Btn
-          disabled={isDisable}
+          disabled={client.isMutating() > 0}
           type='submit'
-          className={clsx('w-full p-1 bg-maincolor-100/50 hover:bg-maincolor-100 rounded-lg relative transition-all', isDisable && 'disabled:pointer-events-none')}
+          className={clsx('w-full p-1 bg-maincolor-100/50 hover:bg-maincolor-100 rounded-lg relative transition-all', client.isMutating() > 0 && 'disabled:pointer-events-none')}
         >
           Submit changes
         </Btn>
         <Btn
-          disabled={isDisable}
-          className={clsx('w-full p-1 bg-maincolor-100/50 hover:bg-maincolor-100 rounded-lg relative transition-all', isDisable && 'disabled:pointer-events-none')}
-          onClick={() => handleHiddeProduct()}
+          disabled={client.isMutating() > 0}
+          className={clsx('w-full p-1 bg-maincolor-100/50 hover:bg-maincolor-100 rounded-lg relative transition-all', client.isMutating() > 0 && 'disabled:pointer-events-none')}
+          onClick={() => hideProduct({ id: product.id, hide: product.hide ? false : true })}
         >
           {product.hide ? 'Show product' : 'Hide product'}
         </Btn>
         <Btn
-          disabled={isDisable}
-          className={clsx('w-full p-1 bg-maincolor-600/50 hover:bg-maincolor-600 rounded-lg relative transition-all', isDisable && 'disabled:pointer-events-none')}
-          onClick={() => handleDeleteProduct()}
+          disabled={client.isMutating() > 0}
+          className={clsx('w-full p-1 bg-maincolor-600/50 hover:bg-maincolor-600 rounded-lg relative transition-all', client.isMutating() > 0 && 'disabled:pointer-events-none')}
+          onClick={() => deleteProduct(product.id)}
         >
           Delete product
         </Btn>

@@ -1,9 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useState } from 'react'
-import { UserMenuData } from '@/lib/data'
-
-type UserSectionType = typeof UserMenuData[number]['title']
+import { UserSectionType } from '@/types/types'
 
 type UserPageCurrentSectionType = {
   currentSection: UserSectionType
@@ -34,7 +32,7 @@ export default function UserPageCurrentSectionProvider({
   )
 }
 
-export function useUserPageCurrentSection() {
+export function useUserPageCurrentSectionContext() {
   const context = useContext(UserPageCurrentSection)
 
   if (context === null) {

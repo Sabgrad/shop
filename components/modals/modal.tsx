@@ -18,9 +18,6 @@ export default function Modal({
 }: ModalProps) {
 
   const [domReady, setDomReady] = useState(false)
-  // const [scrollOn, setScrollOn] = useState(false)
-
-  // const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setDomReady(true)

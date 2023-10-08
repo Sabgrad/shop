@@ -1,25 +1,22 @@
 'use client'
 
-import { useUserPageCurrentSection } from '@/context/user-current-section'
-import axios from 'axios'
+import { useUserPageCurrentSectionContext } from '@/context/user-current-section'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect } from 'react'
-
-const makeRequest = async (intent_id: string) => {
-  await axios.patch(`/api/confirm/${intent_id}`)
-}
+import { useSuccessPayment } from '@/hooks/tanstack-query/useMutation-hooks'
 
 export default function Success() {
 
   const searchParams = useSearchParams()
   const payment_intent = searchParams.get('payment_intent')
   const router = useRouter()
-  const { setCurrentSection } = useUserPageCurrentSection()
+  const { setCurrentSection } = useUserPageCurrentSectionContext()
+
+  const { mutate: succesPayment } = useSuccessPayment({ setCurrentSection, router })
 
   useEffect(() => {
     if (payment_intent) {
-      makeRequest(payment_intent)
-        .then(() => { setCurrentSection('My orders'), router.push('/user') })
+      succesPayment(payment_intent)
     }
   }, [payment_intent])
 

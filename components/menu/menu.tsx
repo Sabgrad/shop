@@ -1,13 +1,12 @@
 'use client'
 
-import { useMenuContext } from '@/context/menu-context'
 import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import MenuHeader from './menu-header'
 import MenuBtns from './menu-btns'
 import MenuLogoutBtn from './menu-logout-btn'
 import MenuToggleUser from './menu-toggle-user'
-
+import { useMenuContext } from '@/context/menu-context'
 
 export default function Menu() {
 

@@ -12,25 +12,18 @@ export const GET = async (request: Request) => {
   const sortBy = params.get('sortBy')
   const orderBy = params.get('orderBy')
 
+  let order = undefined
+  if (orderBy && sortBy) order = { [sortBy]: orderBy }
+
   try {
     const getProducts = await prisma.product.findMany({
       skip: page * Number(process.env.NEXT_PUBLIC_ITEMS_PER_PAGE),
       take: Number(process.env.NEXT_PUBLIC_ITEMS_PER_PAGE),
-      orderBy: [
-        sortBy === 'price'
-          ?
-          {
-            price: orderBy === 'desc' ? 'desc' : 'asc'
-          }
-          :
-          {
-
-          }
-      ],
+      orderBy: order ? order : undefined,
       where: {
         hide: false,
         category: category || undefined,
-        price: {
+        actual_price: {
           gte: min,
           lte: max < min ? min : max,
         }

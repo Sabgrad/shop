@@ -1,9 +1,11 @@
 'use client'
 
 import { User } from '@prisma/client'
-import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import React, { createContext, useContext, useEffect, useState } from 'react'
+import ShopService from '@/services/services'
+import { useQuery } from '@tanstack/react-query'
+import { useFetchUser } from '@/hooks/tanstack-query/useQuery-hooks'
 
 type UserContexProps = {
   children: React.ReactNode
@@ -11,7 +13,6 @@ type UserContexProps = {
 
 type UserContextType = {
   user: User | undefined
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>
   isLoading: boolean
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
   triggerProduct: number
@@ -20,19 +21,10 @@ type UserContextType = {
 
 const UserContext = createContext<UserContextType | null>(null)
 
-const getUser = async (email: string) => {
-  let res = await axios.get(`/api/user/${email}`)
-
-  if (res.data) {
-    return res.data
-  }
-}
-
 export default function UserContextProvider({
   children
 }: UserContexProps) {
 
-  const [user, setUser] = useState<User>()
   const [triggerProduct, setTriggerProduct] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -42,21 +34,11 @@ export default function UserContextProvider({
 
   const session = useSession()
 
-  useEffect(() => {
-    if (session.status === 'authenticated') {
-      getUser(session.data.user?.email as string)
-        .then((res) => {
-          setUser(res),
-            setTriggerProduct(v => v + 1)
-        })
-    }
-  }, [session.data?.user?.email])
-
+  const { data: user } = useFetchUser({ email: session.data?.user?.email, setTriggerProduct })
 
   return (
     <UserContext.Provider value={{
       user,
-      setUser,
       isLoading,
       setIsLoading,
       triggerProduct,
@@ -71,7 +53,7 @@ export function useUserContext() {
   const context = useContext(UserContext)
 
   if (context === null) {
-    throw new Error('useMenuContext must be used within a MenuContextProvider')
+    throw new Error('useUserContext must be used within a MenuContextProvider')
   }
 
   return context

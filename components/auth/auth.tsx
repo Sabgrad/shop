@@ -1,6 +1,5 @@
 'use client'
 
-import axios from 'axios'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -9,6 +8,9 @@ import toast from 'react-hot-toast'
 import Btn from '../buttons/btn'
 import { AiOutlineCloseCircle, AiOutlineUser, AiOutlineUserAdd } from 'react-icons/ai'
 import Modal from '../modals/modal'
+import { useMutation } from '@tanstack/react-query'
+import ShopService from '@/services/services'
+import { useRegisterUser } from '@/hooks/tanstack-query/useMutation-hooks'
 
 type AuthProps = {
 
@@ -43,29 +45,22 @@ export default function Auth({
     }
   })
 
+  const { mutate: auth } = useRegisterUser({ reset })
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setIsLoading(true)
     if (variant === 'login') {
-      signIn('credentials', {
-        ...data,
-        redirect: false
-      })
+      signIn('credentials', data)
         .then((callback) => {
           if (callback?.error) {
             toast.error('invalid cred')
           }
-
           if (callback?.ok && !callback?.error) {
-            toast.success('succes sign in')
+            toast.success('Success sign in')
           }
         })
-        .finally(() => setIsLoading(false))
     }
     if (variant === 'register') {
-      axios.post('/api/register', data)
-        .then(() => { signIn('credentials', data), toast.success('Now your have an account'), reset() })
-        .catch(() => toast.error('something went wrong'))
-        .finally(() => setIsLoading(false))
+      auth(data)
     }
   }
 

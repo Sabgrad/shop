@@ -8,12 +8,10 @@ import { Orders } from '@/types/types'
 
 type OrderCardProps = {
   order: Orders
-  setTriggerUpdateOrders: Dispatch<SetStateAction<number>>
 }
 
 export default function OrderCard({
   order,
-  setTriggerUpdateOrders
 }: OrderCardProps) {
 
   const [isOpen, setIsOpen] = useState(false)
@@ -22,11 +20,6 @@ export default function OrderCard({
 
   const handlePaid = () => {
     router.push(`/pay/${order.id}`)
-  }
-
-  const handleDelete = () => {
-    axios.delete(`/api/order/${order.id}`)
-      .then(() => setTriggerUpdateOrders(prev => prev + 1))
   }
 
   return (
@@ -77,7 +70,7 @@ export default function OrderCard({
         <Btn onClick={() => setIsOpen(prev => !prev)} className='bg-maincolor-100'>
           {isOpen ? 'Hide products' : 'Show products'}
         </Btn>
-        <Btn onClick={handleDelete} className='bg-maincolor-100'>
+        <Btn className='bg-maincolor-100'>
           Delete order
         </Btn>
       </div>

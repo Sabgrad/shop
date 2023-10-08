@@ -1,26 +1,25 @@
 'use client'
 
 import { useUserContext } from '@/context/user-context'
-import axios from 'axios'
-import React, { useState } from 'react'
+import React from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import TextArea from '../input/textarea'
 import Input from '../input/input'
 import Btn from '../buttons/btn'
 import SelectCategory from '../input/select-category'
+import toast from 'react-hot-toast'
+import { CreateProductType } from '@/types/types'
+import { useCreateProduct } from '@/hooks/tanstack-query/useMutation-hooks'
 
 export default function ProductCreateForm() {
 
   const { user, triggerProductRequest } = useUserContext()
 
-  const [isDisable, setIsDisable] = useState(false)
-
   const {
     handleSubmit,
-    reset,
     register,
+    reset,
     formState: {
-      errors
     }
   } = useForm<FieldValues>({
     defaultValues: {
@@ -33,17 +32,13 @@ export default function ProductCreateForm() {
     }
   })
 
+  const { mutate: createProduct, isLoading } = useCreateProduct({triggerProductRequest, reset})
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    if (!user) return toast.error('No user')
     const { price, discount } = data
-    const actual_price = Math.round(price - (price * discount / 100))
-    setIsDisable(true)
-    axios.post('/api/product', {
-      ...data,
-      actual_price,
-      userId: user?.id
-    })
-      .then(() => { triggerProductRequest() })
-      .finally(() => setIsDisable(false))
+    const createData = Object.assign(data, { actual_price: Math.round(price - (price * discount / 100)) }, { userId: user.id })
+    createProduct(createData as CreateProductType)
   }
 
   return (
@@ -57,7 +52,7 @@ export default function ProductCreateForm() {
       </div>
       <Btn
         type='submit'
-        disabled={isDisable}
+        disabled={isLoading}
         className='w-full p-1 bg-maincolor-100/50 hover:bg-maincolor-100 rounded-lg transition-all'
       >
         Create Product

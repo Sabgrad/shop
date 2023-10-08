@@ -3,14 +3,14 @@
 import { MenuData } from '@/lib/data'
 import React from 'react'
 import Btn from '../buttons/btn'
-import { useCatalogContext } from '@/context/catalog-context'
 import { useRouter } from 'next/navigation'
-import { useUserPageCurrentSection } from '@/context/user-current-section'
+import { useCatalogContext } from '@/context/catalog-context'
+import { useUserPageCurrentSectionContext } from '@/context/user-current-section'
 
 export default function MenuBtns() {
 
   const { setActiveCatalog } = useCatalogContext()
-  const { setCurrentSection } = useUserPageCurrentSection()
+  const { setCurrentSection } = useUserPageCurrentSectionContext()
   const router = useRouter()
 
   const handleClick = (title: typeof MenuData[number]['title']) => {

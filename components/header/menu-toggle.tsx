@@ -1,9 +1,9 @@
 'use client'
 
-import { useMenuContext } from '@/context/menu-context'
 import React from 'react'
 import Btn from '../buttons/btn'
 import { AiOutlineMenu } from 'react-icons/ai'
+import { useMenuContext } from '@/context/menu-context'
 
 export default function MenuToggle() {
 

@@ -4,7 +4,7 @@ import ImageUpload from './image-upload'
 
 type MyShopImageBoardProps = {
   id: string
-  images: string[]
+  images: string[] | undefined
   setTriggerImages: Dispatch<SetStateAction<number>>
 }
 
@@ -15,6 +15,8 @@ export default function MyShopImageBoard({
 }: MyShopImageBoardProps) {
 
   const [imageBoard, setImageBoard] = useState(false)
+
+  console.log(images)
 
   return (
     <>
@@ -29,7 +31,7 @@ export default function MyShopImageBoard({
           <Btn className='bg-maincolor-100' onClick={() => setImageBoard(false)}>
             Close
           </Btn>
-          <ImageUpload id={id} images={images} setTriggerImages={setTriggerImages} />
+          {images && <ImageUpload id={id} images={images} setTriggerImages={setTriggerImages} />}
         </div>
       }
     </>

@@ -1,15 +1,15 @@
 'use client'
 
-import { useUserPageCurrentSection } from '@/context/user-current-section'
 import { UserMenuData } from '@/lib/data'
 import React, { useEffect, useState } from 'react'
 import Btn from '../buttons/btn'
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai'
 import clsx from 'clsx'
+import { useUserPageCurrentSectionContext } from '@/context/user-current-section'
 
 export default function UserMenu() {
 
-  const { currentSection, setCurrentSection } = useUserPageCurrentSection()
+  const { currentSection, setCurrentSection } = useUserPageCurrentSectionContext()
   const [open, setOpen] = useState(true)
   const [sm, setSm] = useState(false)
 

@@ -4,54 +4,15 @@ import ProductCard from '@/components/cards/product-card'
 import ProductCreateForm from '@/components/forms/product-create-form'
 import MyShopImageBoard from '@/components/images/my-shop-image-board'
 import { useUserContext } from '@/context/user-context'
-import { Product } from '@prisma/client'
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-
-const getUserProduct = async (id: string) => {
-  const res = await axios.get(`/api/user/product`, {
-    params: {
-      user_id: id
-    }
-  })
-
-  if (res.data) {
-    return res.data
-  }
-}
-
-const getImages = async (id: string) => {
-  const res = await axios.get(`/api/user/images`, {
-    params: {
-      user_id: id
-    }
-  })
-
-  if (res.data) {
-    return res.data.images
-  }
-}
+import React, { useState } from 'react'
+import { useFetchUserShopImages, useFetchUserShopProducts } from '@/hooks/tanstack-query/useQuery-hooks'
 
 export default function MyShop() {
-  const { user, triggerProduct, setIsLoading } = useUserContext()
+  const { user, triggerProduct } = useUserContext()
   const [triggerImages, setTriggerImages] = useState(0)
-  const [product, setProduct] = useState<Product[]>([])
-  const [images, setImages] = useState<string[]>([])
 
-  useEffect(() => {
-    if (triggerProduct > 0 && user) {
-      setIsLoading(true)
-      getUserProduct(user.id)
-        .then((res) => { setProduct(res) })
-    }
-  }, [user, triggerProduct])
-
-  useEffect(() => {
-    if (user) {
-      getImages(user.id)
-        .then((res) => { setImages(res) })
-    }
-  }, [triggerImages])
+  const { data: products } = useFetchUserShopProducts({ user, triggerProduct })
+  const { data: images } = useFetchUserShopImages({ user, triggerImages })
 
   if (!user) return null
 
@@ -61,7 +22,7 @@ export default function MyShop() {
       <ProductCreateForm />
       <div className='w-full border-b border-black/40' />
       <div className='flex flex-wrap justify-evenly'>
-        {product.map((el) =>
+        {products?.map((el) =>
           <ProductCard type='user' imagesData={images} key={el.id} product={el} />
         )}
       </div>

@@ -6,10 +6,11 @@ import Image from 'next/image'
 import Modal from '../modals/modal'
 import ProductUpdaterForm from '../forms/product-update-form'
 import { Product } from '@prisma/client'
-import { useRouter } from 'next/navigation'
+import ProductCardUserCartToggle from '../buttons/product-card-user-cart-toggle'
+import ProductCardWishListToggle from '../buttons/product-card-wish-list-toggle'
 
 type ProductCardProps = {
-  product: Product
+  product: Product | Omit<Product, 'orderIds'>
   onClick?: () => void
   amount?: number
   type?: 'user' | 'order' | 'default'
@@ -25,7 +26,6 @@ export default function ProductCard({
 }: ProductCardProps) {
 
   const [activeModal, setActiveModal] = useState(false)
-  const router = useRouter()
 
   const handleClick = () => {
     onClick && onClick()
@@ -38,7 +38,7 @@ export default function ProductCard({
 
   return (
     <>
-      <div className='gap-2 flex flex-col p-2 border relative rounded-lg max-w-[250px] bg-white hover:border-maincolor-100' onClick={handleClick}>
+      <div className='gap-2 flex flex-col p-2 border relative rounded-lg max-w-[250px] bg-white hover:border-maincolor-100 group' onClick={handleClick}>
         <div className='relative justify-center items-center flex flex-1 min-h-[250px] hover:cursor-pointer' onClick={handleOpenProductPage}>
           {
             <Image className='rounded-lg' src={product.images.length ? product.images[0] : noimage} alt='product image' width={250} height={200} />
@@ -69,11 +69,18 @@ export default function ProductCard({
             :
             null
         }
+        {
+          type !== 'user' &&
+          <>
+            <ProductCardUserCartToggle id={product.id} />
+            <ProductCardWishListToggle id={product.id} />
+          </>
+        }
       </div>
       {
         type === 'user' && imagesData !== undefined &&
         < Modal active={activeModal} setActive={setActiveModal}>
-          <ProductUpdaterForm imagesData={imagesData} product={product} />
+          <ProductUpdaterForm imagesData={imagesData} product={product as Product} />
         </Modal >
       }
     </>

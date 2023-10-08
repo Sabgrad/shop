@@ -3,6 +3,7 @@
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import Btn from '../buttons/btn'
 import { AnimatePresence, motion } from 'framer-motion'
+import { sortMenuData } from '@/lib/data'
 
 type HomeSortProps = {
   setSort: Dispatch<SetStateAction<{ sortBy: string, orderBy: string }>>
@@ -34,12 +35,11 @@ export default function HomeSort({
             exit={{ x: '100%' }}
             transition={{ duration: 0.3 }}
           >
-            <li className="py-1 transition-all rounded-l-lg hover:bg-maincolor-50 px-2" onClick={() => handleSort('price', 'desc')}>
-              Descending price
-            </li>
-            <li className="py-1 transition-all rounded-l-lg hover:bg-maincolor-50 px-2" onClick={() => handleSort('price', 'asc')}>
-              Price ascending
-            </li>
+            {sortMenuData.map((sort) =>
+              <li className="py-1 transition-all rounded-l-lg hover:bg-maincolor-50 px-2" onClick={() => handleSort(sort.field, sort.type)}>
+                {sort.title}
+              </li>
+            )}
           </motion.ul>
         }
       </AnimatePresence>

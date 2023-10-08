@@ -1,4 +1,4 @@
-import { categorys } from '@/lib/data'
+import { categorys, mainCategorys } from '@/lib/data'
 import clsx from 'clsx'
 import React from 'react'
 import { FieldValues, UseFormRegister } from 'react-hook-form'
@@ -24,16 +24,21 @@ export default function SelectCategory({
       })}
     >
       {
-        categorys.map((category) =>
-          <optgroup key={category.title} label={category.title}>
+        mainCategorys.map((main) =>
+          <React.Fragment key={main.title}>
+            <optgroup className='text-maincolor-100' label={main.title} />
             {
-              category.subCategory.map((subCategory) =>
-                <option key={subCategory.title} value={subCategory.title}>
-                  {subCategory.title}
-                </option>
+              main.groups.map((el) =>
+                <optgroup className='font-semibold' key={el.title} label={el.title}>
+                  {el.subCategory.map((sub) =>
+                    <option key={sub.title} value={sub.title}>
+                      {sub.title}
+                    </option>
+                  )}
+                </optgroup>
               )
             }
-          </optgroup>
+          </React.Fragment>
         )
       }
     </select>

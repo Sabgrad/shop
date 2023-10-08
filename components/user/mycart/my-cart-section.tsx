@@ -3,51 +3,33 @@ import ProductCard from '@/components/cards/product-card'
 import { useCartContext } from '@/context/cart-context'
 import { useUserContext } from '@/context/user-context'
 import { userCartType } from '@/types/types'
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
+import React, { useState } from 'react'
 import { BiMinus } from 'react-icons/bi'
 import { BsPlus } from 'react-icons/bs'
-
-
+import { useFetchProductInCart } from '@/hooks/tanstack-query/useQuery-hooks'
+import { useCreateOrder } from '@/hooks/tanstack-query/useMutation-hooks'
 
 export default function MyCart() {
 
-  const [isLoading, setIsLoading] = useState(true)
   const { userCart, setUserCart } = useCartContext()
   const { user } = useUserContext()
-  const [isDisable, setIsDisable] = useState(false)
   const [cart, setCart] = useState<userCartType[]>([])
 
-  useEffect(() => {
-    const promise = userCart.map((el) => axios.get(`api/product/${el.productId}`))
+  const { isFetching } = useFetchProductInCart({ userCart, setCart })
 
-    Promise
-      .all(promise)
-      .then((res) => setCart(res.map((product) => ({ ...product.data, quantity: 1 }))))
-      .finally(() => setIsLoading(false))
-  }, [userCart])
+  const { mutate: createOrder, isLoading } = useCreateOrder({ setUserCart, setCart })
 
   const handleCreateOrder = () => {
     if (user) {
-      setIsDisable(true)
       let price = cart.reduce((acc, current) => acc + (current.actual_price * current.quantity), 0)
       let products = cart.map((el) => ({ id: el.id }))
       let options = new Object
       cart.forEach((el) => (Object.assign(options, { [el.id]: el.quantity })))
-      axios.post('/api/order', {
-        email: user.email,
-        status: 'Processed',
-        price,
-        products: products,
-        options: options,
-      })
-        .then(() => setUserCart([]))
-        .finally(() => setIsDisable(false))
+      createOrder({ email: user.email, price, products, options })
     }
   }
 
-  if (isLoading) return <>Laoding ...</>
+  if (isFetching) return <>Laoding ...</>
 
   return (
     <>
@@ -80,7 +62,7 @@ export default function MyCart() {
                 )
               }
             </div>
-            <Btn disabled={isDisable} onClick={handleCreateOrder} className='bg-maincolor-100'>
+            <Btn disabled={isLoading} onClick={handleCreateOrder} className='bg-maincolor-100'>
               Create order
             </Btn>
           </>

@@ -5,6 +5,8 @@ export const PATCH = async (request: Request, { params }: { params: { intent_id:
 
   const { intent_id } = params;
 
+  if (intent_id === undefined && intent_id === null) return NextResponse.json({ message: `no intent_id`, status: 500 })
+
   try {
     await prisma.order.updateMany({
       where: {

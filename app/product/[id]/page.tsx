@@ -3,57 +3,21 @@
 import Btn from '@/components/buttons/btn'
 import ImageComponent from '@/components/images/image-component'
 import { useCartContext } from '@/context/cart-context'
+import useInCart from '@/hooks/useInCart'
 import { Product } from '@prisma/client'
-import axios from 'axios'
 import { useParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
 import { TfiEmail } from 'react-icons/tfi'
-
-const getProduct = async (id: string) => {
-  const result = await axios.get(`/api/product/${id}`)
-
-  if (result.data) {
-    return result.data
-  }
-}
+import { useFetchProductPage } from '@/hooks/tanstack-query/useQuery-hooks'
 
 export default function Product() {
 
   const { id } = useParams()
 
-  const { userCart, setUserCart } = useCartContext()
-  const [product, setProduct] = useState<Product | undefined>(undefined)
-  const [isLoading, setIsLoading] = useState(true)
-  const [inCart, setInCart] = useState(false)
+  const { data: product, isFetching } = useFetchProductPage({ id: id as string })
 
-  useEffect(() => {
-    if (id) {
-      getProduct(id as string).then((res) => setProduct(res))
-        .finally(() => setIsLoading(false))
-    }
-  }, [id])
+  const { inCart, handleCart } = useInCart(product?.id)
 
-  useEffect(() => {
-    if (product) {
-      if (userCart.find((el) => el.productId === product.id)) {
-        setInCart(true)
-      } else {
-        setInCart(false)
-      }
-    }
-  }, [userCart, product])
-
-  const handleCart = () => {
-    if (product) {
-      if (inCart) {
-        setUserCart(prev => prev.filter((el) => el.productId !== product.id))
-      } else {
-        setUserCart(prev => [...prev, { productId: product.id }])
-      }
-    }
-  }
-
-  if (isLoading) return <>Loading</>
+  if (isFetching) return <>Loading...</>
 
   return (
     <div className='w-full h-full flex jusitfy-center items-center'>

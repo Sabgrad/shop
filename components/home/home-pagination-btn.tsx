@@ -16,7 +16,7 @@ export default function HomePaginationBtn({
   pagination,
   maxPagination,
   setPagination,
-  length,
+  length
 }: HomePaginationBtnProps) {
 
   const handleDownloadMore = () => {
