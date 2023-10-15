@@ -3,7 +3,6 @@
 import ProductCard from '@/components/cards/product-card'
 import ProductCreateForm from '@/components/forms/product-create-form'
 import MyShopImageBoard from '@/components/images/my-shop-image-board'
-import { useUserContext } from '@/context/user-context'
 import React from 'react'
 import { useFetchUser, useFetchUserShopImages, useFetchUserShopProducts } from '@/hooks/tanstack-query/useQuery-hooks'
 import FlexLayout from '@/components/items/flex-layout'

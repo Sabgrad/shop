@@ -7,7 +7,7 @@ import { BsPlus } from 'react-icons/bs'
 import { useFetchProductInCart, useFetchUser } from '@/hooks/tanstack-query/useQuery-hooks'
 import { useCreateOrder } from '@/hooks/tanstack-query/useMutation-hooks'
 import FlexLayout from '@/components/items/flex-layout'
-import { useUserCartStorage} from '@/context/zustand'
+import { useUserCartStorage } from '@/context/zustand'
 
 export default function MyCart() {
 
@@ -62,7 +62,7 @@ export default function MyCart() {
                 )
               }
             </FlexLayout>
-            <Btn disabled={isLoading} onClick={handleCreateOrder} className='bg-maincolor-100'>
+            <Btn disabled={isLoading} onClick={handleCreateOrder} >
               Create order
             </Btn>
           </>

@@ -1,33 +1,21 @@
 'use client'
 
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { useState } from 'react'
 import Btn from '../buttons/btn'
 import { AnimatePresence, motion } from 'framer-motion'
 import { sortMenuData } from '@/lib/data'
 import clsx from 'clsx'
+import { useFilterStore } from '@/context/zustand'
 
-type HomeSortProps = {
-  sort: {
-    sortBy: string,
-    orderBy: string
-  }
-  setSort: Dispatch<SetStateAction<{ sortBy: string, orderBy: string }>>
-}
-
-export default function HomeSort({
-  sort: sortProp,
-  setSort
-}: HomeSortProps) {
+export default function HomeSort() {
 
   const [openSort, setOpenSort] = useState(false)
 
-  const handleSort = (sort_by: string, order_by: string) => {
-    setSort({ sortBy: sort_by, orderBy: order_by })
-  }
+  const { sort: sortState, setSort } = useFilterStore()
 
   return (
     <div className="flex flex-col relative">
-      <Btn onClick={() => setOpenSort(prev => !prev)} className='bg-white border hover:!bg-maincolor-100'>
+      <Btn onClick={() => setOpenSort(prev => !prev)}>
         Sort
       </Btn>
       <AnimatePresence>
@@ -44,8 +32,8 @@ export default function HomeSort({
             {sortMenuData.map((sort) =>
               <li
                 key={sort.title}
-                className={clsx("py-1 transition-all rounded-l-lg hover:bg-maincolor-50 px-2", sort.type === sortProp.orderBy && sort.field === sortProp.sortBy && '!bg-white')}
-                onClick={() => handleSort(sort.field, sort.type)}
+                className={clsx("py-1 transition-all rounded-l-lg hover:bg-maincolor-50 px-2", sort.type === sortState.orderBy && sort.field === sortState.sortBy && '!bg-white')}
+                onClick={() => setSort(sort.field, sort.type)}
               >
                 {sort.title}
               </li>

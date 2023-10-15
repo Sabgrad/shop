@@ -8,11 +8,11 @@ export default function SearchHeaderForm() {
 
   return (
     <form className='w-full flex'>
-      <div className='items-center rounded-l-lg hidden lg:flex bg-maincolor-100 text-maincolor-950 px-1'>
+      <div className='items-center rounded-l-lg hidden lg:flex text-maincolor-950 px-1 border-black border-y border-l'>
         <AiOutlineSearch size={24} />
       </div>
-      <input placeholder='I search...' className='w-full rounded-l-lg lg:rounded-none text-maincolor-950 outline-none px-1' />
-      <Btn className=' bg-maincolor-100 rounded-l-none'>
+      <input placeholder='I search...' className='w-full rounded-l-lg lg:rounded-none text-maincolor-950 outline-none px-1 border-black border-y border-l' />
+      <Btn className='rounded-l-none'>
         Search
       </Btn>
     </form>

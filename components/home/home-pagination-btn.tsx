@@ -29,7 +29,7 @@ export default function HomePaginationBtn({
     <>
       {
         pagination !== maxPagination && pagination < maxPagination && length &&
-        <Btn className=" w-max flex p-1 bg-maincolor-100 hover:bg-maincolor-300 text-xl items-center gap-2" onClick={handleDownloadMore}>
+        <Btn className=" w-max flex p-1 text-xl items-center gap-2" onClick={handleDownloadMore}>
           {isLoadingPagination && <div className="h-5 w-5 border-t-2  border-black rounded-full animate-spin" />} Load more
         </Btn>
       }

@@ -18,7 +18,7 @@ export default function ProductCartHadnler({
   const { isMount } = useIsMount()
 
   return (
-    <Btn disabled={!isMount} className='bg-maincolor-100' onClick={handleCart} >
+    <Btn disabled={!isMount} onClick={handleCart} >
       {
         inCart ? 'Delete product from cart' : 'Added product to cart'
       }

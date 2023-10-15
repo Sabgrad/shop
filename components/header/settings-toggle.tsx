@@ -7,7 +7,7 @@ import { AiFillSetting } from 'react-icons/ai'
 export default function SettingsToggle() {
 
   return (
-    <Btn className='hidden md:flex text-maincolor-100'>
+    <Btn className='hidden md:flex'>
       <AiFillSetting size={28} />
     </Btn>
   )

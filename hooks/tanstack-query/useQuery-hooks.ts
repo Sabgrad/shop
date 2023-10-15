@@ -10,7 +10,6 @@ import {
   useFetchUserOrdersType,
   useFetchUserShopImagesType,
   useFetchUserShopProductsType,
-  useFetchUserType
 } from '@/types/useQuery-hooks-types'
 import { useSession } from 'next-auth/react'
 
@@ -169,7 +168,7 @@ export const useFetchUser = () => {
     queryFn: () => ShopService.getUser(email as string),
     enabled: !!email,
     select: ({ data }) => { return data },
-    onSuccess: () => {
+    onSettled: () => {
       client.invalidateQueries(['userProducts'])
     }
   })

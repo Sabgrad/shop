@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 import Btn from '../buttons/btn'
 import { CldUploadWidget } from 'next-cloudinary'
 import Image from 'next/image'
@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import { ImSpinner8 } from 'react-icons/im'
 import { useDeleteCloudinaryImages, useDeleteUserImages, useUpdateUserImages } from '@/hooks/tanstack-query/useMutation-hooks'
 import FlexLayout from '../items/flex-layout'
+import { useQueryClient } from '@tanstack/react-query'
 
 type ImageUploadProps = {
   id: string
@@ -18,13 +19,14 @@ export default function ImageUpload({
 }: ImageUploadProps) {
 
   const [select, setSelect] = useState<string[]>([])
-  const [isLoading, setIsLoading] = useState(false)
 
-  const { mutate: updateImages } = useUpdateUserImages({ id, images })
+  const client = useQueryClient()
 
-  const { mutate: deleteCloudinaryImages } = useDeleteCloudinaryImages()
+  const { mutate: updateImages, isLoading: isLoadingUpdateImages } = useUpdateUserImages({ id, images })
 
-  const { mutate: deleteImages } = useDeleteUserImages({ select, deleteCloudinaryImages })
+  const { mutate: deleteCloudinaryImages, isLoading: isLoadingCloudinaryImages } = useDeleteCloudinaryImages({ setSelect })
+
+  const { mutate: deleteImages, isLoading: isLoadingDBImages } = useDeleteUserImages({ select, deleteCloudinaryImages })
 
   const onUpload = (result: any) => {
     if (result) {
@@ -32,10 +34,26 @@ export default function ImageUpload({
     }
   }
 
+  useEffect(() => {
+    console.log(client.isFetching(['userImages']))
+  }, [client.isFetching()])
+
+  const isLoading = useMemo(() => {
+    return isLoadingCloudinaryImages || isLoadingDBImages || isLoadingUpdateImages
+  }, [isLoadingCloudinaryImages || isLoadingDBImages || isLoadingUpdateImages])
+
   const handleDeleteImages = () => {
-    const toDeleteImages = new Set(select)
-    const updateImages = images.filter((el) => !toDeleteImages.has(el))
-    deleteImages({ id, images: updateImages })
+    if (!isLoading) {
+      const toDeleteImages = new Set(select)
+      const updateImages = images.filter((el) => !toDeleteImages.has(el))
+      deleteImages({ id, images: updateImages })
+    }
+  }
+
+  const handleSelect = (el: string) => {
+    if (!isLoading) {
+      select.find((selectEl) => selectEl === el) ? setSelect(prev => prev.filter((selectEl) => selectEl !== el)) : setSelect(prev => [...prev, el])
+    }
   }
 
   return (
@@ -53,7 +71,7 @@ export default function ImageUpload({
                   images.length >= 256 ?
                     <span>You uplaod maximum images</span>
                     :
-                    <Btn className='bg-maincolor-100' onClick={click}>
+                    <Btn disabled={isLoading} className='bg-maincolor-100' onClick={click}>
                       Add image
                     </Btn>
                 }
@@ -62,7 +80,7 @@ export default function ImageUpload({
           }}
         </CldUploadWidget>
         <Btn
-          className='bg-maincolor-100 hover:!bg-maincolor-500 hover:text-white ml-auto'
+          className='ml-auto'
           onClick={handleDeleteImages}
           disabled={select.length === 0}
         >
@@ -74,7 +92,7 @@ export default function ImageUpload({
           {images.length ?
             images?.map((el) =>
               <div
-                onClick={() => select.find((selectEl) => selectEl === el) ? setSelect(prev => prev.filter((selectEl) => selectEl !== el)) : setSelect(prev => [...prev, el])}
+                onClick={() => handleSelect(el)}
                 key={el}
                 className={
                   clsx(`h-[15rem] w-[15rem] flex justify-center items-center border-2 border-maincolor-100/0 relative p-1 rounded-lg transition-all`,
@@ -88,12 +106,6 @@ export default function ImageUpload({
             'Image not found'
           }
         </FlexLayout>
-      }
-      {
-        isLoading &&
-        <div className='bg-maincolor-50/80 fixed w-screen h-screen z-[960] -ml-2 -mt-2 flex justify-center items-center'>
-          <ImSpinner8 size={64} className='animate-spin' />
-        </div>
       }
     </>
   )

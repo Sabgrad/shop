@@ -14,6 +14,7 @@ import {
   useUpdateUserImagesType
 } from '@/types/useMutation-hooks-types'
 import { useUserCartStorage } from '@/context/zustand'
+import { Dispatch } from 'react'
 
 export const useCreateIntent = ({
   setClientSecret
@@ -100,11 +101,13 @@ export const useHideProduct = () => {
   return useMutation({
     mutationFn: ({ id, hide }: { id: string, hide: boolean }) => ShopService.hideProduct({ id, hide }),
     onSuccess: () => {
-      client.invalidateQueries(['userProducts'])
       toast.success('success hide product')
     },
     onError: () => {
       toast.error('something went wrong')
+    },
+    onSettled: () => {
+      client.invalidateQueries(['userProducts'])
     }
   })
 }
@@ -116,19 +119,24 @@ export const useUpdateUserImages = ({
   const client = useQueryClient()
   return useMutation({
     mutationFn: (secure_url: string) => ShopService.updateUserImages(id, images, secure_url),
-    onSuccess: () => {
+    onSettled: () => {
       client.invalidateQueries(['userImages'])
     }
   })
 }
 
-export const useDeleteCloudinaryImages = () => {
+export const useDeleteCloudinaryImages = ({
+  setSelect
+}: { setSelect: React.Dispatch<React.SetStateAction<string[]>> }) => {
   const client = useQueryClient()
   return useMutation({
     mutationFn: (ids: string[]) => ShopService.deleteCloudinaryImages(ids),
     onSuccess: () => {
-      client.invalidateQueries(['userImages'])
       toast.success('images deleted from cloud')
+      setSelect([])
+    },
+    onSettled: () => {
+      client.invalidateQueries(['userImages'])
     }
   })
 }
@@ -166,8 +174,8 @@ export const useUpdateOrderPrice = () => {
 
   return useMutation({
     mutationFn: (promises: any[]) => Promise.all(promises),
-    onSettled: async () => {
-      await queryClient.invalidateQueries(['userOrders'])
+    onSettled: () => {
+      queryClient.invalidateQueries(['userOrders'])
     }
   })
 }

@@ -38,7 +38,7 @@ export default function ProductCard({
 
   return (
     <>
-      <div className='gap-2 flex flex-col p-2 border relative rounded-lg max-w-[250px] bg-white hover:border-maincolor-100 group' onClick={handleClick}>
+      <div className='gap-2 flex flex-col p-2 border relative rounded-lg max-w-[250px] bg-white hover:border-maincolor-950 group' onClick={handleClick}>
         <div className='relative justify-center items-center flex flex-1 min-h-[250px] hover:cursor-pointer' onClick={handleOpenProductPage}>
           {
             <Image className='rounded-lg' src={product.images.length ? product.images[0] : noimage} alt='product image' width={250} height={200} />

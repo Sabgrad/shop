@@ -44,14 +44,14 @@ export default function UserMenu() {
             }
             <AiOutlineArrowLeft
               onClick={() => setOpen(prev => !prev)}
-              className='absolute top-0 right-0 z-[500] bg-maincolor-100 hover:bg-maincolor-300 rounded-sm'
+              className='absolute top-0 right-0 z-[500] rounded-bl-lg border-l border-b border-maincolor-950'
               size={20}
             />
           </div>
           :
           <AiOutlineArrowRight
             onClick={() => setOpen(prev => !prev)}
-            className='absolute top-[72px] left-0 z-[500] bg-maincolor-100 hover:bg-maincolor-300 rounded-sm'
+            className='absolute top-[72px] left-0 z-[500] rounded-br-lg border-r border-b border-maincolor-950'
             size={20}
           />
       }

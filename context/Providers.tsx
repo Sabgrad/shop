@@ -12,6 +12,7 @@ export default function Providers({
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: false,
+        retry: 5,
       },
     },
   })

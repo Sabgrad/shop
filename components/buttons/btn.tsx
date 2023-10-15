@@ -1,6 +1,5 @@
 'use client'
 
-import { useIsMount } from "@/hooks/usIsMount"
 import clsx from "clsx"
 
 type HeaderBtnProps = {
@@ -16,7 +15,7 @@ export default function Btn({
   className,
   onClick,
   disabled,
-  type = 'button'
+  type = 'button',
 }: HeaderBtnProps) {
 
   return (
@@ -24,9 +23,11 @@ export default function Btn({
       type={type}
       disabled={disabled}
       className={clsx(
-        'p-1 gap-2 rounded-lg transition-all relative h-max flex items-center justify-center hover:bg-maincolor-300 hover:text-maincolor-950 whitespace-nowrap',
+        'p-1 gap-2 rounded-lg transition-all relative h-max flex items-center justify-center whitespace-nowrap border',
+        'text-maincolor-950 bg-white border-maincolor-950',
+        'hover:border-white hover:text-white hover:bg-maincolor-950',
         className && className,
-        disabled && 'blur-[2px] pointer-events-none'
+        disabled && 'blur-[2px] pointer-events-none',
       )}
     >
       {children}

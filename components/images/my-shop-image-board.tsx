@@ -14,11 +14,9 @@ export default function MyShopImageBoard({
 
   const [imageBoard, setImageBoard] = useState(false)
 
-  console.log(images)
-
   return (
     <>
-      <Btn className='bg-maincolor-100' onClick={() => setImageBoard(true)}>
+      <Btn onClick={() => setImageBoard(true)}>
         Open image board
       </Btn>
       {
@@ -26,7 +24,7 @@ export default function MyShopImageBoard({
         <div
           className='flex flex-col fixed top-0 left-0 w-screen h-screen z-[951] bg-white p-2 gap-2'
         >
-          <Btn className='bg-maincolor-100' onClick={() => setImageBoard(false)}>
+          <Btn onClick={() => setImageBoard(false)}>
             Close
           </Btn>
           {images && <ImageUpload id={id} images={images} />}

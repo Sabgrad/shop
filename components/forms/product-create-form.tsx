@@ -53,7 +53,7 @@ export default function ProductCreateForm() {
       <Btn
         type='submit'
         disabled={isLoading}
-        className='w-full p-1 bg-maincolor-100/50 hover:bg-maincolor-100 rounded-lg transition-all'
+        className='w-full p-1 rounded-lg transition-all'
       >
         Create Product
       </Btn>

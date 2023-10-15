@@ -17,16 +17,12 @@ export const useSwitchStore = create<SwitchStore>((set) => ({
 }))
 
 type StringStore = {
-  currentCategory: string
   currentSection: UserSectionType
-  setCurrentCategory: (value: string) => void
   setCurrentSection: (value: UserSectionType) => void
 }
 
 export const useStringStore = create<StringStore>((set) => ({
-  currentCategory: '',
   currentSection: 'Me',
-  setCurrentCategory: (value) => set(() => ({ currentCategory: value })),
   setCurrentSection: (value) => set(() => ({ currentSection: value }))
 }))
 
@@ -87,3 +83,21 @@ export const useWishListStorage = create(
     }
   )
 )
+
+type FilterStore = {
+  price: { min: number, max: number }
+  setPrice: (min: number, max: number) => void
+  sort: { sortBy: string, orderBy: string }
+  setSort: (sortBy: string, orderBy: string) => void
+  currentCategory: string
+  setCurrentCategory: (value: string) => void
+}
+
+export const useFilterStore = create<FilterStore>((set) => ({
+  price: { min: 0, max: 999999 },
+  setPrice: (min, max) => set(() => ({ price: { min, max } })),
+  sort: { sortBy: '', orderBy: '' },
+  setSort: (sortBy, orderBy) => set(() => ({ sort: { sortBy, orderBy } })),
+  currentCategory: '',
+  setCurrentCategory: (value) => set(() => ({ currentCategory: value })),
+}))

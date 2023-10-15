@@ -8,8 +8,6 @@ import toast from 'react-hot-toast'
 import Btn from '../buttons/btn'
 import { AiOutlineCloseCircle, AiOutlineUser, AiOutlineUserAdd } from 'react-icons/ai'
 import Modal from '../modals/modal'
-import { useMutation } from '@tanstack/react-query'
-import ShopService from '@/services/services'
 import { useRegisterUser } from '@/hooks/tanstack-query/useMutation-hooks'
 
 type AuthProps = {
@@ -66,7 +64,7 @@ export default function Auth({
 
   return (
     <>
-      <Btn className='hidden text-maincolor-100 sm:flex' onClick={() => {
+      <Btn className='hidden sm:flex' onClick={() => {
         session.status === 'authenticated' ? router.push('/user') : setActiveAuth(true)
       }}>
         {

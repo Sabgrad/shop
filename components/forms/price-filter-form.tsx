@@ -1,20 +1,15 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Input from '../input/input'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import Btn from '../buttons/btn'
 import toast from 'react-hot-toast'
+import { useFilterStore } from '@/context/zustand'
 
-type PriceFilterFormProps = {
-  price: { min: number, max: number }
-  setPrice: ({ min, max }: { min: number, max: number }) => void
-}
+export default function PriceFilterForm() {
 
-export default function PriceFilterForm({
-  price,
-  setPrice,
-}: PriceFilterFormProps) {
+  const { price, setPrice } = useFilterStore()
 
   const {
     handleSubmit,
@@ -54,7 +49,7 @@ export default function PriceFilterForm({
   const priceRange: SubmitHandler<FieldValues> = (data) => {
     const { minPrice, maxPrice } = data
     if (price.min !== minPrice || price.max !== maxPrice) {
-      setPrice({ min: data.minPrice, max: data.maxPrice })
+      setPrice(data.minPrice, data.maxPrice)
     }
   }
 
@@ -82,7 +77,7 @@ export default function PriceFilterForm({
         min={getValues().minPrice}
         max={999999}
       />
-      <Btn className="bg-white border hover:!bg-maincolor-100 w-full" type="submit" onClick={() => handleError()}>
+      <Btn className="w-full" type="submit" onClick={() => handleError()}>
         OK
       </Btn>
     </form>

@@ -11,7 +11,7 @@ export default function MenuToggle() {
 
   return (
     <>
-      <Btn className='text-maincolor-100' onClick={() => setActiveMenu()}>
+      <Btn onClick={() => setActiveMenu()}>
         <AiOutlineMenu size={28} />
       </Btn>
     </>

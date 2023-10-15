@@ -50,7 +50,7 @@ export const POST = async (request: Request) => {
         category,
         discount,
         actual_price,
-        hide: false,
+        hide: true,
         images: [],
         owner: {
           connect: {

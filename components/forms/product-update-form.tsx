@@ -61,7 +61,7 @@ export default function ProductUpdaterForm({
         imagePicker &&
         <div className='flex flex-col fixed top-0 left-0 w-screen h-screen z-[951] bg-white p-2 overflow-y-auto'>
           <div className='flex'>
-            <Btn className='ml-auto bg-maincolor-100' onClick={() => setImagePicker(false)}>
+            <Btn className='ml-auto' onClick={() => setImagePicker(false)}>
               Close
             </Btn>
           </div>
@@ -103,7 +103,7 @@ export default function ProductUpdaterForm({
         </div>
       }
       <ImageComponent images={product.images} />
-      <Btn className='bg-maincolor-100' onClick={() => setImagePicker(true)}>
+      <Btn onClick={() => setImagePicker(true)}>
         Add Images
       </Btn>
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2 w-full'>
@@ -122,7 +122,7 @@ export default function ProductUpdaterForm({
         <Btn
           disabled={client.isMutating() > 0}
           className={clsx('w-full p-1 bg-maincolor-100/50 hover:bg-maincolor-100 rounded-lg relative transition-all', client.isMutating() > 0 && 'disabled:pointer-events-none')}
-          onClick={() => hideProduct({ id: product.id, hide: product.hide ? false : true })}
+          onClick={() => hideProduct({ id: product.id, hide: !product.hide })}
         >
           {product.hide ? 'Show product' : 'Hide product'}
         </Btn>

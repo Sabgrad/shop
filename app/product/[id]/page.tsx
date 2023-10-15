@@ -33,7 +33,7 @@ export default async function Product({ params }: { params: { id: string } }) {
                 <span>
                   Customer: {product.ownerId}
                 </span>
-                <Btn className='bg-maincolor-100'>
+                <Btn>
                   <TfiEmail size={30} />
                 </Btn>
               </div>

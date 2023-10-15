@@ -58,7 +58,7 @@ export default function OrderCard({
             {
               order.paid ?
                 `Paid in the amount of ${order.price}` :
-                <Btn className='py-0 px-1 bg-maincolor-100/50 hover:!bg-maincolor-100' onClick={handlePaid}>
+                <Btn className='py-0 px-1' onClick={handlePaid}>
                   Pay for the order
                 </Btn>
             }
@@ -66,10 +66,10 @@ export default function OrderCard({
         </div>
       </div>
       <div className='flex w-full gap-2 flex-col sm:flex-row'>
-        <Btn onClick={() => setIsOpen(prev => !prev)} className='bg-maincolor-100'>
+        <Btn onClick={() => setIsOpen(prev => !prev)}>
           {isOpen ? 'Hide products' : 'Show products'}
         </Btn>
-        <Btn className='bg-maincolor-100'>
+        <Btn>
           Delete order
         </Btn>
       </div>

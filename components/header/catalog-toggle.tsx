@@ -10,7 +10,7 @@ export default function CatalogToggle() {
   const { setActiveCatalog } = useSwitchStore()
 
   return (
-    <Btn className='gap-2  hidden lg:flex text-maincolor-100' onClick={() => setActiveCatalog()}>
+    <Btn className='gap-2 hidden lg:flex' onClick={() => setActiveCatalog()}>
       <AiOutlineAppstore size={28} /> Catalog
     </Btn>
   )
