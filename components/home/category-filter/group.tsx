@@ -1,13 +1,13 @@
 import { useState } from "react"
 import { Group } from "@/types/types"
 import clsx from "clsx"
-import { useHomePageCurrentCategoryContext } from "@/context/home-current-category"
+import { useStringStore } from "@/context/zustand"
 
 export default function Group({ group }: { group: Group }) {
 
   const [open, set] = useState(false)
 
-  const { currentCategory, setCurrentCategory } = useHomePageCurrentCategoryContext()
+  const { currentCategory, setCurrentCategory } = useStringStore()
 
   return (
     <div className='flex flex-col'>

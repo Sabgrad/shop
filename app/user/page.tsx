@@ -1,7 +1,7 @@
 'use client'
 
 import UserMenu from '@/components/user/user-menu'
-import { useUserPageCurrentSectionContext} from '@/context/user-current-section'
+import { useStringStore } from '@/context/zustand'
 import { UserMenuData } from '@/lib/data'
 import { useSession } from 'next-auth/react'
 import React from 'react'
@@ -10,7 +10,7 @@ export default function User() {
 
   const session = useSession()
 
-  const { currentSection } = useUserPageCurrentSectionContext()
+  const { currentSection } = useStringStore()
 
   if (session.status !== 'authenticated') return null
 

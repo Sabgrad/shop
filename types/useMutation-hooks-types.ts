@@ -9,7 +9,7 @@ export type useCreateIntentType = {
 }
 
 export type useSuccessPaymentType = {
-  setCurrentSection: Dispatch<React.SetStateAction<UserSectionType>>
+  setCurrentSection: (value: UserSectionType) => void
   router: AppRouterInstance
 }
 
@@ -18,26 +18,12 @@ export type useRegisterUserType = {
 }
 
 export type useCreateProductType = {
-  triggerProductRequest: () => void
   reset: UseFormReset<FieldValues>
-}
-
-export type useUpdateProductType = {
-  triggerProductRequest: () => void
-}
-
-export type useUpdateDeleteType = {
-  triggerProductRequest: () => void
-}
-
-export type useHideProductType = {
-  triggerProductRequest: () => void
 }
 
 export type useUpdateUserImagesType = {
   id: string
   images: string[]
-  setTriggerImages: Dispatch<React.SetStateAction<number>>
 }
 
 export type useDeleteUserImagesType = {
@@ -46,6 +32,5 @@ export type useDeleteUserImagesType = {
 }
 
 export type useCreateOrderType = {
-  setUserCart: React.Dispatch<React.SetStateAction<{ productId: string; }[]>>
   setCart: React.Dispatch<React.SetStateAction<userCartType[]>>
 }

@@ -1,23 +1,23 @@
 import Btn from '@/components/buttons/btn'
 import ProductCard from '@/components/cards/product-card'
-import { useCartContext } from '@/context/cart-context'
-import { useUserContext } from '@/context/user-context'
 import { userCartType } from '@/types/types'
 import React, { useState } from 'react'
 import { BiMinus } from 'react-icons/bi'
 import { BsPlus } from 'react-icons/bs'
-import { useFetchProductInCart } from '@/hooks/tanstack-query/useQuery-hooks'
+import { useFetchProductInCart, useFetchUser } from '@/hooks/tanstack-query/useQuery-hooks'
 import { useCreateOrder } from '@/hooks/tanstack-query/useMutation-hooks'
+import FlexLayout from '@/components/items/flex-layout'
+import { useUserCartStorage} from '@/context/zustand'
 
 export default function MyCart() {
 
-  const { userCart, setUserCart } = useCartContext()
-  const { user } = useUserContext()
+  const { userCart } = useUserCartStorage()
+  const { data: user } = useFetchUser()
   const [cart, setCart] = useState<userCartType[]>([])
 
   const { isFetching } = useFetchProductInCart({ userCart, setCart })
 
-  const { mutate: createOrder, isLoading } = useCreateOrder({ setUserCart, setCart })
+  const { mutate: createOrder, isLoading } = useCreateOrder({ setCart })
 
   const handleCreateOrder = () => {
     if (user) {
@@ -36,7 +36,7 @@ export default function MyCart() {
       {
         cart.length > 0 ?
           <>
-            <div className='flex flex-row flex-wrap gap-2 justify-evenly'>
+            <FlexLayout>
               {
                 cart.map((product, index) =>
                   <div className='flex flex-col gap-2' key={product.id}>
@@ -61,7 +61,7 @@ export default function MyCart() {
                   </div>
                 )
               }
-            </div>
+            </FlexLayout>
             <Btn disabled={isLoading} onClick={handleCreateOrder} className='bg-maincolor-100'>
               Create order
             </Btn>

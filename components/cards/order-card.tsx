@@ -1,10 +1,9 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { useState } from 'react'
 import Btn from '../buttons/btn'
-import ResponsiveGridLayout from '../items/responsive-grid-layout'
 import ProductCard from './product-card'
 import { useRouter } from 'next/navigation'
-import axios from 'axios'
 import { Orders } from '@/types/types'
+import FlexLayout from '../items/flex-layout'
 
 type OrderCardProps = {
   order: Orders
@@ -74,7 +73,7 @@ export default function OrderCard({
           Delete order
         </Btn>
       </div>
-      <ResponsiveGridLayout>
+      <FlexLayout>
         {
           isOpen &&
           order.products.map((orderItem) =>
@@ -82,7 +81,7 @@ export default function OrderCard({
             <ProductCard amount={order.options[orderItem.id]} type='order' product={orderItem} key={orderItem.id} />
           )
         }
-      </ResponsiveGridLayout>
+      </FlexLayout>
     </div>
   )
 }

@@ -4,12 +4,18 @@ import React, { Dispatch, SetStateAction, useState } from 'react'
 import Btn from '../buttons/btn'
 import { AnimatePresence, motion } from 'framer-motion'
 import { sortMenuData } from '@/lib/data'
+import clsx from 'clsx'
 
 type HomeSortProps = {
+  sort: {
+    sortBy: string,
+    orderBy: string
+  }
   setSort: Dispatch<SetStateAction<{ sortBy: string, orderBy: string }>>
 }
 
 export default function HomeSort({
+  sort: sortProp,
   setSort
 }: HomeSortProps) {
 
@@ -36,7 +42,11 @@ export default function HomeSort({
             transition={{ duration: 0.3 }}
           >
             {sortMenuData.map((sort) =>
-              <li className="py-1 transition-all rounded-l-lg hover:bg-maincolor-50 px-2" onClick={() => handleSort(sort.field, sort.type)}>
+              <li
+                key={sort.title}
+                className={clsx("py-1 transition-all rounded-l-lg hover:bg-maincolor-50 px-2", sort.type === sortProp.orderBy && sort.field === sortProp.sortBy && '!bg-white')}
+                onClick={() => handleSort(sort.field, sort.type)}
+              >
                 {sort.title}
               </li>
             )}

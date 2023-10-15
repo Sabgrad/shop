@@ -1,5 +1,5 @@
 import ShopService from '@/services/services'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   useFetchHomeByFilterType,
   useFetchHomeByPaginationType,
@@ -12,6 +12,7 @@ import {
   useFetchUserShopProductsType,
   useFetchUserType
 } from '@/types/useQuery-hooks-types'
+import { useSession } from 'next-auth/react'
 
 export const useFetchMaxHomePagination = ({
   currentCategory,
@@ -102,9 +103,12 @@ export const useFetchProductInCart = ({
 }
 
 export const useFetchUserOrders = ({
-  email,
   updateOrderPrice
 }: useFetchUserOrdersType) => {
+
+  const session = useSession()
+  let email = session.data?.user?.email
+
   return useQuery({
     queryKey: ['userOrders', email],
     queryFn: () => ShopService.getUserOrders(email as string),
@@ -134,10 +138,9 @@ export const useFetchUserOrders = ({
 
 export const useFetchUserShopProducts = ({
   user,
-  triggerProduct
 }: useFetchUserShopProductsType) => {
   return useQuery({
-    queryKey: ['userProducts', user, triggerProduct],
+    queryKey: ['userProducts', user],
     queryFn: () => ShopService.getUserProducts(user?.id as string),
     enabled: !!user && !!user.id,
     select: ({ data }) => { return data },
@@ -146,27 +149,28 @@ export const useFetchUserShopProducts = ({
 
 export const useFetchUserShopImages = ({
   user,
-  triggerImages
 }: useFetchUserShopImagesType) => {
   return useQuery({
-    queryKey: ['userImages', user, triggerImages],
+    queryKey: ['userImages', user],
     queryFn: () => ShopService.getUserImages(user?.id as string),
     enabled: !!user && !!user.id,
     select: ({ data }) => { return data.images },
   })
 }
 
-export const useFetchUser = ({
-  email,
-  setTriggerProduct
-}: useFetchUserType) => {
+export const useFetchUser = () => {
+
+  const client = useQueryClient()
+  const session = useSession()
+  let email = session.data?.user?.email
+
   return useQuery({
     queryKey: ['user-context', email],
     queryFn: () => ShopService.getUser(email as string),
     enabled: !!email,
     select: ({ data }) => { return data },
     onSuccess: () => {
-      setTriggerProduct(v => v + 1)
+      client.invalidateQueries(['userProducts'])
     }
   })
 }

@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import clsx from 'clsx'
 import Header from '@/components/header/header'
-import Footer from '@/components/footer'
 import { Toaster } from 'react-hot-toast'
 import Menu from '@/components/menu/menu'
 import Catalog from '@/components/catalog'
@@ -13,7 +12,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Shop',
-  description: 'Shop on Next.js, Mongodb, Tailwind and Vercel deploy',
+  description: 'Shop on Next.js, TanStack, Prisma, MongoDB, Tailwind and Vercel deploy',
 }
 
 export default function RootLayout({

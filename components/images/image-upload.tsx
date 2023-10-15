@@ -4,28 +4,23 @@ import { CldUploadWidget } from 'next-cloudinary'
 import Image from 'next/image'
 import clsx from 'clsx'
 import { ImSpinner8 } from 'react-icons/im'
-import ShopService from '@/services/services'
-import { useMutation } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
-import { extractPublicId } from 'cloudinary-build-url'
 import { useDeleteCloudinaryImages, useDeleteUserImages, useUpdateUserImages } from '@/hooks/tanstack-query/useMutation-hooks'
+import FlexLayout from '../items/flex-layout'
 
 type ImageUploadProps = {
   id: string
   images: string[]
-  setTriggerImages: Dispatch<SetStateAction<number>>
 }
 
 export default function ImageUpload({
   id,
   images,
-  setTriggerImages
 }: ImageUploadProps) {
 
   const [select, setSelect] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
-  const { mutate: updateImages } = useUpdateUserImages({ id, images, setTriggerImages })
+  const { mutate: updateImages } = useUpdateUserImages({ id, images })
 
   const { mutate: deleteCloudinaryImages } = useDeleteCloudinaryImages()
 
@@ -75,7 +70,7 @@ export default function ImageUpload({
         </Btn>
       </div>
       {
-        <div className='flex gap-4 justify-evenly flex-wrap pb-4 overflow-y-auto'>
+        <FlexLayout>
           {images.length ?
             images?.map((el) =>
               <div
@@ -92,7 +87,7 @@ export default function ImageUpload({
             :
             'Image not found'
           }
-        </div>
+        </FlexLayout>
       }
       {
         isLoading &&

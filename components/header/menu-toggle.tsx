@@ -3,15 +3,15 @@
 import React from 'react'
 import Btn from '../buttons/btn'
 import { AiOutlineMenu } from 'react-icons/ai'
-import { useMenuContext } from '@/context/menu-context'
+import { useSwitchStore } from '@/context/zustand'
 
 export default function MenuToggle() {
 
-  const { setActiveMenu } = useMenuContext()
+  const { setActiveMenu } = useSwitchStore()
 
   return (
     <>
-      <Btn className='text-maincolor-100' onClick={() => setActiveMenu(true)}>
+      <Btn className='text-maincolor-100' onClick={() => setActiveMenu()}>
         <AiOutlineMenu size={28} />
       </Btn>
     </>

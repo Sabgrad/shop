@@ -15,7 +15,7 @@ const config: Config = {
       },
       colors: {
         maincolor: {
-          50: '#edf2f4',
+          50: '#cacdcf',
           100: '#ffba08',
           200: '#faa307',
           300: '#f48c06',
@@ -35,3 +35,5 @@ const config: Config = {
   ],
 }
 export default config
+
+// #edf2f4

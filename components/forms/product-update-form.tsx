@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useUserContext } from '@/context/user-context'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import ImageComponent from '../images/image-component'
 import TextArea from '../input/textarea'
@@ -14,6 +13,7 @@ import Image from 'next/image'
 import { useQueryClient } from '@tanstack/react-query'
 import { UpdateProductDataType } from '@/types/types'
 import { useDeleteProduct, useHideProduct, useUpdateProduct } from '@/hooks/tanstack-query/useMutation-hooks'
+import FlexLayout from '../items/flex-layout'
 
 type ProductUpdaterFormProps = {
   product: Product
@@ -27,16 +27,14 @@ export default function ProductUpdaterForm({
 
   const client = useQueryClient()
 
-  const { triggerProductRequest } = useUserContext()
-
   const [imagePicker, setImagePicker] = useState(false)
   const [select, setSelect] = useState<string[]>(product.images)
 
-  const { mutate: updateProduct, isLoading: updatingProduct } = useUpdateProduct({ triggerProductRequest })
+  const { mutate: updateProduct, isLoading: updatingProduct } = useUpdateProduct()
 
-  const { mutate: deleteProduct, isLoading: deletingProduct } = useDeleteProduct({ triggerProductRequest })
+  const { mutate: deleteProduct, isLoading: deletingProduct } = useDeleteProduct()
 
-  const { mutate: hideProduct, isLoading: hidingProduct } = useHideProduct({ triggerProductRequest })
+  const { mutate: hideProduct, isLoading: hidingProduct } = useHideProduct()
 
   const {
     register,
@@ -69,7 +67,7 @@ export default function ProductUpdaterForm({
           </div>
           {
             select.length > 0 &&
-            <div className='flex gap-4 justify-evenly flex-wrap py-4 border-b-2 border-maincolor-950'>
+            <FlexLayout>
               {
                 select?.map((el) =>
                   <div
@@ -81,9 +79,9 @@ export default function ProductUpdaterForm({
                   </div>
                 )
               }
-            </div>
+            </FlexLayout>
           }
-          <div className='flex gap-4 justify-evenly flex-wrap py-4'>
+          <FlexLayout>
             {imagesData.length ?
               imagesData?.map((el) =>
                 <div
@@ -101,7 +99,7 @@ export default function ProductUpdaterForm({
               :
               'empty'
             }
-          </div>
+          </FlexLayout>
         </div>
       }
       <ImageComponent images={product.images} />

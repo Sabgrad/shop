@@ -16,8 +16,6 @@ export default function PriceFilterForm({
   setPrice,
 }: PriceFilterFormProps) {
 
-  const [triggerToast, setTriggerToast] = useState(0)
-
   const {
     handleSubmit,
     register,
@@ -34,7 +32,7 @@ export default function PriceFilterForm({
     mode: 'all'
   })
 
-  useEffect(() => {
+  const handleError = () => {
     const min = getValues().minPrice
     const max = getValues().maxPrice
 
@@ -51,8 +49,7 @@ export default function PriceFilterForm({
       toast.error('Price cant be higher than 999,999')
       setValue('maxPrice', 999999)
     }
-
-  }, [triggerToast])
+  }
 
   const priceRange: SubmitHandler<FieldValues> = (data) => {
     const { minPrice, maxPrice } = data
@@ -85,7 +82,7 @@ export default function PriceFilterForm({
         min={getValues().minPrice}
         max={999999}
       />
-      <Btn className="bg-white border hover:!bg-maincolor-100 w-full" type="submit" onClick={() => setTriggerToast(prev => prev + 1)}>
+      <Btn className="bg-white border hover:!bg-maincolor-100 w-full" type="submit" onClick={() => handleError()}>
         OK
       </Btn>
     </form>

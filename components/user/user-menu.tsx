@@ -5,11 +5,11 @@ import React, { useEffect, useState } from 'react'
 import Btn from '../buttons/btn'
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai'
 import clsx from 'clsx'
-import { useUserPageCurrentSectionContext } from '@/context/user-current-section'
+import { useStringStore } from '@/context/zustand'
 
 export default function UserMenu() {
 
-  const { currentSection, setCurrentSection } = useUserPageCurrentSectionContext()
+  const { currentSection, setCurrentSection } = useStringStore()
   const [open, setOpen] = useState(true)
   const [sm, setSm] = useState(false)
 
@@ -30,7 +30,6 @@ export default function UserMenu() {
     <>
       {
         open ?
-
           <div className='sm:w-max h-full py-6 px-2 flex flex-col w-full  z-[500] gap-2 sm:border-r border-r-black/30 fixed sm:sticky left-0 top-[72px] bg-maincolor-50'>
             {
               UserMenuData.map((el) =>

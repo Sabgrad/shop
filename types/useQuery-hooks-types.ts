@@ -55,21 +55,17 @@ export type useFetchProductInCartType = {
 }
 
 export type useFetchUserOrdersType = {
-  email: string | undefined
   updateOrderPrice: UseMutateFunction<any[], unknown, any[], unknown>
 }
 
 export type useFetchUserShopProductsType = {
   user: User | undefined
-  triggerProduct: number
 }
 
 export type useFetchUserShopImagesType = {
   user: User | undefined
-  triggerImages: number
 }
 
 export type useFetchUserType = {
   email: string | undefined | null
-  setTriggerProduct: React.Dispatch<React.SetStateAction<number>>
 }

@@ -1,6 +1,5 @@
 'use client'
 
-import { useUserContext } from '@/context/user-context'
 import React from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import TextArea from '../input/textarea'
@@ -10,10 +9,11 @@ import SelectCategory from '../input/select-category'
 import toast from 'react-hot-toast'
 import { CreateProductType } from '@/types/types'
 import { useCreateProduct } from '@/hooks/tanstack-query/useMutation-hooks'
+import { useFetchUser } from '@/hooks/tanstack-query/useQuery-hooks'
 
 export default function ProductCreateForm() {
 
-  const { user, triggerProductRequest } = useUserContext()
+  const { data: user } = useFetchUser()
 
   const {
     handleSubmit,
@@ -32,7 +32,7 @@ export default function ProductCreateForm() {
     }
   })
 
-  const { mutate: createProduct, isLoading } = useCreateProduct({triggerProductRequest, reset})
+  const { mutate: createProduct, isLoading } = useCreateProduct({ reset })
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     if (!user) return toast.error('No user')

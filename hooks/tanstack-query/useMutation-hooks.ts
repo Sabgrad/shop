@@ -9,13 +9,11 @@ import {
   useCreateOrderType,
   useCreateProductType,
   useDeleteUserImagesType,
-  useHideProductType,
   useRegisterUserType,
   useSuccessPaymentType,
-  useUpdateDeleteType,
-  useUpdateProductType,
   useUpdateUserImagesType
 } from '@/types/useMutation-hooks-types'
+import { useUserCartStorage } from '@/context/zustand'
 
 export const useCreateIntent = ({
   setClientSecret
@@ -56,26 +54,25 @@ export const useRegisterUser = ({
 }
 
 export const useCreateProduct = ({
-  triggerProductRequest,
   reset
 }: useCreateProductType) => {
+  const client = useQueryClient()
   return useMutation({
     mutationFn: (data: CreateProductType) => ShopService.createProduct(data),
     onSuccess: () => {
-      triggerProductRequest()
+      client.invalidateQueries(['userProducts'])
       reset()
       toast.success('Product create')
     }
   })
 }
 
-export const useUpdateProduct = ({
-  triggerProductRequest,
-}: useUpdateProductType) => {
+export const useUpdateProduct = () => {
+  const client = useQueryClient()
   return useMutation({
     mutationFn: ({ id, data }: { id: string, data: UpdateProductDataType }) => ShopService.updateProduct({ id, data }),
     onSuccess: () => {
-      triggerProductRequest()
+      client.invalidateQueries(['userProducts'])
       toast.success('success updater')
     },
     onError: () => {
@@ -84,13 +81,12 @@ export const useUpdateProduct = ({
   })
 }
 
-export const useDeleteProduct = ({
-  triggerProductRequest,
-}: useUpdateDeleteType) => {
+export const useDeleteProduct = () => {
+  const client = useQueryClient()
   return useMutation({
     mutationFn: (id: string) => ShopService.deleteProduct(id),
     onSuccess: () => {
-      triggerProductRequest()
+      client.invalidateQueries(['userProducts'])
       toast.success('success delete')
     },
     onError: () => {
@@ -99,13 +95,12 @@ export const useDeleteProduct = ({
   })
 }
 
-export const useHideProduct = ({
-  triggerProductRequest,
-}: useHideProductType) => {
+export const useHideProduct = () => {
+  const client = useQueryClient()
   return useMutation({
     mutationFn: ({ id, hide }: { id: string, hide: boolean }) => ShopService.hideProduct({ id, hide }),
     onSuccess: () => {
-      triggerProductRequest()
+      client.invalidateQueries(['userProducts'])
       toast.success('success hide product')
     },
     onError: () => {
@@ -117,20 +112,22 @@ export const useHideProduct = ({
 export const useUpdateUserImages = ({
   id,
   images,
-  setTriggerImages
 }: useUpdateUserImagesType) => {
+  const client = useQueryClient()
   return useMutation({
     mutationFn: (secure_url: string) => ShopService.updateUserImages(id, images, secure_url),
     onSuccess: () => {
-      setTriggerImages(q => q + 1)
+      client.invalidateQueries(['userImages'])
     }
   })
 }
 
 export const useDeleteCloudinaryImages = () => {
+  const client = useQueryClient()
   return useMutation({
     mutationFn: (ids: string[]) => ShopService.deleteCloudinaryImages(ids),
     onSuccess: () => {
+      client.invalidateQueries(['userImages'])
       toast.success('images deleted from cloud')
     }
   })
@@ -150,13 +147,15 @@ export const useDeleteUserImages = ({
 }
 
 export const useCreateOrder = ({
-  setUserCart,
   setCart
 }: useCreateOrderType) => {
+
+  const { clearCart } = useUserCartStorage()
+
   return useMutation({
     mutationFn: ({ email, price, products, options }: CreateOrderType) => ShopService.createOrder({ email, price, products, options }),
     onSuccess: () => {
-      setUserCart([])
+      clearCart()
       setCart([])
     },
   })

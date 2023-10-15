@@ -17,7 +17,7 @@ class ShopService {
   }
 
   async getProductById(id: string) {
-    return await axios.get<Product>(`/api/product/${id}`)
+    return await axios.get<Product>(`http://localhost:3000/api/product/${id}`)
   }
 
   async getProductsByIds(ids: string) {

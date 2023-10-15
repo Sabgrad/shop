@@ -1,18 +1,18 @@
-import { useCartContext } from '@/context/cart-context'
+import { useUserCartStorage } from '@/context/zustand'
 import { useEffect, useState } from 'react'
 
 export default function useInCart(id: string | undefined): { inCart: boolean, handleCart: () => void } {
 
   const [inCart, setInCart] = useState(false)
 
-  const { userCart, setUserCart } = useCartContext()
+  const { userCart, addItem, deleteItem } = useUserCartStorage()
 
   const handleCart = () => {
     if (id) {
       if (inCart) {
-        setUserCart(prev => prev.filter((el) => el.productId !== id))
+        deleteItem(id)
       } else {
-        setUserCart(prev => [...prev, { productId: id }])
+        addItem(id)
       }
     }
   }

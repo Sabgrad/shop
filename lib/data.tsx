@@ -12,6 +12,10 @@ import { BsShop } from 'react-icons/bs'
 const menuSize = { size: 25 }
 const userMenuSize = { size: 30 }
 
+export const iS = {
+  homePriceState: { min: 0, max: 999999 },
+  homeSortState: { sortBy: '', orderBy: '' },
+}
 
 export const MenuData = [
   {

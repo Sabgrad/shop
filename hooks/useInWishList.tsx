@@ -1,31 +1,31 @@
-import { useWishListContext } from '@/context/wish-list-context'
+import { useWishListStorage } from '@/context/zustand'
 import { useEffect, useState } from 'react'
 
 export default function useInWishList(id: string | undefined): { inWishList: boolean, handleWishList: () => void } {
 
   const [inWishList, setInWishList] = useState(false)
 
-  const { userWishList, setUserWishList } = useWishListContext()
+  const { wishList, addItem, deleteItem } = useWishListStorage()
 
   const handleWishList = () => {
     if (id) {
       if (inWishList) {
-        setUserWishList(prev => prev.filter((el) => el.productId !== id))
+        deleteItem(id)
       } else {
-        setUserWishList(prev => [...prev, { productId: id }])
+        addItem(id)
       }
     }
   }
 
   useEffect(() => {
     if (id) {
-      if (userWishList.find((el) => el.productId === id)) {
+      if (wishList.find((el) => el.productId === id)) {
         setInWishList(true)
       } else {
         setInWishList(false)
       }
     }
-  }, [id, userWishList])
+  }, [id, wishList])
 
   return { inWishList, handleWishList }
 }

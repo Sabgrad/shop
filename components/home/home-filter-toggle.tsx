@@ -13,7 +13,7 @@ export default function HomeFilterToggle({
 }: HomeFilterToggleProps) {
   return (
     <Btn onClick={() => setFilter(prev => !prev)} className="border bg-white hover:!bg-maincolor-100">
-      <BsFilterLeft size={28} /> Filters
+      <BsFilterLeft size={24} /> Filters
     </Btn>
   )
 }

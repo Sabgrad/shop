@@ -1,5 +1,6 @@
 'use client'
 
+import { useIsMount } from "@/hooks/usIsMount"
 import clsx from "clsx"
 
 type HeaderBtnProps = {
@@ -22,7 +23,11 @@ export default function Btn({
     <button onClick={onClick}
       type={type}
       disabled={disabled}
-      className={clsx('p-1 gap-2 rounded-lg transition-all h-max flex items-center justify-center hover:bg-maincolor-300 hover:text-maincolor-950 whitespace-nowrap', className && className)}
+      className={clsx(
+        'p-1 gap-2 rounded-lg transition-all relative h-max flex items-center justify-center hover:bg-maincolor-300 hover:text-maincolor-950 whitespace-nowrap',
+        className && className,
+        disabled && 'blur-[2px] pointer-events-none'
+      )}
     >
       {children}
     </button>

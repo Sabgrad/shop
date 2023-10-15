@@ -3,11 +3,7 @@
 @tailwind utilities;
 
 @layer utilities {
-  @variants responsive {
-    .responsive-grid {
-      grid-template-columns: repeat(auto-fit, minmax(200px, max-content));
-    }
-  }
+  
 }
 
 /* width */
