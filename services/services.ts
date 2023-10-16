@@ -7,7 +7,7 @@ import { extractPublicId } from "cloudinary-build-url"
 class ShopService {
 
   async getHomePageCount(category: string, min: number, max: number,) {
-    return await axios.get<number>('api/count', {
+    return await axios.get<number>('/api/count', {
       params: {
         category,
         min,
@@ -17,11 +17,11 @@ class ShopService {
   }
 
   async getProductById(id: string) {
-    return await axios.get<ProductPageType>(`http://localhost:3000/api/product/${id}`)
+    return await axios.get<ProductPageType>(`/api/product/${id}`)
   }
 
   async getProductsByIds(ids: string) {
-    return await axios.get<Omit<Product, 'orderIds'>[]>('api/product/ids', {
+    return await axios.get<Omit<Product, 'orderIds'>[]>('/api/product/ids', {
       params: {
         ids: ids
       }
@@ -29,7 +29,7 @@ class ShopService {
   }
 
   async getProductsByPagination(page: number, category: string, min: number, max: number, sortBy: string, orderBy: string) {
-    return await axios.get<Product[]>('api/product', {
+    return await axios.get<Product[]>('/api/product', {
       params: {
         page,
         category,
@@ -62,7 +62,7 @@ class ShopService {
   }
 
   async getUserOrders(email: string) {
-    return await axios.get<Orders[]>('api/user/order', {
+    return await axios.get<Orders[]>('/api/user/order', {
       params: {
         user_email: email
       }
@@ -70,13 +70,13 @@ class ShopService {
   }
 
   async updateUserOrder(id: string, price: number) {
-    return await axios.patch(`api/order/${id}`, {
+    return await axios.patch(`/api/order/${id}`, {
       price: price
     })
   }
 
   async updateUserImages(id: string, images: string[], secure_url: string) {
-    return await axios.patch(`api/user/images/${id}`, {
+    return await axios.patch(`/api/user/images/${id}`, {
       images: [...images, secure_url]
     })
   }
