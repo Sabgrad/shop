@@ -19,7 +19,7 @@ class ShopService {
   }
 
   async getProductById(id: string) {
-    return await axios.get<ProductPageType>(URL + `/api/product/${id}`)
+    return await axios.get<ProductPageType>(`https://nextjs-tailwind-shop.vercel.app//api/product/${id}`)
   }
 
   async getProductsByIds(ids: string) {
