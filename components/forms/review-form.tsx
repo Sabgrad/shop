@@ -41,8 +41,8 @@ export default function ReviewForm({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='bg-maincolor-200'>
-      <TextArea placeholder='Review' id='text' required register={register} minLength={30} maxLength={600} className='w-full max-w-[40rem] min-h-[10rem]'/>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <TextArea placeholder='Review' id='text' required register={register} minLength={30} maxLength={600} className='w-full max-w-[40rem] min-h-[10rem]' />
       <Btn type='submit'>
         OK
       </Btn>

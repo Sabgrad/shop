@@ -4,9 +4,11 @@ import axios from "axios"
 import { generateSHA1, generateSignature } from "@/lib/cloudinary-helpers"
 import { extractPublicId } from "cloudinary-build-url"
 
-const URL = process.env.NEXT_PUBLIC_DEV_URL || process.env.NEXT_PUBLIC_URL
+
 
 class ShopService {
+
+  URL = process.env.NEXT_PUBLIC_DEV_URL || process.env.NEXT_PUBLIC_URL
 
   async getHomePageCount(category: string, min: number, max: number,) {
     return await axios.get<number>('/api/count', {
@@ -19,7 +21,7 @@ class ShopService {
   }
 
   async getProductById(id: string) {
-    return await axios.get<ProductPageType>(`https://nextjs-tailwind-shop.vercel.app//api/product/${id}`)
+    return await axios.get<ProductPageType>(`${this.URL}/api/product/${id}`)
   }
 
   async getProductsByIds(ids: string) {
