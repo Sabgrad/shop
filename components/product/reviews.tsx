@@ -14,7 +14,7 @@ export default function Reviews({
       {
         reviews.length ?
           reviews.map((review) =>
-            <ReviewCard review={review} />
+            <ReviewCard key={review.id} review={review} />
           )
           :
           <>Reviews didnt found</>
