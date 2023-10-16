@@ -1,5 +1,5 @@
 import { UserMenuData } from "@/lib/data";
-import { Order, Product } from "@prisma/client";
+import { Order, Product, Review, User } from "@prisma/client";
 
 export type Orders = Order & { products: Product[] }
 
@@ -52,4 +52,14 @@ export type Group = {
 export type Main = {
   title: string
   groups: Group[]
+}
+
+export type ReviewProductPage = Omit<Review, 'productId' | 'userId'> & {
+  user: UserInReview
+}
+
+export type UserInReview = Pick<User, 'name' | 'id'>
+
+export type ProductPageType = Omit<Product, 'orderIds'> & {
+  reviews: ReviewProductPage[]
 }

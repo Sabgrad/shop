@@ -5,11 +5,12 @@ import { TfiEmail } from 'react-icons/tfi'
 import ProductPrice from '@/components/product/product-price'
 import ProductCartHadnler from '@/components/product/product-cart-handler'
 import ShopService from '@/services/services'
+import UserReview from '@/components/product/user-review'
+import Reviews from '@/components/product/reviews'
 
 export default async function Product({ params }: { params: { id: string } }) {
 
   const { data: product } = await ShopService.getProductById(params.id)
-
 
   return (
     <div className='w-full h-full flex jusitfy-center items-center'>
@@ -28,8 +29,8 @@ export default async function Product({ params }: { params: { id: string } }) {
                 Code: {product.id}
               </span>
             </div>
-            <div className='flex flex-col w-full border border-maincolor-100 rounded-lg'>
-              <div className='flex flex-row items-center justify-between px-2 py-4 border-b border-b-maincolor-100'>
+            <div className='flex flex-col w-full border border-maincolor-950 rounded-lg'>
+              <div className='flex flex-row items-center justify-between px-2 py-4 border-b border-b-maincolor-950'>
                 <span>
                   Customer: {product.ownerId}
                 </span>
@@ -47,6 +48,9 @@ export default async function Product({ params }: { params: { id: string } }) {
         <span className='w-full'>
           {product.description}
         </span>
+        Reviews:
+        <Reviews reviews={product.reviews} />
+        <UserReview id={params.id} reviews={product.reviews} />
       </div>
     </div>
   )

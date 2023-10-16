@@ -1,4 +1,4 @@
-import { CreateOrderType, CreateProductType, OrderTypePayment, Orders, ProductsByIdsType, UpdateProductDataType } from "@/types/types"
+import { CreateOrderType, CreateProductType, OrderTypePayment, Orders, ProductPageType, ProductsByIdsType, UpdateProductDataType } from "@/types/types"
 import { Product, User } from "@prisma/client"
 import axios from "axios"
 import { generateSHA1, generateSignature } from "@/lib/cloudinary-helpers"
@@ -17,7 +17,7 @@ class ShopService {
   }
 
   async getProductById(id: string) {
-    return await axios.get<Product>(`http://localhost:3000/api/product/${id}`)
+    return await axios.get<ProductPageType>(`http://localhost:3000/api/product/${id}`)
   }
 
   async getProductsByIds(ids: string) {
@@ -158,6 +158,9 @@ class ShopService {
     return await axios.post(`/api/create-intent/${order_id}`)
   }
 
+  async createReview(data: any) {
+    return await axios.post('/api/review', data)
+  }
 }
 
 export default new ShopService()

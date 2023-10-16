@@ -14,7 +14,6 @@ import {
   useUpdateUserImagesType
 } from '@/types/useMutation-hooks-types'
 import { useUserCartStorage } from '@/context/zustand'
-import { Dispatch } from 'react'
 
 export const useCreateIntent = ({
   setClientSecret
@@ -176,6 +175,22 @@ export const useUpdateOrderPrice = () => {
     mutationFn: (promises: any[]) => Promise.all(promises),
     onSettled: () => {
       queryClient.invalidateQueries(['userOrders'])
+    }
+  })
+}
+
+type ReviewCreateData = {
+  text: string
+  rating: number
+  productId: string
+  userId: string
+}
+
+export const useCreateReview = (refresh: any) => {
+  return useMutation({
+    mutationFn: (data: ReviewCreateData) => ShopService.createReview(data),
+    onSettled: () => {
+      refresh()
     }
   })
 }

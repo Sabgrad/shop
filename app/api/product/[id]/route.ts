@@ -14,13 +14,42 @@ export const GET = async (request: Request, { params }: { params: Params }) => {
   }
 
   try {
-    const updateProduct = await prisma.product.findUnique({
+    const getProduct = await prisma.product.findUnique({
       where: {
         id
       },
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        name: true,
+        description: true,
+        price: true,
+        discount: true,
+        actual_price: true,
+        category: true,
+        images: true,
+        hide: true,
+        ownerId: true,
+        reviews: {
+          select: {
+            id: true,
+            createdAt: true,
+            updatedAt: true,
+            text: true,
+            rating: true,
+            user: {
+              select: {
+                name: true,
+                id: true
+              }
+            }
+          }
+        }
+      }
     })
 
-    return NextResponse.json(updateProduct)
+    return NextResponse.json(getProduct)
   } catch (error) {
     return NextResponse.json({ message: `Error product/[id] GET -> Error: ${error}`, satus: 500 })
   }
