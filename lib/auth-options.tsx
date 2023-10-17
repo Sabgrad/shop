@@ -41,7 +41,10 @@ export const authOptions: AuthOptions = {
       }
     })
   ],
-
+  pages: {
+    signIn: '/',
+    error: '/',
+  },
   debug: process.env.NODE_ENV === 'development',
   session: {
     strategy: 'jwt'

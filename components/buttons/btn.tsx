@@ -23,11 +23,11 @@ export default function Btn({
       type={type}
       disabled={disabled}
       className={clsx(
-        'p-1 gap-2 rounded-lg transition-all relative h-max flex items-center justify-center whitespace-nowrap border',
-        'text-maincolor-950 bg-white border-maincolor-950',
-        'hover:border-white hover:text-white hover:bg-maincolor-950',
+        'p-1 gap-2 rounded transition-all relative h-max flex items-center justify-center whitespace-nowrap border',
+        'bg-white border-maincolor-950/30 hover:bg-maincolor-50 dark:bg-black dark:border-maincolor-50/30 dark:hover:bg-maincolor-50/30',
         className && className,
         disabled && 'blur-[2px] pointer-events-none',
+        ''
       )}
     >
       {children}

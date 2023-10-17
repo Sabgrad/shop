@@ -8,12 +8,14 @@ import {
   useCreateIntentType,
   useCreateOrderType,
   useCreateProductType,
+  useDeleteCloudinaryImagesType,
   useDeleteUserImagesType,
   useRegisterUserType,
   useSuccessPaymentType,
   useUpdateUserImagesType
 } from '@/types/useMutation-hooks-types'
 import { useUserCartStorage } from '@/context/zustand'
+import { User } from '@prisma/client'
 
 export const useCreateIntent = ({
   setClientSecret
@@ -116,6 +118,7 @@ export const useUpdateUserImages = ({
   images,
 }: useUpdateUserImagesType) => {
   const client = useQueryClient()
+  const user = client.getQueryData(['user'])
   return useMutation({
     mutationFn: (secure_url: string) => ShopService.updateUserImages(id, images, secure_url),
     onSettled: () => {
@@ -125,14 +128,15 @@ export const useUpdateUserImages = ({
 }
 
 export const useDeleteCloudinaryImages = ({
-  setSelect
-}: { setSelect: React.Dispatch<React.SetStateAction<string[]>> }) => {
+  clearSelect
+}: useDeleteCloudinaryImagesType) => {
   const client = useQueryClient()
+  const user = client.getQueryData(['user'])
   return useMutation({
     mutationFn: (ids: string[]) => ShopService.deleteCloudinaryImages(ids),
     onSuccess: () => {
       toast.success('images deleted from cloud')
-      setSelect([])
+      clearSelect()
     },
     onSettled: () => {
       client.invalidateQueries(['userImages'])

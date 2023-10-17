@@ -29,8 +29,8 @@ export default async function Product({ params }: { params: { id: string } }) {
                 Code: {product.id}
               </span>
             </div>
-            <div className='flex flex-col w-full border border-maincolor-950 rounded-lg'>
-              <div className='flex flex-row items-center justify-between px-2 py-4 border-b border-b-maincolor-950'>
+            <div className='flex flex-col w-full border border-maincolor-950/30 dark:border-maincolor-50/30 rounded'>
+              <div className='flex flex-row items-center justify-between p-2 border-b border-maincolor-950/30 dark:border-maincolor-50/30'>
                 <span>
                   Customer: {product.ownerId}
                 </span>
@@ -38,7 +38,7 @@ export default async function Product({ params }: { params: { id: string } }) {
                   <TfiEmail size={30} />
                 </Btn>
               </div>
-              <div className='flex flex-col gap-2 px-2 py-4'>
+              <div className='flex flex-col gap-2 p-2'>
                 <ProductPrice price={product.price} discount={product.discount} actual_price={product.actual_price} />
                 <ProductCartHadnler id={product.id} />
               </div>
@@ -48,9 +48,9 @@ export default async function Product({ params }: { params: { id: string } }) {
         <span className='w-full'>
           {product.description}
         </span>
-        Reviews:
-        <Reviews reviews={product.reviews} />
+        <span>{product?.reviews && `${product.reviews.length} reviews`}</span>
         <UserReview id={params.id} reviews={product.reviews} />
+        <Reviews reviews={product.reviews} />
       </div>
     </div>
   )

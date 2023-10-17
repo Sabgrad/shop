@@ -14,7 +14,7 @@ type InputProps = {
   maxLength?: number
   valueAsNumber?: boolean
   validate?: (v: number) => boolean
-  type?: 'number'
+  type?: 'number' | 'password' | 'email' | 'text'
   min?: number
   max?: number
 }
@@ -38,7 +38,7 @@ export default function Input({
     <input
       type={type}
       id={id}
-      className={clsx('p-1 border border-maincolor-950 rounded-lg outline-maincolor-950', className && className)}
+      className={clsx('p-1 border rounded border-maincolor-950/30 dark:bg-black dark:border-maincolor-50/30', className && className)}
       placeholder={placeholder}
       {...register(id, {
         required,

@@ -27,7 +27,7 @@ export default function TextArea({
 
     <textarea
       id={id}
-      className={clsx('p-1 border border-maincolor-950 rounded-lg outline-maincolor-950', className && className)}
+      className={clsx('p-1 border rounded border-maincolor-950/30 dark:bg-black dark:border-maincolor-50/30', className && className)}
       placeholder={placeholder}
       {...register(id, {
         required,

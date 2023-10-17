@@ -18,7 +18,7 @@ export default function Success() {
     if (payment_intent) {
       succesPayment(payment_intent)
     }
-  }, [payment_intent])
+  }, [payment_intent, succesPayment])
 
   return (
     <div className='flex justify-center items-center'>

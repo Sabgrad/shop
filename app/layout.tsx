@@ -23,14 +23,14 @@ export default function RootLayout({
   return (
     <html lang="en" className='h-full select-none relative'>
       <Providers>
-        <body className={clsx('bg-maincolor-50 h-full relative pt-[4.5rem]',
+        <body className={clsx('bg-gray-50 dark:bg-black h-full relative pt-[3.375rem] font-light dark:text-gray-50',
           inter.className,
         )}>
           <Header />
           {children}
           <Menu />
           <Catalog />
-          <Toaster position='top-center' />
+          <Toaster position='top-center' toastOptions={{ className: 'bg-white text-black border border-maincolor-950/30 dark:bg-black dark:text-white border-maincolor-50/30' }} />
         </body>
       </Providers>
     </html >

@@ -28,7 +28,7 @@ export default function Home() {
 
   return (
     <div className="relative flex flex-col min-h-full gap-2 pb-2">
-      <div className="sticky top-[72px] z-[500] border-b gap-2 border-b-maincolor-950 items-end justify-between  flex flex-row overflow-x-clip backdrop-blur-lg p-2">
+      <div className="sticky top-[54px] z-[500] border-b gap-2 border-maincolor-950/30 dark:border-maincolor-50/30 items-end justify-between  flex flex-row overflow-x-clip backdrop-blur-lg p-2">
         <HomeFilterToggle setFilter={setFilter} />
         <SelectedFilters />
         <HomeSort />

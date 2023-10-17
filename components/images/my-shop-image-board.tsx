@@ -24,10 +24,7 @@ export default function MyShopImageBoard({
         <div
           className='flex flex-col fixed top-0 left-0 w-screen h-screen z-[951] bg-white p-2 gap-2'
         >
-          <Btn onClick={() => setImageBoard(false)}>
-            Close
-          </Btn>
-          {images && <ImageUpload id={id} images={images} />}
+          {images && <ImageUpload id={id} images={images} setImageBoard={setImageBoard} />}
         </div>
       }
     </>

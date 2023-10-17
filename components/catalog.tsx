@@ -15,7 +15,7 @@ export default function Catalog() {
           <div className='bg-maincolor-950/50 absolute h-full w-full top-0 left-0 text-black z-[900] flex justify-center sm:p-[4.5rem]' onClick={() => setActiveCatalog()}>
             <motion.div
               className=' bg-white flex flex-col h-full w-full p-2 
-              sm:h-max sm:w-4/5 sm:rounded-lg'
+              sm:h-max sm:w-4/5 sm:rounded'
               key='menu'
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}

@@ -1,32 +1,32 @@
-import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
+import React from 'react'
 import Btn from '../buttons/btn'
 import { CldUploadWidget } from 'next-cloudinary'
 import Image from 'next/image'
 import clsx from 'clsx'
-import { ImSpinner8 } from 'react-icons/im'
 import { useDeleteCloudinaryImages, useDeleteUserImages, useUpdateUserImages } from '@/hooks/tanstack-query/useMutation-hooks'
 import FlexLayout from '../items/flex-layout'
-import { useQueryClient } from '@tanstack/react-query'
+import { useSelectedImages } from '@/hooks/useSelectedImages'
+import { useIsLoading } from '@/hooks/isLoading'
 
 type ImageUploadProps = {
   id: string
   images: string[]
+  setImageBoard: (v: false) => void
 }
 
 export default function ImageUpload({
   id,
   images,
+  setImageBoard
 }: ImageUploadProps) {
 
-  const [select, setSelect] = useState<string[]>([])
-
-  const client = useQueryClient()
+  const { select, handleSelect, clearSelect } = useSelectedImages()
 
   const { mutate: updateImages, isLoading: isLoadingUpdateImages } = useUpdateUserImages({ id, images })
-
-  const { mutate: deleteCloudinaryImages, isLoading: isLoadingCloudinaryImages } = useDeleteCloudinaryImages({ setSelect })
-
+  const { mutate: deleteCloudinaryImages, isLoading: isLoadingCloudinaryImages } = useDeleteCloudinaryImages({ clearSelect })
   const { mutate: deleteImages, isLoading: isLoadingDBImages } = useDeleteUserImages({ select, deleteCloudinaryImages })
+
+  const { isLoading } = useIsLoading([isLoadingCloudinaryImages, isLoadingDBImages, isLoadingUpdateImages])
 
   const onUpload = (result: any) => {
     if (result) {
@@ -34,31 +34,17 @@ export default function ImageUpload({
     }
   }
 
-  useEffect(() => {
-    console.log(client.isFetching(['userImages']))
-  }, [client.isFetching()])
-
-  const isLoading = useMemo(() => {
-    return isLoadingCloudinaryImages || isLoadingDBImages || isLoadingUpdateImages
-  }, [isLoadingCloudinaryImages || isLoadingDBImages || isLoadingUpdateImages])
-
   const handleDeleteImages = () => {
     if (!isLoading) {
-      const toDeleteImages = new Set(select)
-      const updateImages = images.filter((el) => !toDeleteImages.has(el))
-      deleteImages({ id, images: updateImages })
-    }
-  }
-
-  const handleSelect = (el: string) => {
-    if (!isLoading) {
-      select.find((selectEl) => selectEl === el) ? setSelect(prev => prev.filter((selectEl) => selectEl !== el)) : setSelect(prev => [...prev, el])
+      let toDeleteImages = new Set(select)
+      let keepedImages = images.filter((el) => !toDeleteImages.has(el))
+      deleteImages({ id, images: keepedImages })
     }
   }
 
   return (
     <>
-      <div className='flex flex-row gap-2 w-full border-y-2 border-maincolor-950 py-2 sticky'>
+      <div className='flex flex-row gap-2 w-full border-b border-maincolor-950 py-2 sticky'>
         <CldUploadWidget uploadPreset='niudip3t' onUpload={onUpload} options={{ maxFiles: 1, maxImageWidth: 1920, maxImageHeight: 1080, maxFileSize: 10000000 }}>
           {({ open }: any) => {
             const click = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -82,9 +68,12 @@ export default function ImageUpload({
         <Btn
           className='ml-auto'
           onClick={handleDeleteImages}
-          disabled={select.length === 0}
+          disabled={select.length === 0 || isLoading}
         >
           Delete
+        </Btn>
+        <Btn onClick={() => setImageBoard(false)}>
+          Close
         </Btn>
       </div>
       {
@@ -92,10 +81,10 @@ export default function ImageUpload({
           {images.length ?
             images?.map((el) =>
               <div
-                onClick={() => handleSelect(el)}
+                onClick={() => handleSelect(el, isLoading)}
                 key={el}
                 className={
-                  clsx(`h-[15rem] w-[15rem] flex justify-center items-center border-2 border-maincolor-100/0 relative p-1 rounded-lg transition-all`,
+                  clsx(`h-[15rem] w-[15rem] flex justify-center items-center border-2 border-maincolor-100/0 relative p-1 rounded transition-all`,
                     select.find(selectEl => selectEl === el) && '!border-maincolor-100')
                 }
               >

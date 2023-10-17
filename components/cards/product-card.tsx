@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import noimage from '@/public/noimage.jpg'
 import Image from 'next/image'
 import Modal from '../modals/modal'
@@ -8,6 +8,7 @@ import ProductUpdaterForm from '../forms/product-update-form'
 import { Product } from '@prisma/client'
 import ProductCardUserCartToggle from '../buttons/product-card-user-cart-toggle'
 import ProductCardWishListToggle from '../buttons/product-card-wish-list-toggle'
+import clsx from 'clsx'
 
 type ProductCardProps = {
   product: Product | Omit<Product, 'orderIds'>
@@ -26,6 +27,7 @@ export default function ProductCard({
 }: ProductCardProps) {
 
   const [activeModal, setActiveModal] = useState(false)
+  const [isHover, setIsHover] = useState(false)
 
   const handleClick = () => {
     onClick && onClick()
@@ -38,10 +40,17 @@ export default function ProductCard({
 
   return (
     <>
-      <div className='gap-2 flex flex-col p-2 border relative rounded-lg max-w-[250px] bg-white hover:border-maincolor-950 group' onClick={handleClick}>
+      <div
+        className={clsx('gap-2 flex flex-col p-2 border relative rounded max-w-[250px] group',
+          'dark:border-maincolor-50/30 border-maincolor-950/30 dark:bg-black hover:bg-maincolor-950/10 bg-white dark:hover:bg-maincolor-50/30'
+        )}
+        onClick={handleClick}
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+      >
         <div className='relative justify-center items-center flex flex-1 min-h-[250px] hover:cursor-pointer' onClick={handleOpenProductPage}>
           {
-            <Image className='rounded-lg' src={product.images.length ? product.images[0] : noimage} alt='product image' width={250} height={200} />
+            <Image className='rounded' src={product.images.length ? product.images[0] : noimage} alt='product image' width={250} height={200} />
           }
         </div>
         <span className='line-clamp-2 h-[48px] break-words hover:underline hover:cursor-pointer' onClick={handleOpenProductPage}>
@@ -70,7 +79,7 @@ export default function ProductCard({
             null
         }
         {
-          type !== 'user' &&
+          type !== 'user' && isHover &&
           <>
             <ProductCardUserCartToggle id={product.id} />
             <ProductCardWishListToggle id={product.id} />

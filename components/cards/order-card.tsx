@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react'
 import Btn from '../buttons/btn'
 import ProductCard from './product-card'
@@ -22,7 +24,9 @@ export default function OrderCard({
   }
 
   return (
-    <div key={order.id} className='flex flex-col gap-2 border bg-white hover:border-maincolor-100 rounded-lg  p-1'>
+    <div key={order.id}
+      className='flex flex-col gap-2 border  rounded p-2 dark:border-maincolor-50/30 border-maincolor-950/30 dark:bg-black hover:bg-maincolor-950/10 bg-white dark:hover:bg-maincolor-50/30'
+    >
       <div className='flex flex-row gap-2'>
         <div className='flex flex-col gap-2'>
           <span>
@@ -69,9 +73,12 @@ export default function OrderCard({
         <Btn onClick={() => setIsOpen(prev => !prev)}>
           {isOpen ? 'Hide products' : 'Show products'}
         </Btn>
-        <Btn>
-          Delete order
-        </Btn>
+        {
+          !order.paid &&
+          <Btn>
+            Delete order
+          </Btn>
+        }
       </div>
       <FlexLayout>
         {

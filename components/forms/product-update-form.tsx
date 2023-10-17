@@ -73,7 +73,7 @@ export default function ProductUpdaterForm({
                   <div
                     onClick={() => setSelect(prev => prev.filter((selectEl) => selectEl !== el))}
                     key={el}
-                    className='h-[15rem] w-[15rem] flex justify-center items-center border-2 border-maincolor-100 relative p-1 rounded-lg transition-all hover:scale-110'
+                    className='h-[15rem] w-[15rem] flex justify-center items-center border-2 border-maincolor-100 relative p-1 rounded transition-all hover:scale-110'
                   >
                     <Image src={el} alt='user_galery_images' className='object-contain' width={240} height={240} />
                   </div>
@@ -88,7 +88,7 @@ export default function ProductUpdaterForm({
                   onClick={() => select.find((selectEl) => selectEl === el) ? setSelect(prev => prev.filter((selectEl) => selectEl !== el)) : setSelect(prev => [...prev, el])}
                   key={el}
                   className={
-                    clsx(`h-[15rem] w-[15rem] flex justify-center items-center border-2 border-maincolor-100/0 relative p-1 rounded-lg transition-all`,
+                    clsx(`h-[15rem] w-[15rem] flex justify-center items-center border-2 border-maincolor-100/0 relative p-1 rounded transition-all`,
                       select.find(selectEl => selectEl === el) && ' !border-maincolor-100',
                       `hover:scale-110`)
                   }
@@ -115,20 +115,20 @@ export default function ProductUpdaterForm({
         <Btn
           disabled={client.isMutating() > 0}
           type='submit'
-          className={clsx('w-full p-1 bg-maincolor-100/50 hover:bg-maincolor-100 rounded-lg relative transition-all', client.isMutating() > 0 && 'disabled:pointer-events-none')}
+          className={clsx('w-full p-1 bg-maincolor-100/50 hover:bg-maincolor-100 rounded relative transition-all', client.isMutating() > 0 && 'disabled:pointer-events-none')}
         >
           Submit changes
         </Btn>
         <Btn
           disabled={client.isMutating() > 0}
-          className={clsx('w-full p-1 bg-maincolor-100/50 hover:bg-maincolor-100 rounded-lg relative transition-all', client.isMutating() > 0 && 'disabled:pointer-events-none')}
+          className={clsx('w-full p-1 bg-maincolor-100/50 hover:bg-maincolor-100 rounded relative transition-all', client.isMutating() > 0 && 'disabled:pointer-events-none')}
           onClick={() => hideProduct({ id: product.id, hide: !product.hide })}
         >
           {product.hide ? 'Show product' : 'Hide product'}
         </Btn>
         <Btn
           disabled={client.isMutating() > 0}
-          className={clsx('w-full p-1 bg-maincolor-600/50 hover:bg-maincolor-600 rounded-lg relative transition-all', client.isMutating() > 0 && 'disabled:pointer-events-none')}
+          className={clsx('w-full p-1 bg-maincolor-600/50 hover:bg-maincolor-600 rounded relative transition-all', client.isMutating() > 0 && 'disabled:pointer-events-none')}
           onClick={() => deleteProduct(product.id)}
         >
           Delete product

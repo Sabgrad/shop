@@ -7,11 +7,10 @@ import SettingsToggle from './settings-toggle'
 import Auth from '../auth/auth'
 import CartToggle from './cart-toggle'
 
-
 export default function Header() {
 
   return (
-    <header className="h-[4.5rem] z-[800] fixed top-0 w-full px-2 text-xl flex items-center gap-2 backdrop-blur-lg border-b border-black">
+    <header className="z-[800] fixed top-0 w-full p-2 text-xl flex items-center gap-2 backdrop-blur-lg border-b border-maincolor-950/30 dark:border-maincolor-50/30">
       <MenuToggle />
       <ShopToggle />
       <CatalogToggle />

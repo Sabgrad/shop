@@ -11,7 +11,7 @@ class ShopService {
   URL = process.env.NEXT_PUBLIC_DEV_URL || process.env.NEXT_PUBLIC_URL
 
   async getHomePageCount(category: string, min: number, max: number,) {
-    return await axios.get<number>('/api/count', {
+    return await axios.get<number>(`${this.URL}/api/count`, {
       params: {
         category,
         min,
@@ -25,15 +25,15 @@ class ShopService {
   }
 
   async getProductsByIds(ids: string) {
-    return await axios.get<Omit<Product, 'orderIds'>[]>('/api/product/ids', {
+    return await axios.get<Omit<Product, 'orderIds'>[]>(`${this.URL}/api/product/ids`, {
       params: {
         ids: ids
       }
     })
   }
 
-  async getProductsByPagination(page: number, category: string, min: number, max: number, sortBy: string, orderBy: string) {
-    return await axios.get<Product[]>('/api/product', {
+  async getProductsByPagination(page: number, category: string | undefined, min: number, max: number, sortBy: string | undefined, orderBy: string | undefined) {
+    return await axios.get<Product[]>(`${this.URL}/api/product`, {
       params: {
         page,
         category,
@@ -46,7 +46,7 @@ class ShopService {
   }
 
   async getUserProducts(id: string) {
-    return await axios.get<ProductsByIdsType[]>(`/api/user/product`, {
+    return await axios.get<ProductsByIdsType[]>(`${this.URL}/api/user/product`, {
       params: {
         user_id: id
       }
@@ -54,7 +54,7 @@ class ShopService {
   }
 
   async getUserImages(id: string) {
-    return await axios.get<{ images: string[] }>(`/api/user/images`, {
+    return await axios.get<{ images: string[] }>(`${this.URL}/api/user/images`, {
       params: {
         user_id: id
       }
@@ -62,11 +62,11 @@ class ShopService {
   }
 
   async getUser(email: string) {
-    return await axios.get<User>(`/api/user/${email}`)
+    return await axios.get<User>(`${this.URL}/api/user/${email}`)
   }
 
   async getUserOrders(email: string) {
-    return await axios.get<Orders[]>('/api/user/order', {
+    return await axios.get<Orders[]>(`${this.URL}/api/user/order`, {
       params: {
         user_email: email
       }
@@ -74,19 +74,19 @@ class ShopService {
   }
 
   async updateUserOrder(id: string, price: number) {
-    return await axios.patch(`/api/order/${id}`, {
+    return await axios.patch(`${this.URL}/api/order/${id}`, {
       price: price
     })
   }
 
   async updateUserImages(id: string, images: string[], secure_url: string) {
-    return await axios.patch(`/api/user/images/${id}`, {
+    return await axios.patch(`${this.URL}/api/user/images/${id}`, {
       images: [...images, secure_url]
     })
   }
 
   async createOrder({ email, price, products, options }: CreateOrderType) {
-    return await axios.post('/api/order', {
+    return await axios.post(`${this.URL}/api/order`, {
       email,
       status: 'Processed',
       price,
@@ -96,30 +96,30 @@ class ShopService {
   }
 
   async hideProduct({ id, hide }: { id: string, hide: boolean }) {
-    return await axios.patch(`/api/product/hide/${id}`, {
+    return await axios.patch(`${this.URL}/api/product/hide/${id}`, {
       hide
     })
   }
 
   async deleteProduct(id: string) {
-    return await axios.delete(`/api/product/${id}`)
+    return await axios.delete(`${this.URL}/api/product/${id}`)
   }
 
   async updateProduct({ id, data }: { id: string, data: UpdateProductDataType }) {
     const { name, description, price, category, discount, actual_price, images } = data
-    return await axios.patch(`/api/product/${id}`, {
+    return await axios.patch(`${this.URL}/api/product/${id}`, {
       name, description, price, category, discount, actual_price, images
     })
   }
 
   async createProduct(data: CreateProductType) {
-    return await axios.post('/api/product', {
+    return await axios.post(`${this.URL}/api/product`, {
       ...data,
     })
   }
 
   async deleteImages({ id, images }: { id: string, images: string[] }) {
-    return await axios.patch(`/api/user/images/${id}`, {
+    return await axios.patch(`${this.URL}/api/user/images/${id}`, {
       images
     })
   }
@@ -147,23 +147,23 @@ class ShopService {
   }
 
   async register(data: any) {
-    return await axios.post('/api/register', data)
+    return await axios.post(`${this.URL}/api/register`, data)
   }
 
   async successPayment(intent_id: string) {
-    return await axios.patch(`/api/confirm/${intent_id}`)
+    return await axios.patch(`${this.URL}/api/confirm/${intent_id}`)
   }
 
   async getOrderById(id: string) {
-    return await axios.get<OrderTypePayment>(`/api/order/${id}`)
+    return await axios.get<OrderTypePayment>(`${this.URL}/api/order/${id}`)
   }
 
   async createIntent(order_id: string) {
-    return await axios.post(`/api/create-intent/${order_id}`)
+    return await axios.post(`${this.URL}/api/create-intent/${order_id}`)
   }
 
   async createReview(data: any) {
-    return await axios.post('/api/review', data)
+    return await axios.post(`${this.URL}/api/review`, data)
   }
 }
 

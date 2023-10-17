@@ -11,9 +11,9 @@ export default function MenuToggleUser() {
   const router = useRouter()
 
   return (
-    <div className='w-full bg-maincolor-950/90 text-white'>
+    <div className='w-full'>
       {session.status === 'authenticated' ?
-        <Btn className='rounded-none w-full !justify-start gap-2' onClick={() => router.push('/user')}>
+        <Btn className='rounded-none w-full !justify-start gap-2 !border-x-[0px]' onClick={() => router.push('/user')}>
           <span className='text-5xl'>
             {session.data.user?.name?.charAt(0).toUpperCase()}
           </span>

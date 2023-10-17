@@ -141,7 +141,6 @@ export const useFetchUserShopProducts = ({
   return useQuery({
     queryKey: ['userProducts', user],
     queryFn: () => ShopService.getUserProducts(user?.id as string),
-    enabled: !!user && !!user.id,
     select: ({ data }) => { return data },
   })
 }
@@ -152,7 +151,6 @@ export const useFetchUserShopImages = ({
   return useQuery({
     queryKey: ['userImages', user],
     queryFn: () => ShopService.getUserImages(user?.id as string),
-    enabled: !!user && !!user.id,
     select: ({ data }) => { return data.images },
   })
 }

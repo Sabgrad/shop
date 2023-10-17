@@ -18,7 +18,7 @@ export default function Menu() {
         {activeMenu &&
           <div className='fixed h-screen w-screen bg-maincolor-950/50 flex justify-start z-[900] top-0 left-0' onClick={() => setActiveMenu()}>
             <motion.div
-              className='w-72 h-full bg-white flex flex-col'
+              className='w-72 h-full dark:bg-black bg-white flex flex-col border-r border-maincolor-950/30 dark:border-maincolor-50/30'
               key='menu'
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}

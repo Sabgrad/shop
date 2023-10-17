@@ -38,8 +38,10 @@ export default function Modal({
         onClick={() => setActive(false)}
       >
         <div
-          className={clsx(`flex relative items-center p-10 bg-maincolor-50 h-full w-full flex-col gap-3 max-h-full overflow-auto
-          sm:max-w-max sm:rounded-lg sm:h-max`)}
+          className={clsx(`flex relative items-center p-10 h-full w-full flex-col gap-3 max-h-full overflow-auto
+          sm:max-w-max sm:rounded sm:h-max sm:border
+          border-maincolor-950/30 dark:border-maincolor-50/30 bg-white dark:bg-black
+          `)}
           onClick={(e) => e.stopPropagation()}
         >
           {children}

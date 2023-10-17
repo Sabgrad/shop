@@ -1,3 +1,5 @@
+'use client'
+
 import Btn from '@/components/buttons/btn'
 import ProductCard from '@/components/cards/product-card'
 import { userCartType } from '@/types/types'

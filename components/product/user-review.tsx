@@ -28,7 +28,7 @@ export default function UserReview({
   }, [reviews, user])
 
   return (
-    <div>
+    <div className='px-2 sm:px-[15%] border-b py-2 border-maincolor-950/30 dark:border-maincolor-50/30'>
       {
         !user?.id ?
           <>Sign in if u want left review</>

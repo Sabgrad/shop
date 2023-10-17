@@ -10,7 +10,7 @@ export default function MainCategory({ main }: { main: Main }) {
     <div className='flex flex-col'>
       <span
         onClick={() => set(prev => !prev)}
-        className='font-semibold underline'
+        className="font-normal"
       >
         {main.title}
       </span>

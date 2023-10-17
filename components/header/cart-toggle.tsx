@@ -23,7 +23,7 @@ export default function CartToggle() {
   return (
     <Btn className='relative' onClick={handleCart} disabled={pathname === '/user' && currentSection === 'My cart'}>
       <AiOutlineShoppingCart size={28} />
-      <div className='absolute font-semibold text-sm  right-0 -top-5 text-maincolor-950'>
+      <div className='absolute font-semibold text-sm -right-1 -top-2 text-maincolor-950 dark:text-white'>
         {isMount ? userCart.length : 0}
       </div>
     </Btn>

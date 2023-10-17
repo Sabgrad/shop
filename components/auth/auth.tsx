@@ -9,20 +9,14 @@ import Btn from '../buttons/btn'
 import { AiOutlineCloseCircle, AiOutlineUser, AiOutlineUserAdd } from 'react-icons/ai'
 import Modal from '../modals/modal'
 import { useRegisterUser } from '@/hooks/tanstack-query/useMutation-hooks'
-
-type AuthProps = {
-
-}
+import Input from '../input/input'
 
 type Variant = 'login' | 'register'
 
-export default function Auth({
-
-}: AuthProps) {
+export default function Auth() {
 
   const router = useRouter()
 
-  const [isLoading, setIsLoading] = useState(false)
   const [variant, setVariant] = useState<Variant>('login')
   const [activeAuth, setActiveAuth] = useState(false)
 
@@ -47,18 +41,23 @@ export default function Auth({
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     if (variant === 'login') {
-      signIn('credentials', data)
+      signIn('credentials', {
+        ...data,
+        redirect: false
+      })
         .then((callback) => {
           if (callback?.error) {
-            toast.error('invalid cred')
+            toast.error('Invalid credentials')
           }
           if (callback?.ok && !callback?.error) {
             toast.success('Success sign in')
+            setActiveAuth(false)
           }
         })
     }
     if (variant === 'register') {
       auth(data)
+      setActiveAuth(false)
     }
   }
 
@@ -76,42 +75,22 @@ export default function Auth({
       </Btn>
 
       <Modal active={activeAuth} setActive={setActiveAuth}>
-        <div className='absolute top-1 right-1 p-1 rounded-full transition-all block
-          hover:bg-gray-300 sm:hidden
+        <Btn className='!absolute top-1 right-1 rounded-full sm:hidden
           '
           onClick={() => setActiveAuth(false)}
         >
           <AiOutlineCloseCircle size={24} />
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-3 w-full sm:w-[35rem] items-center text-xl'>
+        </Btn>
+        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-3 w-full sm:w-[35rem] items-center'>
           {variant === 'register' &&
-            <input
-              id='name'
-              type='text'
-              placeholder='Name'
-              className='w-full px-4 py-1'
-              {...register('name')}
-            />
+            <Input id='name' placeholder='Name' required register={register} className='w-full' />
           }
-          <input
-            id='email'
-            type='email'
-            placeholder='Email'
-            {...register('email')}
-            className='w-full px-4 py-1'
-          />
-          <input
-            id='email'
-            type='password'
-            placeholder='Password'
-            {...register('password')}
-            className='w-full px-4 py-1'
-          />
-          <button type='submit' className=' bg-gray-500 hover:bg-gray-700 text-white px-4 py-1 transition-all rounded-lg' disabled={isLoading}>
-            {isLoading ? <div className='h-5 w-5 animate-spin rounded-full border-b-2 border-white' /> : 'Submit'}
-          </button>
-          <div className='border-t border-black/50 w-full' />
-          <div className='flex flex-row gap-2 text-sm'>
+          <Input id='email' type='email' placeholder='Email' register={register} required className='w-full' />
+          <Input id='password' type='password' placeholder='Password' register={register} required className='w-full' />
+          <Btn type='submit' disabled={session.status === 'loading'}>
+            {session.status === 'loading' ? <div className='h-5 w-5 animate-spin rounded-full border-b-2 border-maincolor-950/30 dark:border-maincolor-50/30' /> : 'Submit'}
+          </Btn>
+          <div className='flex flex-row gap-2 text-sm border-t border-maincolor-950/30 dark:border-maincolor-50/30 w-full pt-5 mt-5 justify-center'>
             <span>
               {variant === 'login' ? "New to Shop?" : "Already have an account?"}
             </span>

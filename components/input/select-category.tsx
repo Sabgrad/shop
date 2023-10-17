@@ -18,7 +18,7 @@ export default function SelectCategory({
 }: SelectCategoryProps) {
   return (
     <select
-      className={clsx('p-1 border border-maincolor-950 rounded-lg outline-maincolor-950', className && className)}
+      className={clsx('p-1 border border-maincolor-950 rounded outline-maincolor-950', className && className)}
       {...register(id, {
         required,
       })}

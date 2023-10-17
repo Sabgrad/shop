@@ -53,7 +53,7 @@ export default function ProductCreateForm() {
       <Btn
         type='submit'
         disabled={isLoading}
-        className='w-full p-1 rounded-lg transition-all'
+        className='w-full p-1 rounded transition-all'
       >
         Create Product
       </Btn>

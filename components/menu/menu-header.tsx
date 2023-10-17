@@ -10,7 +10,7 @@ export default function MenuHeader() {
   const { setActiveMenu } = useSwitchStore()
 
   return (
-    <div className='w-full bg-maincolor-950 p-2 gap-2 flex flex-row items-center text-white'>
+    <div className='w-full p-2 gap-2 flex flex-row items-center'>
       <AiFillShop size={28} />
       <span className=''>SHOP</span>
       <Btn onClick={() => setActiveMenu()} className='ml-auto'>

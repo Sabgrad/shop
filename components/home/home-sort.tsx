@@ -21,7 +21,10 @@ export default function HomeSort() {
       <AnimatePresence>
         {openSort &&
           <motion.ul
-            className=" z-[901] absolute top-[42px] -right-2  flex flex-col gap-1 w-max py-1 pl-1 border-l border-t border-b border-maincolor-950/30 rounded-l-lg bg-maincolor-100"
+            className={clsx(
+              "z-[901] absolute top-[42px] -right-2  flex flex-col gap-1 w-max py-1 pl-1 border-l rounded-bl border-y",
+              'dark:border-maincolor-50/30 border-maincolor-950/30 dark:bg-black bg-white'
+            )}
             onClick={() => setOpenSort(false)}
             key={'sort'}
             initial={{ x: '100%' }}
@@ -32,7 +35,10 @@ export default function HomeSort() {
             {sortMenuData.map((sort) =>
               <li
                 key={sort.title}
-                className={clsx("py-1 transition-all rounded-l-lg hover:bg-maincolor-50 px-2", sort.type === sortState.orderBy && sort.field === sortState.sortBy && '!bg-white')}
+                className={clsx("py-1 transition-all rounded-l px-2 border-y border-l",
+                  sort.type === sortState.orderBy && sort.field === sortState.sortBy && 'dark:bg-maincolor-50/30 bg-maincolor-50',
+                  'dark:border-maincolor-50/30 border-maincolor-950/30 dark:hover:bg-maincolor-50/30 hover:bg-maincolor-50'
+                )}
                 onClick={() => setSort(sort.field, sort.type)}
               >
                 {sort.title}

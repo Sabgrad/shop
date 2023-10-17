@@ -15,13 +15,13 @@ export default function User() {
   if (session.status !== 'authenticated') return null
 
   return (
-    <>
+    <div className='w-full min-h-full flex flex-col overflow-x-clip'>
       <UserMenu />
-      <div className='w-full h-full p-6 flex flex-col gap-4'>
+      <div className='w-full h-full p-2 flex flex-col gap-2'>
         {
           UserMenuData.find((el) => currentSection === el.title)?.section
         }
       </div>
-    </>
+    </div>
   )
 }

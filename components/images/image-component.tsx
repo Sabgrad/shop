@@ -56,11 +56,11 @@ export default function ImageComponent({
           )}
         </div>
       }
-      <div className={`h-[624px] justify-center items-center relative flex max-w-[37.50rem] group w-full bg-white`}>
+      <div className={`h-[624px] justify-center items-center relative flex max-w-[37.50rem] group w-full`}>
         {
           images.length > 1 &&
           <AiOutlineLeft
-            className='opacity-0 group-hover:opacity-100 absolute left-1 bg-gray-100/10 hover:bg-gray-100/60 rounded-lg transition-all'
+            className='opacity-0 group-hover:opacity-100 absolute left-1 bg-gray-100/10 hover:bg-gray-100/60 rounded transition-all'
             size={40}
             onClick={() => handleSwapImage('left')}
           />
@@ -74,7 +74,7 @@ export default function ImageComponent({
         {
           images.length > 1 &&
           <AiOutlineRight
-            className='opacity-0 group-hover:opacity-100 absolute right-1 bg-gray-100/10 hover:bg-gray-100/60 rounded-lg transition-all'
+            className='opacity-0 group-hover:opacity-100 absolute right-1 bg-gray-100/10 hover:bg-gray-100/60 rounded transition-all'
             size={40}
             onClick={() => handleSwapImage('right')}
           />

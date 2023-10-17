@@ -10,15 +10,19 @@ export default function Reviews({
   reviews,
 }: ReviewsProps) {
   return (
-    <div className='flex flex-col gap-2'>
+    <>
       {
         reviews.length ?
-          reviews.map((review) =>
-            <ReviewCard key={review.id} review={review} />
-          )
+          <div className='flex flex-col gap-2 w-full px-2 sm:px-[15%]'>
+            {
+              reviews.map((review) =>
+                <ReviewCard key={review.id} review={review} />
+              )
+            }
+          </div>
           :
-          <>Reviews didnt found</>
+          null
       }
-    </div>
+    </>
   )
 }

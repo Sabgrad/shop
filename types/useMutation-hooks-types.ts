@@ -26,6 +26,10 @@ export type useUpdateUserImagesType = {
   images: string[]
 }
 
+export type useDeleteCloudinaryImagesType = {
+  clearSelect: () => void
+}
+
 export type useDeleteUserImagesType = {
   select: string[]
   deleteCloudinaryImages: UseMutateFunction<void[], unknown, string[], unknown>

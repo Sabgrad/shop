@@ -23,7 +23,7 @@ type StringStore = {
 
 export const useStringStore = create<StringStore>((set) => ({
   currentSection: 'Me',
-  setCurrentSection: (value) => set(() => ({ currentSection: value }))
+  setCurrentSection: (value) => set(() => ({ currentSection: value })),
 }))
 
 type ArrayOfProductId = {
@@ -101,3 +101,22 @@ export const useFilterStore = create<FilterStore>((set) => ({
   currentCategory: '',
   setCurrentCategory: (value) => set(() => ({ currentCategory: value })),
 }))
+
+type Theme = 'light' | 'dark'
+
+type ThemeStore = {
+  theme: Theme
+  setTheme: (theme: Theme) => void
+  themeSwitches?: () => void
+}
+
+export const useThemeStore = create(
+  persist<ThemeStore>(
+    (set, get) => ({
+      theme: 'light',
+      setTheme: (theme) => set(() => ({ theme })),
+    }),
+    {
+      name: 'theme',
+    }
+  ))

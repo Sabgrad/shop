@@ -11,8 +11,10 @@ export default function ProductCardWishListToggle({
 
   return (
     <div
-      className={clsx(`absolute left-2 top-2 p-2 rounded-full transition-all hover:scale-125 opacity-0 group-hover:opacity-100 
-    bg-maincolor-50 border border-black`)}
+      className={clsx(`absolute left-2 top-2 p-2 rounded-full transition-all border flex justify-center items-center`,
+        'border-maincolor-950/30 dark:border-maincolor-50/30 dark:bg-black bg-gray-50'
+      )}
+
       onClick={handleWishList}
     >
       {
