@@ -51,6 +51,7 @@ export default function Catalog() {
                         'px-1 whitespace-nowrap border rounded border-maincolor-950/30 dark:border-maincolor-50/30',
                         el.title === currentCategory && 'bg-black text-white dark:text-black dark:bg-white'
                       )}
+                      key={el.title}
                       onMouseEnter={() => setCurrentCategory(el.title)}
 
                     >
@@ -65,7 +66,7 @@ export default function Catalog() {
                     <>
                       <div className='flex flex-row max-w-full gap-1 flex-wrap'>
                         <CatalogItem title={current.popular.title} categorys={current.popular.subCategory} />
-                        {current.other.map(el => <CatalogItem title={el.title} categorys={el.subCategory} />)}
+                        {current.other.map(el => <CatalogItem key={el.title} title={el.title} categorys={el.subCategory} />)}
                       </div>
                     </>
                     :

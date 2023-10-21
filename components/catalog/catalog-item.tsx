@@ -28,6 +28,7 @@ export default function CatalogItem({
             href='/'
             className='px-1 rounded border border-maincolor-950/30 dark:border-maincolor-50/30 hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white'
             onClick={() => { setCurrentCategory(el.title), setActiveCatalog(false) }}
+            key={el.title}
           >
             {el.title}
           </Link>
