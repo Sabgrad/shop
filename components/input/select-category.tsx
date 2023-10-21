@@ -1,4 +1,4 @@
-import { categorys, mainCategorys } from '@/lib/data'
+import { mainCategorys } from '@/lib/data'
 import clsx from 'clsx'
 import React from 'react'
 import { FieldValues, UseFormRegister } from 'react-hook-form'
