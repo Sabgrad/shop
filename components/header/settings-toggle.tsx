@@ -13,6 +13,12 @@ const variants = {
   light: { justifyContent: 'flex-start' },
 }
 
+const spring = {
+  type: 'spring',
+  stiffness: 700,
+  damping: 30,
+}
+
 
 export default function SettingsToggle() {
 
@@ -45,22 +51,16 @@ export default function SettingsToggle() {
           )}
           ref={ref}
         >
-          <Btn onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-            {theme}
-          </Btn>
-          <motion.div
+          <div
             className={clsx(
-              'w-16 h-8 px-1 rounded-l-full rounded-r-full border flex items-center',
-              'border-maincolor-950/30 dark:border-maincolor-50/30'
+              'w-16 h-8 px-1 rounded-l-full rounded-r-full border flex items-center justify-start',
+              'border-maincolor-950/30 dark:border-maincolor-50/30',
+              theme === 'dark' && 'justify-end'
             )}
-            animate={variants[theme]}
-            variants={variants}
-            transition={{
-              duration: 5,
-            }}
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           >
-            <div className='w-6 h-6 rounded-full bg-black dark:bg-white' />
-          </motion.div>
+            <motion.div layout transition={{ duration: 0.15 }} className='w-6 h-6 rounded-full bg-black dark:bg-white' />
+          </div>
           <Btn>
             EU
           </Btn>

@@ -1,6 +1,6 @@
 'use client'
 
-import ProductCard from '@/components/cards/product-card'
+import ProductCard from '@/components/cards/productcard/product-card'
 import ProductCreateForm from '@/components/forms/product-create-form'
 import MyShopImageBoard from '@/components/images/my-shop-image-board'
 import React from 'react'

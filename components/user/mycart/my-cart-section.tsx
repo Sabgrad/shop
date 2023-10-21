@@ -1,7 +1,7 @@
 'use client'
 
 import Btn from '@/components/buttons/btn'
-import ProductCard from '@/components/cards/product-card'
+import ProductCard from '@/components/cards/productcard/product-card'
 import { userCartType } from '@/types/types'
 import React, { useState } from 'react'
 import { BiMinus } from 'react-icons/bi'
@@ -31,46 +31,40 @@ export default function MyCart() {
     }
   }
 
-  if (isFetching) return <>Laoding ...</>
-
   return (
     <>
-      {
-        cart.length > 0 ?
-          <>
-            <FlexLayout>
-              {
-                cart.map((product, index) =>
-                  <div className='flex flex-col gap-2' key={product.id}>
-                    <ProductCard product={product} />
-                    <div className='flex flex-row gap-2'>
-                      <div className='flex h-8 w-8 rounded-full justify-center items-center bg-maincolor-500 text-white'>
-                        {product.quantity}
-                      </div>
-                      <Btn
-                        className='bg-maincolor-100 w-8 h-8 !rounded-full'
-                        disabled={product.quantity < 9 ? false : true}
-                        onClick={() => setCart(prev => [...prev.slice(0, index), { ...prev[index], quantity: prev[index].quantity + 1 }, ...prev.slice(index + 1)])}>
-                        <BsPlus size={25} />
-                      </Btn>
-                      <Btn
-                        className='bg-maincolor-100 w-8 h-8 !rounded-full'
-                        disabled={product.quantity > 1 ? false : true}
-                        onClick={() => setCart(prev => [...prev.slice(0, index), { ...prev[index], quantity: prev[index].quantity - 1 }, ...prev.slice(index + 1)])}>
-                        <BiMinus size={25} />
-                      </Btn>
-                    </div>
+      <FlexLayout>
+        {
+          cart?.length > 0 ?
+            cart.map((product, index) =>
+              <div className='flex flex-col gap-2' key={product.id}>
+                <ProductCard product={product} />
+                <div className='flex flex-row gap-2'>
+                  <div className='flex h-8 w-8 rounded-full justify-center items-center bg-maincolor-500 text-white'>
+                    {product.quantity}
                   </div>
-                )
-              }
-            </FlexLayout>
-            <Btn disabled={isLoading} onClick={handleCreateOrder} >
-              Create order
-            </Btn>
-          </>
-          :
-          'Your cart is empty'
-      }
+                  <Btn
+                    className='bg-maincolor-100 w-8 h-8 !rounded-full'
+                    disabled={product.quantity < 9 ? false : true}
+                    onClick={() => setCart(prev => [...prev.slice(0, index), { ...prev[index], quantity: prev[index].quantity + 1 }, ...prev.slice(index + 1)])}>
+                    <BsPlus size={25} />
+                  </Btn>
+                  <Btn
+                    className='bg-maincolor-100 w-8 h-8 !rounded-full'
+                    disabled={product.quantity > 1 ? false : true}
+                    onClick={() => setCart(prev => [...prev.slice(0, index), { ...prev[index], quantity: prev[index].quantity - 1 }, ...prev.slice(index + 1)])}>
+                    <BiMinus size={25} />
+                  </Btn>
+                </div>
+              </div>
+            )
+            :
+            <>Cart is empty</>
+        }
+      </FlexLayout>
+      <Btn disabled={isFetching || isLoading || cart.length === 0 || !cart} onClick={handleCreateOrder} >
+        Create order
+      </Btn>
     </>
   )
 }

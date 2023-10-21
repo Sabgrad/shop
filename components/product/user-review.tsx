@@ -17,7 +17,7 @@ export default function UserReview({
   reviews,
   id
 }: UserReviewProps) {
-  const { data: user } = useFetchUser()
+  const { data: user, isFetching } = useFetchUser()
 
   const review: UserReview = useMemo(() => {
     let userReview = undefined
@@ -30,16 +30,19 @@ export default function UserReview({
   return (
     <div className='px-2 sm:px-[15%] border-b py-2 border-maincolor-950/30 dark:border-maincolor-50/30'>
       {
-        !user?.id ?
-          <>Sign in if u want left review</>
+        isFetching ?
+          <>Loading...</>
           :
-          review ?
-            <>
-              Your review:
-              <ReviewCard review={review} />
-            </>
+          !user?.id ?
+            <>Sign in if u want left review</>
             :
-            <ReviewForm productId={id} userId={user.id} />
+            review ?
+              <>
+                Your review:
+                <ReviewCard review={review} />
+              </>
+              :
+              <ReviewForm productId={id} userId={user.id} />
       }
     </div>
   )

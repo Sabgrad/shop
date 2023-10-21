@@ -1,10 +1,10 @@
 'use client'
 
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React from 'react'
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 import noimage from '@/public/noimage.jpg'
-
+import { useImageSwitcher } from '@/hooks/useImageSwitcher'
 
 type ImageComponentProps = {
   images: string[]
@@ -14,26 +14,7 @@ export default function ImageComponent({
   images,
 }: ImageComponentProps) {
 
-  const [currentImage, setCurrentImage] = useState(0)
-
-  const handleSwapImage = (type: 'left' | 'right') => {
-    if (type === 'left') {
-      if (currentImage === 0) {
-        setCurrentImage(images.length - 1)
-      }
-      if (currentImage !== 0) {
-        setCurrentImage(prev => prev - 1)
-      }
-    }
-    if (type === 'right') {
-      if (currentImage === images.length - 1) {
-        setCurrentImage(0)
-      }
-      if (currentImage < images.length - 1) {
-        setCurrentImage(prev => prev + 1)
-      }
-    }
-  }
+  const { currentImage, setCurrentImage, handleSwapImage } = useImageSwitcher(images.length)
 
   return (
     <div className='flex gap-2 min-w-[15rem] max-w-[40rem]'>

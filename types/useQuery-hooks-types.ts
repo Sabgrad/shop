@@ -2,7 +2,7 @@ import { Product, User } from "@prisma/client"
 import { UseMutateFunction } from "@tanstack/react-query"
 import { AxiosResponse } from "axios"
 import { Dispatch } from "react"
-import { userCartType } from "./types"
+import { ArrayOfProductId, userCartType } from "./types"
 
 export type useFetchMaxHomePaginationType = {
   currentCategory: string
@@ -52,6 +52,10 @@ export type useFetchProductPageType = {
 export type useFetchProductInCartType = {
   userCart: { productId: string }[]
   setCart: Dispatch<React.SetStateAction<userCartType[]>>
+}
+
+export type useFetchProductInWishListType = {
+  wishList: ArrayOfProductId[]
 }
 
 export type useFetchUserOrdersType = {

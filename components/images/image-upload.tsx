@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import { useDeleteCloudinaryImages, useDeleteUserImages, useUpdateUserImages } from '@/hooks/tanstack-query/useMutation-hooks'
 import FlexLayout from '../items/flex-layout'
 import { useSelectedImages } from '@/hooks/useSelectedImages'
-import { useIsLoading } from '@/hooks/isLoading'
+import { useIsLoading } from '@/hooks/useIsLoading'
 
 type ImageUploadProps = {
   id: string

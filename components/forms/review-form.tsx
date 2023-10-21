@@ -41,9 +41,9 @@ export default function ReviewForm({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <TextArea placeholder='Review' id='text' required register={register} minLength={30} maxLength={600} className='w-full max-w-[40rem] min-h-[10rem]' />
-      <Btn type='submit'>
+    <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2 items-center'>
+      <TextArea placeholder='Review' id='text' required register={register} minLength={5} maxLength={600} className='w-full max-w-[40rem] min-h-[10rem]' />
+      <Btn type='submit' className='w-32'>
         OK
       </Btn>
     </form>

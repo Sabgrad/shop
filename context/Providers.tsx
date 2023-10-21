@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import AuthContext from './session-context'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 

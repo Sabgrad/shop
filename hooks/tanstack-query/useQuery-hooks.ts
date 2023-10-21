@@ -6,6 +6,7 @@ import {
   useFetchMaxHomePaginationType,
   useFetchOrderPayPageType,
   useFetchProductInCartType,
+  useFetchProductInWishListType,
   useFetchProductPageType,
   useFetchUserOrdersType,
   useFetchUserShopImagesType,
@@ -101,6 +102,17 @@ export const useFetchProductInCart = ({
   })
 }
 
+export const useFetchProductInWishList = ({
+  wishList,
+}: useFetchProductInWishListType) => {
+  return useQuery({
+    queryKey: ['proucts-in-cart', wishList],
+    queryFn: () => ShopService.getProductsByIds(wishList.map((el) => el.productId).join(',')),
+    enabled: wishList.length > 0,
+    select: ({ data }) => { return data }
+  })
+}
+
 export const useFetchUserOrders = ({
   updateOrderPrice
 }: useFetchUserOrdersType) => {
@@ -169,5 +181,16 @@ export const useFetchUser = () => {
     onSettled: () => {
       client.invalidateQueries(['userProducts'])
     }
+  })
+}
+
+export const useFetchUserReview = ({
+  id
+}: { id: string }) => {
+  return useQuery({
+    queryKey: ['userReviews', id],
+    queryFn: () => ShopService.getReviews(id),
+    enabled: !!id,
+    select: (({ data }) => { return data })
   })
 }

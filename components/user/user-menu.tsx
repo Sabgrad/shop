@@ -11,7 +11,7 @@ export default function UserMenu() {
   const { currentSection, setCurrentSection } = useStringStore()
 
   return (
-    <div className='p-2 flex flex-row w-full  z-[500] gap-2 border-b border-maincolor-950/30 dark:border-maincolor-50/30 fixed sm:sticky left-0 top-[54px]'>
+    <div className='p-2 flex flex-row w-full  z-[500] gap-2 border-b border-maincolor-950/30 dark:border-maincolor-50/30 sticky left-0 top-[54px]'>
       {
         UserMenuData.map((el) =>
           <Btn

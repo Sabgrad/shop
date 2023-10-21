@@ -1,11 +1,11 @@
 'use client'
 
 import React, { useState } from 'react'
-import Btn from '../buttons/btn'
-import ProductCard from './product-card'
+import Btn from '../../buttons/btn'
+import ProductCard from '../productcard/product-card'
 import { useRouter } from 'next/navigation'
 import { Orders } from '@/types/types'
-import FlexLayout from '../items/flex-layout'
+import FlexLayout from '../../items/flex-layout'
 
 type OrderCardProps = {
   order: Orders

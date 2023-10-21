@@ -17,8 +17,8 @@ model User {
   name           String
   email          String   @unique
   hashedPassword String?
-  images         String[]
 
+  images  String[]
   product Product[]
   order   Order[]
   reviews Review[]

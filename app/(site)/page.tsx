@@ -1,6 +1,6 @@
 'use client'
 
-import ProductCard from "@/components/cards/product-card"
+import ProductCard from "@/components/cards/productcard/product-card"
 import { useState } from "react"
 import PriceFilterForm from "@/components/forms/price-filter-form"
 import HomeCategoryFilter from "@/components/home/category-filter/home-category-filter"

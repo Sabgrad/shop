@@ -1,4 +1,4 @@
-import OrderCard from '@/components/cards/order-card'
+import OrderCard from '@/components/cards/ordercard/order-card'
 import React from 'react'
 import { useFetchUserOrders } from '@/hooks/tanstack-query/useQuery-hooks'
 import { useUpdateOrderPrice } from '@/hooks/tanstack-query/useMutation-hooks'

@@ -1,13 +1,6 @@
-import { UserSectionType } from "@/types/types"
+import { FilterStore, StringStore, SwitchStore, ThemeStore, UserCartPersist, WishListPersist } from "@/types/zustand-types"
 import { create } from "zustand"
 import { persist } from 'zustand/middleware'
-
-type SwitchStore = {
-  activeMenu: boolean
-  activeCatalog: boolean
-  setActiveMenu: () => void
-  setActiveCatalog: (value?: boolean) => void
-}
 
 export const useSwitchStore = create<SwitchStore>((set) => ({
   activeMenu: false,
@@ -16,26 +9,10 @@ export const useSwitchStore = create<SwitchStore>((set) => ({
   setActiveCatalog: (value) => set((state) => ({ activeCatalog: value !== undefined ? value : !state.activeCatalog })),
 }))
 
-type StringStore = {
-  currentSection: UserSectionType
-  setCurrentSection: (value: UserSectionType) => void
-}
-
 export const useStringStore = create<StringStore>((set) => ({
   currentSection: 'Me',
   setCurrentSection: (value) => set(() => ({ currentSection: value })),
 }))
-
-type ArrayOfProductId = {
-  productId: string
-}
-
-type UserCartPersist = {
-  userCart: ArrayOfProductId[]
-  addItem: (productId: string) => void
-  deleteItem: (productId: string) => void
-  clearCart: () => void
-}
 
 export const useUserCartStorage = create(
   persist<UserCartPersist>(
@@ -57,13 +34,6 @@ export const useUserCartStorage = create(
   )
 )
 
-type WishListPersist = {
-  wishList: ArrayOfProductId[]
-  addItem: (productId: string) => void
-  deleteItem: (productId: string) => void
-  clearWishList: () => void
-}
-
 export const useWishListStorage = create(
   persist<WishListPersist>(
     (set, get) => ({
@@ -84,15 +54,6 @@ export const useWishListStorage = create(
   )
 )
 
-type FilterStore = {
-  price: { min: number, max: number }
-  setPrice: (min: number, max: number) => void
-  sort: { sortBy: string, orderBy: string }
-  setSort: (sortBy: string, orderBy: string) => void
-  currentCategory: string
-  setCurrentCategory: (value: string) => void
-}
-
 export const useFilterStore = create<FilterStore>((set) => ({
   price: { min: 0, max: 999999 },
   setPrice: (min, max) => set(() => ({ price: { min, max } })),
@@ -100,19 +61,19 @@ export const useFilterStore = create<FilterStore>((set) => ({
   setSort: (sortBy, orderBy) => set(() => ({ sort: { sortBy, orderBy } })),
   currentCategory: '',
   setCurrentCategory: (value) => set(() => ({ currentCategory: value })),
+  clearPrice: () => set(() => ({ price: { min: 0, max: 999999 } })),
+  clearSort: () => set(() => ({ sort: { sortBy: '', orderBy: '' } })),
+  clearCategory: () => set(() => ({ currentCategory: '' })),
+  clearFilter: () => set(() => ({
+    price: { min: 0, max: 999999 },
+    sort: { sortBy: '', orderBy: '' },
+    currentCategory: '',
+  }))
 }))
-
-type Theme = 'light' | 'dark'
-
-type ThemeStore = {
-  theme: Theme
-  setTheme: (theme: Theme) => void
-  themeSwitches?: () => void
-}
 
 export const useThemeStore = create(
   persist<ThemeStore>(
-    (set, get) => ({
+    (set) => ({
       theme: 'light',
       setTheme: (theme) => set(() => ({ theme })),
     }),

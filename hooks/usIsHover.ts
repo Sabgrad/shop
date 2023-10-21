@@ -1,19 +1,26 @@
 'use client'
 
-import { RefObject, useEffect } from "react"
+import { RefObject, useEffect, useState } from "react"
 
-export const useIsHover = <T extends HTMLElement = HTMLElement>(ref: RefObject<T>, callback: () => void) => {
+export const useIsHover = <T extends HTMLElement = HTMLElement>(ref: RefObject<T>) => {
+
+  const [isHover, setIsHover] = useState(false)
 
   useEffect(() => {
     const node = ref.current
 
-    const handleMouseOver = (e: MouseEvent) => {
-      if (node && !node.contains(e.target as Node)) {
-        callback()
-      }
-    }
+    const handleMouseEnter = () => setIsHover(true)
+    const handleMouseLeave = () => setIsHover(false)
 
-    document.addEventListener('mouseover', handleMouseOver)
-    return () => document.removeEventListener('mouseover', handleMouseOver)
-  }, [ref, callback])
+    if (node) {
+      node.addEventListener('mouseenter', handleMouseEnter)
+      node.addEventListener('mouseleave', handleMouseLeave)
+    }
+    return () => {
+      document.removeEventListener('mouseenter', handleMouseEnter)
+      document.addEventListener('mouseleave', handleMouseLeave)
+    }
+  }, [ref])
+
+  return isHover
 }

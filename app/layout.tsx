@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import Header from '@/components/header/header'
 import { Toaster } from 'react-hot-toast'
 import Menu from '@/components/menu/menu'
-import Catalog from '@/components/catalog'
+import Catalog from '@/components/catalog/catalog'
 import Providers from '@/context/Providers'
 
 const inter = Inter({ subsets: ['latin'] })

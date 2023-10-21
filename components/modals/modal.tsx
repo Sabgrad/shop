@@ -1,5 +1,6 @@
 'use client'
 
+import { useTurnOffBodyScroll } from '@/hooks/useTurnOffBodyScroll'
 import clsx from 'clsx'
 import React, { useRef } from 'react'
 import { useEffect, useState } from "react"
@@ -23,13 +24,7 @@ export default function Modal({
     setDomReady(true)
   }, [])
 
-  useEffect(() => {
-    if (active) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-  }, [active])
+  useTurnOffBodyScroll(active)
 
   return domReady && active ?
     ReactDOM.createPortal(
